@@ -1,0 +1,37 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "18536262",
+      "name": "Twitter",
+      "font_class": "Twitter",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "18536263",
+      "name": "medium",
+      "font_class": "medium",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "18536268",
+      "name": "Discord",
+      "font_class": "Discord",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "18536270",
+      "name": "Telegram",
+      "font_class": "Telegram",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    }
+  ]
+}
