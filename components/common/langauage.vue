@@ -1,8 +1,9 @@
 <template>
   <div class="langauage">
     <div class="hover_box">
+      <img src="~/assets/img/helmet/globe@2x.png" alt="" />
       <span>{{ langName }}</span>
-      <img src="~/assets/img/icon/icon_minor_select@2x.png" alt="" />
+      <img src="~/assets/img/helmet/chevrondown@2x.png" alt="" />
       <div class="hint_box">
         <ul>
           <li
@@ -10,8 +11,8 @@
             :key="item.key"
             @click="switchLang(item.key)"
           >
-            <img src="~/assets/img/icon/radio1.png" v-if="item.key == lang" />
-            <img src="~/assets/img/icon/radio2.png" v-else />
+            <!-- <img src="~/assets/img/icon/radio1.png" v-if="item.key == lang" /> -->
+            <!-- <img src="~/assets/img/icon/radio2.png" v-else /> -->
             {{ item.name }}
           </li>
         </ul>
@@ -78,10 +79,10 @@ export default {
     display: flex;
     align-items: center;
     .hover_box {
-      width: 130px;
+      width: 160px;
       height: 40px;
-      border-radius: 20px;
-      border: 1px solid #ffffff;
+      border-radius: 3px;
+      border: 1px solid #212121;
       margin-left: 20px;
       position: relative;
       display: flex;
@@ -91,28 +92,37 @@ export default {
       img {
         width: 20px;
         height: 20px;
-        margin-left: 4px;
+        &:nth-of-type(1) {
+          margin-left: 10px;
+          margin-right: 10px;
+        }
+        &:nth-of-type(2) {
+          margin-right: 10px;
+        }
+      }
+      span {
+        flex: 1;
+        color: #dbdbdb;
       }
     }
     .hint_box {
       display: none;
       position: absolute;
-      top: 35px;
-      margin-top: 8px;
+      top: calc(-100% - 50px);
       z-index: 9;
+      margin-bottom: 40px;
       ul {
-        background: #ffffff;
-        border-radius: 10px;
-        width: 130px;
+        background: #000;
+        width: 160px;
         display: flex;
         flex-direction: column;
         overflow: hidden;
         li {
+          padding-left: 16px;
           height: 40px;
           display: flex;
           align-items: center;
-          padding-left: 10px;
-          color: #1d2023;
+          color: #dbdbdb;
           font-size: 14px;
           img {
             margin-right: 10px;
@@ -120,7 +130,7 @@ export default {
             height: 16px;
           }
           &:hover {
-            background: #e8eaec;
+            background: #1d1d1d;
           }
         }
       }

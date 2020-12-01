@@ -32,6 +32,27 @@
       "font_class": "Telegram",
       "unicode": "e604",
       "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "18561555",
+      "name": "Helmet",
+      "font_class": "Helmet",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "18561556",
+      "name": "time",
+      "font_class": "time",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "18561557",
+      "name": "BNB",
+      "font_class": "BNB",
+      "unicode": "e607",
+      "unicode_decimal": 58887
     }
   ]
 }

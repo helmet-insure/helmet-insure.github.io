@@ -1,7 +1,6 @@
 <template>
   <div class="layout-container">
     <PHeader></PHeader>
-    <p>{{ $t('Dialog.StartMining') }}</p>
     <div class="main-container">
       <nuxt />
     </div>
@@ -239,17 +238,16 @@ export default {
       text-align: center;
       line-height: 30px;
     }
-    padding-bottom: 210px;
     .main-container {
       width: 1200px;
-      margin: 0 auto;
+      margin: 20px auto 0;
     }
   }
 }
 @media screen and (max-width: 750px) {
   .layout-container {
-    padding-bottom: 240px;
     .main-container {
+      margin: 20px auto 0;
       width: 100%;
     }
   }

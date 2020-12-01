@@ -1,24 +1,23 @@
 <template>
   <div class="home-container">
     <Banner></Banner>
-    <Insurance></Insurance>
+    <InsuranceCenter></InsuranceCenter>
+    <InsuranceBottom></InsuranceBottom>
   </div>
 </template>
 <script>
-import Insurance from '~/components/insurance/index.vue';
 import Banner from '~/components/insurance/banner.vue';
-
+import InsuranceCenter from '~/components/insurance/insurance-center.vue';
+import InsuranceBottom from '~/components/insurance/insurance-bottom.vue';
 export default {
   layout: 'default',
   name: 'home',
   components: {
     Banner,
-    Insurance,
+    InsuranceCenter,
+    InsuranceBottom,
   },
 };
 </script>
 <style lang="scss">
-.home-container {
-  /* padding-bottom: 90px; */
-}
 </style>

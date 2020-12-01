@@ -22,49 +22,21 @@
         <img src="~/assets/img/helmet/home_banner.png" alt="" />
       </div>
     </div>
-    <div class="helmet_footer">
-      <div class="footer_top">
-        <a href="">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-Twitter"></use>
-          </svg>
-          <span>Twitter</span>
-        </a>
-        <a href="">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-Telegram"></use>
-          </svg>
-          <span>Telegram</span>
-        </a>
-        <a href="">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-Discord"></use>
-          </svg>
-          <span>Discord</span>
-        </a>
-        <a href="">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-medium"></use>
-          </svg>
-          <span>Medium</span>
-        </a>
-      </div>
-      <div class="footer_bottom">
-        <p>Powered by HELMET Core team</p>
-      </div>
-    </div>
+    <Footer />
   </div>
 </template>
 <script>
-import Insurance from '~/components/insurance/index.vue';
+// import Insurance from '~/components/insurance/index.vue';
 import Banner from '~/components/insurance/banner.vue';
+import Footer from '~/components/common/footer.vue';
 import '~/assets/svg/iconfont.js';
 export default {
   layout: 'helmet',
   name: 'home',
   components: {
     Banner,
-    Insurance,
+    // Insurance,
+    Footer,
   },
   methods: {
     toProduct() {
@@ -102,7 +74,7 @@ export default {
       display: flex;
       justify-content: space-between;
       .right_text {
-        margin-top: 20vh;
+        margin-top: 25vh;
         H3 {
           color: #fff;
           font-size: 5vw;
@@ -162,52 +134,12 @@ export default {
       .right_pic {
         min-width: 474px;
         min-height: 322px;
-        margin-top: 18vh;
+        margin-top: 10vh;
         width: 35vw;
         height: 46vh;
         img {
           width: 100%;
           height: 100%;
-        }
-      }
-    }
-    .helmet_footer {
-      width: 100%;
-      height: 150px;
-      display: flex;
-      flex-direction: column;
-      .footer_top {
-        width: 300px;
-        flex: 1;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        a {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          img {
-            width: 24px;
-            height: 24px;
-          }
-          span {
-            margin-top: 4px;
-            font-size: 14px;
-            color: #e8e7e9;
-          }
-        }
-      }
-      .footer_bottom {
-        border-top: 1px solid #212121;
-        width: 100%;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        p {
-          font-size: 14px;
-          font-weight: 400;
-          color: #545454;
         }
       }
     }
@@ -239,7 +171,7 @@ export default {
       display: flex;
       justify-content: space-between;
       .right_text {
-        margin-top: 150px;
+        margin-top: 180px;
         H3 {
           color: #fff;
           font-size: 64px;
@@ -297,7 +229,7 @@ export default {
       .right_pic {
         min-width: 474px;
         min-height: 322px;
-        margin-top: 140px;
+        margin-top: 50px;
         width: 474px;
         height: 322px;
         img {
@@ -345,23 +277,6 @@ export default {
           color: #545454;
         }
       }
-    }
-  }
-}
-.icon {
-  width: 24px;
-  height: 24px;
-  vertical-align: -0.15em;
-  fill: #ffffff;
-  overflow: hidden;
-}
-.footer_top {
-  a:hover {
-    .icon:hover {
-      fill: #ff9600;
-    }
-    span {
-      color: #ff9600 !important;
     }
   }
 }

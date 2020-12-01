@@ -1,51 +1,54 @@
 <template>
   <div class="header-container">
-    <a class="logo" href="https://www.payaso.io/" target="_blank">
-      <img src="~/assets/img/logo_1.png" />
-    </a>
-    <div class="nav-list">
-      <nuxt-link
-        to="/product"
-        :class="routeObj.name === 'product-id' ? 'active' : ''"
-        >{{ $t('Header.Market') }}</nuxt-link
+    <div>
+      <a class="logo" href="https://www.payaso.io/" target="_blank">
+        <img src="~/assets/img/helmet/trade_logo.png" />
+      </a>
+      <div class="nav-list">
+        <nuxt-link
+          to="/product"
+          :class="routeObj.name === 'product-id' ? 'active' : ''"
+          >{{ $t('Header.Market') }}</nuxt-link
+        >
+        <nuxt-link to="/buy">{{ $t('Header.MySafetyHelmet') }}</nuxt-link>
+        <nuxt-link to="/sell">{{ $t('Header.MySupply') }}</nuxt-link>
+        <nuxt-link to="/mining">{{ $t('Header.LPMining') }}</nuxt-link>
+        <a href="http://www.payaso.io/guides" target="_blank">{{
+          $t('Header.GuideBook')
+        }}</a>
+      </div>
+      <!-- <Assets v-if="userInfo.data.isLogin"></Assets> -->
+      <!-- 分割线 -->
+      <!-- <i class="cut-line" v-if="userInfo.data.isLogin"></i> -->
+      <a
+        v-if="!userInfo.data.isLogin"
+        class="connect-wallet-btn"
+        @click="openWallectSelect"
+        >{{ $t('Assets.ConnectWallet') }}</a
       >
-      <nuxt-link to="/buy">{{ $t('Header.MySafetyHelmet') }}</nuxt-link>
-      <nuxt-link to="/sell">{{ $t('Header.MySupply') }}</nuxt-link>
-      <nuxt-link to="/mining">{{ $t('Header.LPMining') }}</nuxt-link>
-      <a href="http://www.payaso.io/guides" target="_blank">{{
-        $t('Header.GuideBook')
-      }}</a>
-    </div>
-    <Assets v-if="userInfo.data.isLogin"></Assets>
-    <!-- 分割线 -->
-    <i class="cut-line" v-if="userInfo.data.isLogin"></i>
-    <a
-      v-if="!userInfo.data.isLogin"
-      class="connect-wallet-btn"
-      @click="openWallectSelect"
-      >{{ $t('Assets.ConnectWallet') }}</a
-    >
-    <div v-else class="wallet-address" @click="openCurrentAccount">
-      <span>{{ accountText }}</span>
-      <i></i>
-    </div>
-    <WallectSelect
-      v-if="showWallectSelect"
-      @close="closeWallectSelect"
-    ></WallectSelect>
-    <Langauage></Langauage>
-    <div class="more" @click="handleShowMask"></div>
+      <div v-else class="wallet-address" @click="openCurrentAccount">
+        <span>{{ accountText }}</span>
+        <i></i>
+      </div>
 
-    <CurrentAccount
-      v-if="showCurrentAccount"
-      @close="closeCurrentAccount"
-      @change="openChangeWallet"
-    ></CurrentAccount>
-    <ChangeAccount
-      v-if="showChangeWallet"
-      @close="closeChangeWallet"
-      @back="openCurrentAccount"
-    ></ChangeAccount>
+      <WallectSelect
+        v-if="showWallectSelect"
+        @close="closeWallectSelect"
+      ></WallectSelect>
+      <!-- <Langauage></Langauage> -->
+      <div class="more" @click="handleShowMask"></div>
+
+      <CurrentAccount
+        v-if="showCurrentAccount"
+        @close="closeCurrentAccount"
+        @change="openChangeWallet"
+      ></CurrentAccount>
+      <ChangeAccount
+        v-if="showChangeWallet"
+        @close="closeChangeWallet"
+        @back="openCurrentAccount"
+      ></ChangeAccount>
+    </div>
   </div>
 </template>
 <script>
@@ -102,7 +105,15 @@ export default {
     userInfoWatch(newValue) {
       if (newValue.data && newValue.data.account) {
         let account = newValue.data.account;
-        this.accountText = account.substr(0, 6) + '...' + account.substr(-5);
+        account = account.toUpperCase();
+        this.accountText =
+          account.substr(0, 1) +
+          ' ' +
+          account.substr(1, 1) +
+          ' ' +
+          account.substr(2, 4) +
+          '...' +
+          account.substr(-5);
       }
     },
     openWallectSelect() {
@@ -121,33 +132,23 @@ export default {
 @import '~/assets/css/base.scss';
 .header-container {
   width: 100%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  background: $main-color;
-  text-align: center;
-}
-@media screen and (min-width: 750px) {
-  .header-container {
-    min-width: 1280px;
-    padding: 0px 30px;
-    .logo {
-      img {
-        height: 60px;
-      }
-    }
+  height: 80px;
+  background: #fff;
+  > div {
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    text-align: center;
     .nav-list {
       flex: 1;
       display: flex;
-      // justify-content: space-around;
       a {
         display: inline-block;
-        // margin-left: 40px;
-        height: 60px;
-        line-height: 60px;
+        margin-left: 40px;
         position: relative;
-        font-size: 14px;
-        color: $text-m;
+        color: #121212;
+        font-weight: bold;
         &::after {
           display: none;
           content: '';
@@ -156,7 +157,7 @@ export default {
           bottom: 0px;
           width: 100%;
           height: 2px;
-          background: #cb7e7e;
+          background: #ff9600;
         }
         &.active,
         &.nuxt-link-exact-active {
@@ -167,12 +168,10 @@ export default {
       }
     }
     .wallet-address {
-      padding: 0px 16px;
-      height: 40px;
+      padding: 0px 12px;
       display: flex;
       align-items: center;
-      border-radius: 3px;
-      border: 1px solid $bg-w;
+      background: #121212;
       color: #ffffff;
       cursor: pointer;
       i {
@@ -186,11 +185,41 @@ export default {
     }
     .connect-wallet-btn {
       display: block;
-      height: 40px;
-      line-height: 40px;
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
+      background: #121212;
       padding: 0px 12px;
+      color: #ffffff;
+      &:hover {
+        background: #2c2c2c;
+      }
+    }
+  }
+}
+@media screen and (min-width: 1280px) {
+  .header-container {
+    > div {
+      width: 1200px;
+      .logo {
+        img {
+          height: 40px;
+        }
+      }
+      .nav-list {
+        flex: 1;
+        display: flex;
+        a {
+          height: 80px;
+          line-height: 80px;
+          font-size: 16px;
+        }
+      }
+      .wallet-address {
+        height: 48px;
+      }
+      .connect-wallet-btn {
+        height: 48px;
+        line-height: 48px;
+        font-size: 16px;
+      }
     }
   }
   .cut-line {
@@ -200,54 +229,68 @@ export default {
     margin: 0 20px 0 16px;
   }
 }
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 750px) and (max-width: 1280px) {
   .header-container {
-    padding: 0px 60px;
-    justify-content: space-around;
-    .nav-list {
-      a {
-        margin-left: 50px;
-        font-size: 16px;
+    height: 60px;
+    > div {
+      width: 1200px;
+      .logo {
+        img {
+          height: 40px;
+        }
+      }
+      .nav-list {
+        flex: 1;
+        display: flex;
+        a {
+          display: inline-block;
+          margin-left: 40px;
+          height: 60;
+          line-height: 60;
+          position: relative;
+          color: #121212;
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+      .wallet-address {
+        height: 40px;
+      }
+      .connect-wallet-btn {
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
       }
     }
   }
 }
-@media screen and (min-width: 750px) and (max-width: 1600px) {
-  .header-container {
-    padding: 0px 30px;
-    .nav-list {
-      justify-content: space-around;
-      a {
-        // margin-left: 50px;
-        font-size: 16px;
-      }
-    }
-  }
-}
+
 @media screen and (max-width: 750px) {
   .header-container {
-    padding: 0px 16px;
     justify-content: space-between;
-    .logo {
-      img {
-        height: 50px;
+    > div {
+      width: 100%;
+      .logo {
+        img {
+          height: 50px;
+        }
       }
-    }
-    .nav-list {
-      display: none;
-    }
-    .wallet-address {
-      display: none;
-    }
-    .connect-wallet-btn {
-      display: none;
-    }
-    .more {
-      width: 20px;
-      height: 20px;
-      background-image: url('../../assets/img/more@2x.png');
-      background-repeat: no-repeat;
-      background-size: cover;
+      .nav-list {
+        display: none;
+      }
+      .wallet-address {
+        display: none;
+      }
+      .connect-wallet-btn {
+        display: none;
+      }
+      .more {
+        width: 20px;
+        height: 20px;
+        background-image: url('../../assets/img/more@2x.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
     }
   }
 }

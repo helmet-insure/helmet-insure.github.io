@@ -1,0 +1,56 @@
+<template>
+  <div class="coin_type">
+    <button
+      v-for="coin in coinList"
+      :key="coin"
+      @click="handleClickCoin(coin)"
+      :class="curCoin == coin ? 'active' : ''"
+    >
+      {{ coin }}
+    </button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      curCoin: 'BNB',
+    };
+  },
+  computed: {
+    coinList() {
+      return this.$store.state.coinList;
+    },
+  },
+  methods: {
+    handleClickCoin(coin) {
+      this.curCoin = coin;
+    },
+  },
+};
+</script>
+
+<style lang='scss' scoped>
+@media screen and (min-width: 750px) {
+  .coin_type {
+    margin: 28px 0 29px;
+    button {
+      min-width: 76px;
+      height: 40px;
+      padding: 0 9px;
+      margin-right: 14px;
+      background: #f7f7fa;
+      border-radius: 3px;
+      color: #121212;
+      &:hover {
+        color: #ff9600;
+      }
+    }
+    .active {
+      background: #ff9600;
+      color: #fff !important;
+    }
+  }
+}
+</style>

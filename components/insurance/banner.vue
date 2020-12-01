@@ -3,18 +3,27 @@
     <ul>
       <li>
         <!-- 已经成交的保险品种的种类 -->
-        <label>{{ $t('Banner.HelmetVarieties') }}</label>
-        <p>{{ helmetVarieties }}</p>
+        <p>
+          <label>{{ $t('Banner.HelmetVarieties') }}</label>
+          <span>{{ helmetVarieties }}</span>
+        </p>
+        <img src="~/assets/img/helmet/ba1@2x.png" alt="" />
       </li>
       <li>
         <!-- 保险交易过的资金量 -->
-        <label>{{ $t('Banner.TotalHelmetsBorrowedVolume') }}</label>
-        <p>{{ fixD(totalHelmetsBorrowedVolume, 0) }} Helmets</p>
+        <p>
+          <label>{{ $t('Banner.TotalHelmetsBorrowedVolume') }}</label>
+          <span> {{ helmetVarieties }}</span>
+        </p>
+        <img src="~/assets/img/helmet/ba2@2x.png" alt="" />
       </li>
       <li>
         <!-- 24小时Long token 铸造量 -->
-        <label>{{ $t('Banner.LongToken') }}</label>
-        <p>{{ fixD(longTokenCreatedVolume, 0) }} $</p>
+        <p>
+          <label>{{ $t('Banner.LongToken') }}</label>
+          <span>{{ helmetVarieties }}</span>
+        </p>
+        <img src="~/assets/img/helmet/ba3@2x.png" alt="" />
       </li>
     </ul>
   </div>
@@ -47,6 +56,7 @@ export default {
 <style lang="scss" scoped>
 @import '~/assets/css/base.scss';
 .insurance-banner {
+  background: #fff;
   ul {
     display: flex;
     align-items: center;
@@ -67,16 +77,50 @@ export default {
 @media screen and (min-width: 750px) {
   .insurance-banner {
     width: 1200px;
-    height: 180px;
-    /* line-height: 180px; */
+    height: 200px;
+    padding: 40px 60px;
     margin: 0 auto;
-    background: url('../../assets/img/Banner3@2x.png') right 36px no-repeat;
     background-size: auto 100%;
-    /* font-size: 40px; */
     font-size: 16px;
     color: $text-m;
-    /* padding-right: 250px; */
-    padding: 0px 30px;
+    margin-bottom: 10px;
+    ul {
+      li {
+        padding: 20px 30px;
+        width: 340px;
+        height: 120px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        p {
+          display: flex;
+          flex-direction: column;
+          text-align: left;
+          span {
+            margin-top: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #121212;
+          }
+        }
+        img {
+          width: 120px;
+          height: 80px;
+        }
+      }
+      li:nth-of-type(1) {
+        background: #f7f7fa;
+        border-radius: 3px;
+      }
+      li:nth-of-type(2) {
+        background: #ff9600;
+        border-radius: 3px;
+      }
+      li:nth-of-type(3) {
+        background: #f7f7fa;
+        border-radius: 3px;
+      }
+    }
   }
 }
 @media screen and (max-width: 750px) {
