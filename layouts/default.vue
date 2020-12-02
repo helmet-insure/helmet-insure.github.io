@@ -247,7 +247,7 @@ export default {
 @media screen and (max-width: 750px) {
   .layout-container {
     .main-container {
-      margin: 20px auto 0;
+      margin: 0px auto 0;
       width: 100%;
     }
   }

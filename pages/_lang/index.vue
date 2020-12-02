@@ -8,13 +8,12 @@
         <h3><span>HELMET</span>.INSURE</h3>
         <p>HELMET will be with you any corner</p>
         <div>
-          <button @click="toProduct">
-            <img src="~/assets/img/helmet/home_btn_icon.png" alt="" />
-            Lauch APP
-          </button>
           <button>
             <img src="~/assets/img/helmet/home_github.png" alt="" />
             View GitHub
+          </button>
+          <button @click="toProduct">
+            <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Lauch APP
           </button>
         </div>
       </div>
@@ -145,7 +144,7 @@ export default {
     }
   }
 }
-@media screen and(max-width:1280px) {
+@media screen and (min-width: 750px) and( max-width:1280px) {
   .helmet_container {
     width: 100%;
     min-height: 100vh;
@@ -189,7 +188,7 @@ export default {
           display: flex;
           margin-top: 40px;
           button {
-            width: 134px;
+            width: 140px;
             height: 36px;
             display: flex;
             align-items: center;
@@ -232,6 +231,141 @@ export default {
         margin-top: 50px;
         width: 474px;
         height: 322px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .helmet_footer {
+      width: 100%;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      .footer_top {
+        width: 300px;
+        flex: 1;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        a {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          img {
+            width: 24px;
+            height: 24px;
+          }
+          span {
+            margin-top: 4px;
+            font-size: 14px;
+            color: #e8e7e9;
+          }
+        }
+      }
+      .footer_bottom {
+        border-top: 1px solid #212121;
+        width: 100%;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p {
+          font-size: 14px;
+          font-weight: 400;
+          color: #545454;
+        }
+      }
+    }
+  }
+}
+@media screen and(max-width:750px) {
+  .helmet_container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    .helmet_logo {
+      display: flex;
+      align-items: flex-end;
+      a {
+        margin: 27px 0 50px 30px;
+        display: block;
+        width: 138px;
+        height: 26px;
+        background-image: url('../../assets/img/helmet/home_logo.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    }
+    .helmet_content {
+      display: flex;
+      flex-direction: column-reverse;
+      .right_text {
+        H3 {
+          margin-top: 38px;
+          text-align: center;
+          color: #fff;
+          font-size: 40px;
+          font-weight: 300;
+          span {
+            color: #ff9600;
+          }
+        }
+        p {
+          margin-top: 20px;
+          text-align: center;
+          font-size: 16px;
+          font-weight: 300;
+          color: rgba(255, 255, 255, 0.6);
+        }
+        div {
+          display: flex;
+          flex-direction: column-reverse;
+          margin-top: 34px;
+          button {
+            margin: 0 auto;
+            width: 90%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:hover {
+              transition: transform 0.5s ease;
+              transform: scale(1.04);
+            }
+            &:nth-of-type(1) {
+              border: 1px solid #ff9600;
+              background: none;
+              font-size: 16px;
+              font-weight: 600;
+              color: #ff9600;
+              img {
+                width: 24px;
+                height: 24px;
+                margin-right: 4px;
+              }
+            }
+
+            &:nth-of-type(2) {
+              background: #ff9600;
+              font-size: 16px;
+              font-weight: 600;
+              color: #ffffff;
+              margin-bottom: 20px;
+              img {
+                width: 24px;
+                height: 24px;
+                margin-right: 4px;
+              }
+            }
+          }
+        }
+      }
+      .right_pic {
+        width: 94%;
+        margin: 0 auto;
         img {
           width: 100%;
           height: 100%;

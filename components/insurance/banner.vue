@@ -58,10 +58,6 @@ export default {
 .insurance-banner {
   background: #fff;
   ul {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: space-between;
     height: 100%;
     label {
       font-size: 16px;
@@ -80,11 +76,14 @@ export default {
     height: 200px;
     padding: 40px 60px;
     margin: 0 auto;
-    background-size: auto 100%;
     font-size: 16px;
     color: $text-m;
     margin-bottom: 10px;
     ul {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: space-between;
       li {
         padding: 20px 30px;
         width: 340px;
@@ -125,35 +124,46 @@ export default {
 }
 @media screen and (max-width: 750px) {
   .insurance-banner {
-    display: flex;
-    align-items: center;
-    padding: 0 0px 0 16px;
-    width: 100%;
-    height: 180px;
-    margin: 0 auto;
-    background: url('../../assets/img/banner_h5.png') right no-repeat;
-    background-size: auto 100%;
-    /* font-size: 30px; */
-    font-size: 12px;
+    padding: 20px 16px;
+    font-size: 16px;
     color: $text-m;
+    margin-bottom: 10px;
     ul {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
       li {
+        padding: 20px 20px;
+        width: 100%;
+        height: 120px;
         display: flex;
-        align-items: center;
-        margin: 10px 0px;
-        text-align: left;
-        label {
-          font-size: 12px;
-          margin-right: 10px;
-        }
+        justify-content: space-between;
         p {
-          font-size: 14px;
-          padding-top: 0px;
+          display: flex;
+          flex-direction: column;
+          text-align: left;
+          span {
+            margin-top: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #121212;
+          }
         }
+        img {
+          width: 120px;
+          height: 80px;
+        }
+      }
+      li:nth-of-type(1) {
+        background: #f7f7fa;
+        margin-bottom: 20px;
+        border-radius: 3px;
+      }
+      li:nth-of-type(2) {
+        background: #ff9600;
+        margin-bottom: 20px;
+        border-radius: 3px;
+      }
+      li:nth-of-type(3) {
+        background: #f7f7fa;
+        border-radius: 3px;
       }
     }
   }

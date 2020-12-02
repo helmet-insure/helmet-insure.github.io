@@ -1,117 +1,83 @@
 <template>
-  <div class="insurance_list">
+  <div class="my_guarantee">
     <table>
       <thead>
         <tr>
           <td>ID</td>
+          <td>品种</td>
+          <td>保单价格</td>
           <td>保费 (HELMET)</td>
-          <td>保单数量</td>
-          <td class="option">操作</td>
+          <td>持有量</td>
+          <td>倒计时</td>
+          <td></td>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>0123</td>
-          <td>10.000</td>
-          <td>1000000</td>
-          <td class="option">
-            <PInput
-              type="number"
-              v-model="price"
-              fix="2"
-              maxValue="10000"
-              right="投保"
-              placeholder="请输入数量"
-            ></PInput>
-          </td>
-        </tr>
-        <tr>
-          <td>0123</td>
-          <td>10.000</td>
-          <td>1000000</td>
-          <td class="option">
-            <PInput
-              type="number"
-              v-model="price"
-              fix="2"
-              maxValue="10000"
-              right="投保"
-              placeholder="请输入数量"
-            ></PInput>
-          </td>
-        </tr>
-        <tr>
-          <td>0123</td>
-          <td>10.000</td>
-          <td>1000000</td>
-          <td class="option">
-            <PInput
-              type="number"
-              v-model="price"
-              fix="2"
-              right="投保"
-              maxValue="10000"
-              placeholder="请输入数量"
-            ></PInput>
+          <td>BNB</td>
+          <td>200.00 QUSD</td>
+          <td>21.000</td>
+          <td>53737</td>
+          <td>14天20时06分24秒</td>
+          <td>
+            <button class="b_b_button">出险</button>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
-      <p><span>ID</span><span>01239012</span></p>
+      <p><span>ID</span><span>0123</span></p>
       <div>
-        <p><span>保费(HELMET)</span> <span>100只</span></p>
-        <p><span>保单数量</span><span>10000</span></p>
+        <p><span>品种</span><span>0123</span></p>
+        <p><span>保单价格</span><span>0123</span></p>
       </div>
       <div>
-        <PInput
-          type="number"
-          v-model="price"
-          fix="2"
-          right="投保"
-          maxValue="10000"
-          placeholder="请输入数量"
-        ></PInput>
+        <p><span>保费 (HELMET)</span><span>0123</span></p>
+        <p><span>持有量（SHort Token)</span><span>0123</span></p>
       </div>
+      <section>
+        <span>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-time"></use>
+          </svg>
+          200.0100 BNB
+        </span>
+        <button class="b_b_button">出险</button>
+      </section>
     </div>
     <div>
-      <p><span>ID</span><span>01239012</span></p>
+      <p><span>ID</span><span>0123</span></p>
       <div>
-        <p><span>保费(HELMET)</span> <span>100只</span></p>
-        <p><span>保单数量</span><span>10000</span></p>
+        <p><span>品种</span><span>0123</span></p>
+        <p><span>保单价格</span><span>0123</span></p>
       </div>
       <div>
-        <PInput
-          type="number"
-          v-model="price"
-          fix="2"
-          right="投保"
-          maxValue="10000"
-          placeholder="请输入数量"
-        ></PInput>
+        <p><span>保费 (HELMET)</span><span>0123</span></p>
+        <p><span>持有量（SHort Token)</span><span>0123</span></p>
       </div>
+      <section>
+        <span>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-time"></use>
+          </svg>
+          200.0100 BNB
+        </span>
+        <button class="b_b_button">出险</button>
+      </section>
     </div>
   </div>
 </template>
 
 <script>
-import PInput from '~/components/common/p-input.vue';
-export default {
-  components: {
-    PInput,
-  },
-  data() {
-    return {
-      price: '',
-    };
-  },
-};
+import '~/assets/svg/iconfont.js';
+export default {};
 </script>
 
 <style lang='scss' scoped>
 @import '~/assets/css/base.scss';
 @media screen and (min-width: 750px) {
-  .insurance_list {
+  .my_guarantee {
     > div {
       display: none;
     }
@@ -161,6 +127,10 @@ export default {
             font-weight: bold;
             color: #121212;
           }
+
+          td:last-child {
+            transform: translateX(20px);
+          }
           .option {
             display: flex;
             align-items: center;
@@ -172,19 +142,17 @@ export default {
   }
 }
 @media screen and (max-width: 750px) {
-  .insurance_list {
+  .my_guarantee {
     table {
       display: none;
     }
     > div {
+      margin-top: 20px;
       width: 100%;
-      height: 160px;
+      height: 208px;
       padding: 20px 10px;
       background: #f7f7fa;
-      margin-bottom: 10px;
-      &:last-of-type {
-        margin-bottom: 0;
-      }
+
       p {
         display: flex;
         span:nth-of-type(1) {
@@ -211,7 +179,22 @@ export default {
           flex-direction: column;
         }
       }
+      > section {
+        display: flex;
+        justify-content: space-between;
+        span {
+          display: flex;
+          align-items: center;
+        }
+      }
     }
   }
+}
+.icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: -0.15em;
+  fill: #787878;
+  overflow: hidden;
 }
 </style>

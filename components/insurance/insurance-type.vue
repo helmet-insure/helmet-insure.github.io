@@ -85,4 +85,50 @@ export default {
     }
   }
 }
+@media screen and (max-width: 750px) {
+  .insurance_type {
+    margin-bottom: 20px;
+    .type_btn {
+      display: flex;
+      justify-content: space-between;
+      button {
+        width: 48%;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        line-height: 50px;
+        overflow: hidden;
+        border-bottom: 2px solid transparent;
+        span {
+          font-weight: bold;
+          line-height: 52px;
+          font-size: 16px;
+          margin-left: 8px;
+        }
+        i {
+          width: 16px;
+          height: 16px;
+          display: inline-block;
+          background-repeat: no-repeat;
+          background-size: cover;
+          margin: auto 0px auto 4px;
+        }
+        &:nth-of-type(1) {
+          color: #00b900;
+          background: rgba(0, 185, 0, 0.04);
+          i {
+            background-image: url('../../assets/img/helmet/call@2x.png');
+          }
+        }
+        &:nth-of-type(2) {
+          color: #ff6400;
+          background: rgba(255, 100, 0, 0.04);
+          i {
+            background-image: url('../../assets/img/helmet/put@2x.png');
+          }
+        }
+      }
+    }
+  }
+}
 </style>

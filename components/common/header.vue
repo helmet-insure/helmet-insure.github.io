@@ -8,14 +8,14 @@
         <nuxt-link
           to="/product"
           :class="routeObj.name === 'product-id' ? 'active' : ''"
-          >{{ $t('Header.Market') }}</nuxt-link
+          >交易</nuxt-link
         >
-        <nuxt-link to="/buy">{{ $t('Header.MySafetyHelmet') }}</nuxt-link>
-        <nuxt-link to="/sell">{{ $t('Header.MySupply') }}</nuxt-link>
-        <nuxt-link to="/mining">{{ $t('Header.LPMining') }}</nuxt-link>
-        <a href="http://www.payaso.io/guides" target="_blank">{{
+        <!-- <nuxt-link to="/buy">{{ $t('Header.MySafetyHelmet') }}</nuxt-link> -->
+        <!-- <nuxt-link to="/sell">{{ $t('Header.MySupply') }}</nuxt-link> -->
+        <nuxt-link to="/mining">挖矿</nuxt-link>
+        <!-- <a href="http://www.payaso.io/guides" target="_blank">{{
           $t('Header.GuideBook')
-        }}</a>
+        }}</a> -->
       </div>
       <!-- <Assets v-if="userInfo.data.isLogin"></Assets> -->
       <!-- 分割线 -->
@@ -245,8 +245,8 @@ export default {
         a {
           display: inline-block;
           margin-left: 40px;
-          height: 60;
-          line-height: 60;
+          height: 60px;
+          line-height: 60px;
           position: relative;
           color: #121212;
           font-size: 16px;
@@ -269,10 +269,12 @@ export default {
   .header-container {
     justify-content: space-between;
     > div {
+      padding: 0 16px;
+      justify-content: space-between;
       width: 100%;
       .logo {
         img {
-          height: 50px;
+          height: 40px;
         }
       }
       .nav-list {
@@ -285,9 +287,9 @@ export default {
         display: none;
       }
       .more {
-        width: 20px;
-        height: 20px;
-        background-image: url('../../assets/img/more@2x.png');
+        width: 24px;
+        height: 24px;
+        background-image: url('../../assets/img/helmet/caidan@2x.png');
         background-repeat: no-repeat;
         background-size: cover;
       }

@@ -53,4 +53,26 @@ export default {
     }
   }
 }
+@media screen and (max-width: 750px) {
+  .coin_type {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    button {
+      min-width: 76px;
+      height: 40px;
+      padding: 0 9px;
+      background: #f7f7fa;
+      border-radius: 3px;
+      color: #121212;
+      &:hover {
+        color: #ff9600;
+      }
+    }
+    .active {
+      background: #ff9600;
+      color: #fff !important;
+    }
+  }
+}
 </style>

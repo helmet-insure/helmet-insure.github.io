@@ -28,7 +28,7 @@
     </div>
     <div class="footer_bottom">
       <p>Powered by HELMET Core team</p>
-      <Langauage />
+      <Langauage class="langauage" />
     </div>
   </div>
 </template>
@@ -90,33 +90,48 @@ export default {
 @media screen and (max-width: 750px) {
   .footer-container {
     width: 100%;
-    height: 192px;
+    height: 218px;
+    background: #121212;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background: $bg-f;
-    display: flex;
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    li {
-      display: inline-block;
-      width: 32%;
-      margin: 74px 0 0 0;
+    flex-direction: column;
+    .footer_top {
+      width: 300px;
+      flex: 1;
+      margin: 74px auto 0;
+      display: flex;
+      justify-content: space-around;
       a {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
         img {
+          width: 24px;
           height: 24px;
-          width: auto;
         }
-        p {
+        span {
+          margin-top: 4px;
           font-size: 14px;
-          color: $text-d;
-          padding-top: 4px;
+          color: #787878;
         }
+      }
+    }
+    .footer_bottom {
+      border-top: 1px solid #212121;
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+      p {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: #545454;
+      }
+      .langauage {
+        display: none;
       }
     }
   }

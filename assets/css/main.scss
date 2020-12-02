@@ -401,3 +401,37 @@ $td-gap: 16px;
     display: none;
   }
 }
+.o_button {
+  padding: 0 16px;
+  height: 40px;
+  background: #ff9600;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  &:hover {
+    background: #ffa000;
+  }
+}
+.b_button {
+  min-width: 88px;
+  padding: 0 16px;
+  height: 40px;
+  background: #121212;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  &:hover {
+    background: #2c2c2c;
+  }
+}
+.b_b_button {
+  padding: 0 34px;
+  height: 40px;
+  background: #121212;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  &:hover {
+    background: #2c2c2c;
+  }
+}

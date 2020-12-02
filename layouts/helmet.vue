@@ -5,12 +5,17 @@
 </template>
 
 <script>
+import { mateMaskInfo } from '~/assets/utils/matemask.js';
+
 export default {
   name: 'helmet',
   mounted() {
     this.showWallet();
   },
   methods: {
+    closeDialog() {
+      this.$emit('close');
+    },
     showWallet() {
       try {
         window.ethereum
@@ -38,6 +43,13 @@ export default {
 @media screen and (min-width: 750px) {
   .helmet {
     min-width: 1280px;
+    width: 100%;
+    min-height: 100vh;
+    background: #121212;
+  }
+}
+@media screen and (max-width: 750px) {
+  .helmet {
     width: 100%;
     min-height: 100vh;
     background: #121212;
