@@ -2,10 +2,10 @@
   <div class="insurance_center">
     <div class="buy-type">
       <button @click="handleClickType(1)" :class="type == 1 ? 'active' : ''">
-        购买保险
+        {{ $t('Type.BuyInsurance') }}
       </button>
       <button @click="handleClickType(2)" :class="type == 2 ? 'active' : ''">
-        我要承保
+        {{ $t('Type.ToInsurance') }}
       </button>
     </div>
     <CoinType

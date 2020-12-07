@@ -5,13 +5,13 @@
         @click="handleClickInsurance(1)"
         :class="insurance_type == 1 ? 'green' : ''"
       >
-        翻倍险<span>100%</span><i></i>
+        {{ $t('Content.DoubleInsurance') }}<span>100%</span><i></i>
       </button>
       <button
         @click="handleClickInsurance(2)"
         :class="insurance_type == 2 ? 'orange' : ''"
       >
-        腰斩险<span>-50%</span><i></i>
+        {{ $t('Content.HalfInsurance') }}<span>-50%</span><i></i>
       </button>
     </div>
   </div>

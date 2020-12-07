@@ -3,12 +3,12 @@
     <table>
       <thead>
         <tr>
-          <td>ID</td>
-          <td>品种</td>
-          <td>保单价格</td>
-          <td>保费 (HELMET)</td>
-          <td>持有量</td>
-          <td>倒计时</td>
+          <td>{{ $t('Table.ID') }}</td>
+          <td>{{ $t('Table.Type') }}</td>
+          <td>{{ $t('Table.InsurancePrice') }}</td>
+          <td>{{ $t('Table.Rent') }}</td>
+          <td>{{ $t('Table.Position') }}</td>
+          <td>{{ $t('Table.CountDonm') }}</td>
           <td></td>
         </tr>
       </thead>
@@ -21,20 +21,35 @@
           <td>53737</td>
           <td>14天20时06分24秒</td>
           <td>
-            <button class="b_b_button">出险</button>
+            <button class="b_b_button">{{ $t('Table.outSure') }}</button>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
-      <p><span>ID</span><span>0123</span></p>
+      <p>
+        <span>{{ $t('Table.ID') }}</span
+        ><span>0123</span>
+      </p>
       <div>
-        <p><span>品种</span><span>0123</span></p>
-        <p><span>保单价格</span><span>0123</span></p>
+        <p>
+          <span>{{ $t('Table.Type') }}</span
+          ><span>0123</span>
+        </p>
+        <p>
+          <span>{{ $t('Table.InsurancePrice') }}</span
+          ><span>0123</span>
+        </p>
       </div>
       <div>
-        <p><span>保费 (HELMET)</span><span>0123</span></p>
-        <p><span>持有量（SHort Token)</span><span>0123</span></p>
+        <p>
+          <span>{{ $t('Table.Rent') }}</span
+          ><span>0123</span>
+        </p>
+        <p>
+          <span>{{ $t('Table.Position') }}</span
+          ><span>0123</span>
+        </p>
       </div>
       <section>
         <span>
@@ -43,7 +58,7 @@
           </svg>
           200.0100 BNB
         </span>
-        <button class="b_b_button">出险</button>
+        <button class="b_b_button">{{ $t('Table.outSure') }}</button>
       </section>
     </div>
     <div>

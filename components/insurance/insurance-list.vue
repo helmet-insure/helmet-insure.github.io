@@ -3,10 +3,10 @@
     <table>
       <thead>
         <tr>
-          <td>ID</td>
-          <td>保费 (HELMET)</td>
-          <td>保单数量</td>
-          <td class="option">操作</td>
+          <td>{{ $t('Table.ID') }}</td>
+          <td>{{ $t('Table.Rent') }}</td>
+          <td>{{ $t('Table.Amount') }}</td>
+          <td class="option">{{ $t('Table.Options') }}</td>
         </tr>
       </thead>
       <tbody>
@@ -20,8 +20,7 @@
               v-model="price"
               fix="2"
               maxValue="10000"
-              right="投保"
-              placeholder="请输入数量"
+              :right="$t('Table.Insure')"
             ></PInput>
           </td>
         </tr>
@@ -35,8 +34,7 @@
               v-model="price"
               fix="2"
               maxValue="10000"
-              right="投保"
-              placeholder="请输入数量"
+              :right="$t('Table.Insure')"
             ></PInput>
           </td>
         </tr>
@@ -49,9 +47,8 @@
               type="number"
               v-model="price"
               fix="2"
-              right="投保"
+              :right="$t('Table.Insure')"
               maxValue="10000"
-              placeholder="请输入数量"
             ></PInput>
           </td>
         </tr>
@@ -68,9 +65,8 @@
           type="number"
           v-model="price"
           fix="2"
-          right="投保"
+          :right="$t('Table.Insure')"
           maxValue="10000"
-          placeholder="请输入数量"
         ></PInput>
       </div>
     </div>
@@ -85,9 +81,8 @@
           type="number"
           v-model="price"
           fix="2"
-          right="投保"
+          :right="$t('Table.Insure')"
           maxValue="10000"
-          placeholder="请输入数量"
         ></PInput>
       </div>
     </div>

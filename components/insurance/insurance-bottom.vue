@@ -2,10 +2,10 @@
   <div class="insurance_bottom">
     <div class="buy-type">
       <button @click="handleClickType(1)" :class="type == 1 ? 'active' : ''">
-        我的保单
+        {{ $t('Type.MyGuarantee') }}
       </button>
       <button @click="handleClickType(2)" :class="type == 2 ? 'active' : ''">
-        我发布的保险
+        {{ $t('Type.IssueInsurance') }}
       </button>
     </div>
     <MyGuarantee v-if="type == 1"></MyGuarantee>

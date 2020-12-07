@@ -81,7 +81,7 @@ export default {
     return {
       miningList: [
         {
-          title: 'QUSD-BNB Short Token POOL',
+          title: 'BNB-QUSD Short Token POOL',
           name: 'BNB-QUSD',
           callMined: 0,
           putMined: 0,

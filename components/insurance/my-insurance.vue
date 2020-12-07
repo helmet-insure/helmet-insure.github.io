@@ -3,12 +3,13 @@
     <table>
       <thead>
         <tr>
-          <td>ID</td>
-          <td>品种</td>
-          <td>保单价格</td>
-          <td>剩余/总量</td>
-          <td>可抵押（Short Token）</td>
-          <td>到期时间</td>
+          <td>{{ $t('Table.ID') }}</td>
+          <td>{{ $t('Table.Type') }}</td>
+          <td>{{ $t('Table.InsurancePrice') }}</td>
+          <td>总量</td>
+          <td>{{ $t('Table.CanCollateral') }}</td>
+          <td>{{ $t('Table.DueTime') }}</td>
+          <td>剩余</td>
           <td class="option"></td>
         </tr>
       </thead>
@@ -20,25 +21,41 @@
           <td>21.000</td>
           <td>53737</td>
           <td>14天20时06分24秒</td>
+          <td>剩余</td>
           <td class="option">
-            <button class="o_button">出险</button>
-            <button class="b_button">质押挖矿</button>
+            <button class="o_button">{{ $t('Table.outSure') }}</button>
+            <button class="b_button">{{ $t('Table.Stake') }}</button>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
-      <p><span>ID</span><span>0123</span></p>
+      <p>
+        <span>{{ $t('Table.ID') }}</span
+        ><span>0123</span>
+      </p>
       <div>
-        <p><span>品种</span><span>0123</span></p>
-        <p><span>保单价格</span><span>0123</span></p>
+        <p>
+          <span>{{ $t('Table.Type') }}</span
+          ><span>0123</span>
+        </p>
+        <p>
+          <span>{{ $t('Table.InsurancePrice') }}</span
+          ><span>0123</span>
+        </p>
       </div>
       <div>
-        <p><span>保费 (HELMET)</span><span>0123</span></p>
-        <p><span>持有量（SHort Token)</span><span>0123</span></p>
+        <p><span>剩余/总量</span><span>0123</span></p>
+        <p>
+          <span>{{ $t('Table.CanCollateral') }}</span
+          ><span>0123</span>
+        </p>
       </div>
       <div>
-        <p><span>到期时间</span><span>2020/12/29 14:20:90</span></p>
+        <p>
+          <span>{{ $t('Table.DueTime') }}</span
+          ><span>2020/12/29 14:20:90</span>
+        </p>
       </div>
       <section>
         <button class="o_button">撤销</button>
@@ -92,8 +109,8 @@ export default {};
             line-height: 40px;
             font-size: 14px;
           }
-          td:nth-of-type(5) {
-            width: 200px;
+          td:nth-of-type(6) {
+            width: 150px;
           }
         }
       }
@@ -111,8 +128,8 @@ export default {};
             font-weight: bold;
             color: #121212;
           }
-          td:nth-of-type(5) {
-            width: 200px;
+          td:nth-of-type(6) {
+            width: 150px;
           }
           td:last-child {
             transform: translateX(20px);

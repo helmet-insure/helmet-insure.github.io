@@ -19,8 +19,8 @@
   "Content": {
     "SpotPrice": "Price Now",
     "Earnings": "Earnings",
-    "DoubleInsurance": "Cover 100% up",
-    "HalfInsurance": "Cover 50% off",
+    "DoubleInsurance": "Cover",
+    "HalfInsurance": "Cover",
     "InsurancePrice": "Insurance Price",
     "NoData": "No data",
     "ProtectTheCycle": "Guard Period",
@@ -41,6 +41,14 @@
     "CanCollateral": "Short Token",
     "DueTime": "Expires At",
     "Cancel": "Cancel",
-    "Stake": "Mining"
+    "Stake": "Mining",
+    "Deposite": "抵押",
+    "Confirm": "提交",
+    "ALL": "全部",
+    "InfiniteApproval": "本次合约使用最佳矿工费，后续将不再提示",
+    "Total": "总量",
+    "Surplus": "剩余",
+    "StakeMining": "抵押挖矿",
+    "SurplusTime": "距离挖矿结束还剩"
   }
 }

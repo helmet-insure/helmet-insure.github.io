@@ -8,11 +8,11 @@
         <nuxt-link
           to="/product"
           :class="routeObj.name === 'product-id' ? 'active' : ''"
-          >交易</nuxt-link
+          >{{ $t('Header.Trade') }}</nuxt-link
         >
         <!-- <nuxt-link to="/buy">{{ $t('Header.MySafetyHelmet') }}</nuxt-link> -->
         <!-- <nuxt-link to="/sell">{{ $t('Header.MySupply') }}</nuxt-link> -->
-        <nuxt-link to="/mining">挖矿</nuxt-link>
+        <nuxt-link to="/mining">{{ $t('Header.Mining') }}</nuxt-link>
         <!-- <a href="http://www.payaso.io/guides" target="_blank">{{
           $t('Header.GuideBook')
         }}</a> -->

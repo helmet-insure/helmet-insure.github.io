@@ -13,7 +13,7 @@
   "Type": {
     "BuyInsurance": "购买保险",
     "ToInsurance": "我要承保",
-    "MyGuarantee": "购买保险",
+    "MyGuarantee": "我的保单",
     "IssueInsurance": "我发布的保险"
   },
   "Content": {
@@ -45,6 +45,8 @@
     "Deposite": "抵押",
     "Confirm": "提交",
     "ALL": "全部",
-    "InfiniteApproval": "本次合约使用最佳矿工费，后续将不再提示"
+    "InfiniteApproval": "本次合约使用最佳矿工费，后续将不再提示",
+    "Total": "总量",
+    "Surplus": "剩余"
   }
 }

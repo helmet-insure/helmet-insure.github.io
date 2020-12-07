@@ -4,7 +4,7 @@
       <li>
         <!-- 已经成交的保险品种的种类 -->
         <p>
-          <label>已成交保单</label>
+          <label>{{ $t('Banner.ClosedPolicy') }}</label>
           <span>{{ addCommom(frequency, 2) }}</span>
         </p>
         <img src="~/assets/img/helmet/ba1@2x.png" alt="" />
@@ -12,7 +12,7 @@
       <li>
         <!-- 保险交易过的资金量 -->
         <p>
-          <label>LONG当前总价值</label>
+          <label>{{ $t('Banner.LongValue') }}</label>
           <span> {{ helmetVarieties }}</span>
         </p>
         <img src="~/assets/img/helmet/ba2@2x.png" alt="" />
@@ -20,7 +20,7 @@
       <li>
         <!-- 24小时Long token 铸造量 -->
         <p>
-          <label>Helmet流通量</label>
+          <label>{{ $t('Banner.HelmetTransfer') }}</label>
           <span>{{
             addCommom(
               precision.plus(

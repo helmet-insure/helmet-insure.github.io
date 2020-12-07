@@ -2,11 +2,11 @@
   <div class="balance">
     <section>
       <div>
-        <span>出险价格</span>
+        <span>{{ $t('Content.InsurancePrice') }}</span>
         <p>200.0100 BNB</p>
       </div>
       <div>
-        <span>保护周期</span>
+        <span>{{ $t('Content.ProtectTheCycle') }}</span>
         <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-time"></use>
@@ -17,7 +17,7 @@
     </section>
 
     <div>
-      <span>可用余额</span>
+      <span>{{ $t('Content.UsableBalance') }}</span>
       <div>
         <p>
           <svg class="icon" aria-hidden="true">
