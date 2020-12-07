@@ -3,17 +3,10 @@
     <table>
       <thead>
         <tr>
-<<<<<<< HEAD
           <td>{{ $t('Table.ID') }}</td>
           <td>{{ $t('Table.Rent') }}</td>
           <td>{{ $t('Table.Amount') }}</td>
           <td class="option">{{ $t('Table.Options') }}</td>
-=======
-          <td>ID</td>
-          <td>保费 (HELMET)</td>
-          <td>保单数量</td>
-          <td class="option">操作</td>
->>>>>>> 2d9c12bebefc8728c6869dc3edc405e950fd9391
         </tr>
       </thead>
       <tbody>
@@ -27,12 +20,7 @@
               v-model="price"
               fix="2"
               maxValue="10000"
-<<<<<<< HEAD
               :right="$t('Table.Insure')"
-=======
-              right="投保"
-              placeholder="请输入数量"
->>>>>>> 2d9c12bebefc8728c6869dc3edc405e950fd9391
             ></PInput>
           </td>
         </tr>
@@ -46,12 +34,7 @@
               v-model="price"
               fix="2"
               maxValue="10000"
-<<<<<<< HEAD
               :right="$t('Table.Insure')"
-=======
-              right="投保"
-              placeholder="请输入数量"
->>>>>>> 2d9c12bebefc8728c6869dc3edc405e950fd9391
             ></PInput>
           </td>
         </tr>
@@ -64,14 +47,8 @@
               type="number"
               v-model="price"
               fix="2"
-<<<<<<< HEAD
               :right="$t('Table.Insure')"
               maxValue="10000"
-=======
-              right="投保"
-              maxValue="10000"
-              placeholder="请输入数量"
->>>>>>> 2d9c12bebefc8728c6869dc3edc405e950fd9391
             ></PInput>
           </td>
         </tr>
@@ -88,14 +65,8 @@
           type="number"
           v-model="price"
           fix="2"
-<<<<<<< HEAD
           :right="$t('Table.Insure')"
           maxValue="10000"
-=======
-          right="投保"
-          maxValue="10000"
-          placeholder="请输入数量"
->>>>>>> 2d9c12bebefc8728c6869dc3edc405e950fd9391
         ></PInput>
       </div>
     </div>
@@ -110,14 +81,8 @@
           type="number"
           v-model="price"
           fix="2"
-<<<<<<< HEAD
           :right="$t('Table.Insure')"
           maxValue="10000"
-=======
-          right="投保"
-          maxValue="10000"
-          placeholder="请输入数量"
->>>>>>> 2d9c12bebefc8728c6869dc3edc405e950fd9391
         ></PInput>
       </div>
     </div>
