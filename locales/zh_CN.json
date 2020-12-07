@@ -1,0 +1,50 @@
+{
+  "Header": {
+    "Trade": "交易",
+    "Mining": "挖矿",
+    "Govern": "治理",
+    "Question ": "常见问题"
+  },
+  "Banner": {
+    "ClosedPolicy": "已成交保单",
+    "LongValue": "LONG当前总价值",
+    "HelmetTransfer": "Helmet流通量"
+  },
+  "Type": {
+    "BuyInsurance": "购买保险",
+    "ToInsurance": "我要承保",
+    "MyGuarantee": "购买保险",
+    "IssueInsurance": "我发布的保险"
+  },
+  "Content": {
+    "SpotPrice": "现货价格",
+    "Earnings": "收益",
+    "DoubleInsurance": "翻倍险",
+    "HalfInsurance": "腰斩险",
+    "InsurancePrice": "出险价格",
+    "NoData": "暂无数据",
+    "ProtectTheCycle": "保护周期",
+    "UsableBalance": "可用余额"
+  },
+  "Table": {
+    "ID": "ID",
+    "Rent": "保费(HELMET)",
+    "Amount": "保单数量",
+    "Insure": "投保",
+    "Options": "操作",
+    "Type": "品种",
+    "InsurancePrice": "保单价格",
+    "Position": "持有量",
+    "CountDonm": "倒计时",
+    "outSure": "出险",
+    "ExecutivePrice": "执行价格",
+    "CanCollateral": "可抵押(Short Token)",
+    "DueTime": "到期时间",
+    "Cancel": "撤销",
+    "Stake": "质押挖矿",
+    "Deposite": "抵押",
+    "Confirm": "提交",
+    "ALL": "全部",
+    "InfiniteApproval": "本次合约使用最佳矿工费，后续将不再提示"
+  }
+}

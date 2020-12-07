@@ -1,0 +1,1541 @@
+{
+    "abi": [
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_creator",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "burn",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "long",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "longOrShort",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "burn",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "seller",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "_creator",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Burn",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bool",
+                    "name": "_private",
+                    "type": "bool"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                }
+            ],
+            "name": "createOption",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "long",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "seller",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_creator",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "col",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "und",
+                    "type": "uint256"
+                }
+            ],
+            "name": "emitSettle",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_long",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                }
+            ],
+            "name": "exercise",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amt",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "long",
+                    "type": "address"
+                }
+            ],
+            "name": "exercise",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amt",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_creator",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                }
+            ],
+            "name": "exercise",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amt",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_long",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "exercise",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amt",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "long",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                }
+            ],
+            "name": "exercise",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amt",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "buyer",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amt",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Exercise",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "buyer",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_creator",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                }
+            ],
+            "name": "exercise_",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amt",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "previousGovernor",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "newGovernor",
+                    "type": "address"
+                }
+            ],
+            "name": "GovernorshipTransferred",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "governor_",
+                    "type": "address"
+                }
+            ],
+            "name": "initialize",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_governor",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_implLongOption",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_implShortOption",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_feeRecipient",
+                    "type": "address"
+                }
+            ],
+            "name": "initialize",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "longOrShort",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "mint",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bool",
+                    "name": "_private",
+                    "type": "bool"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "mint",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "long",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "seller",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "bool",
+                    "name": "_private",
+                    "type": "bool"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "long",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Mint",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "creator",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "long",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "count",
+                    "type": "uint256"
+                }
+            ],
+            "name": "OptionCreated",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "renounceGovernorship",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "key",
+                    "type": "bytes32"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "setConfig",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "key",
+                    "type": "bytes32"
+                },
+                {
+                    "internalType": "address",
+                    "name": "addr",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "setConfig",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "key",
+                    "type": "bytes32"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "index",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "setConfig",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "settle",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "col",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "und",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                }
+            ],
+            "name": "settle",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "col",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "und",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_creator",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "settle",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "col",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "und",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "seller",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "_creator",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "col",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "und",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Settle",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "newGovernor",
+                    "type": "address"
+                }
+            ],
+            "name": "transferGovernorship",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_implLongOption",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_implShortOption",
+                    "type": "address"
+                }
+            ],
+            "name": "upgradeProductImplementationsTo",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "allLongs",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "allShorts",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                }
+            ],
+            "name": "calcExerciseAmount",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_long",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "calcExerciseAmount",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "key",
+                    "type": "bytes32"
+                },
+                {
+                    "internalType": "address",
+                    "name": "addr",
+                    "type": "address"
+                }
+            ],
+            "name": "getConfig",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "key",
+                    "type": "bytes32"
+                }
+            ],
+            "name": "getConfig",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "key",
+                    "type": "bytes32"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "index",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getConfig",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "governor",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "length",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "longs",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "",
+                    "type": "bytes32"
+                }
+            ],
+            "name": "productImplementations",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_creator",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_underlying",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_strikePrice",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiry",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "settleable",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "col",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "und",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "seller",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                }
+            ],
+            "name": "settleable",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "col",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "und",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "short",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "volume",
+                    "type": "uint256"
+                }
+            ],
+            "name": "settleable",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "vol",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "col",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "und",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "shorts",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ]
+}
