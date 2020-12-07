@@ -1,12 +1,12 @@
 <template>
   <div class="mining-banner">
-    <h1>{{ $t('Content.MintTitle') }}</h1>
-    <p>
-      <!-- Deposite ETH-USDT LP Token to mint PAYA -->
-      <!-- <a>Read more about PAYA mining </a> -->
-      {{ $t('Content.Report') }}
-      <a href="/security" target="_blank">{{ $t('Content.Here') }}</a>
-    </p>
+    <h1>Short Token 抵押挖矿</h1>
+    <!-- <p> -->
+    <!-- Deposite ETH-USDT LP Token to mint PAYA -->
+    <!-- <a>Read more about PAYA mining </a> -->
+    <!-- {{ $t('Content.Report') }} -->
+    <!-- <a href="/security" target="_blank">{{ $t('Content.Here') }}</a> -->
+    <!-- </p> -->
   </div>
 </template>
 
@@ -21,8 +21,8 @@ export default {};
 @media screen and (min-width: 750px) {
   .mining-banner {
     width: 1200px;
-    height: 180px;
-    background-image: url('../../assets/img/banner_mining.png');
+    height: 166px;
+    background-image: url('../../assets/img/helmet/minning_banner@2x.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     display: flex;
@@ -30,8 +30,8 @@ export default {};
     align-items: center;
     h1 {
       font-size: 40px;
-      font-weight: 500;
-      color: $text-m;
+      font-weight: bold;
+      color: #121212;
       line-height: 56px;
       margin: 63px 0 10px;
     }
@@ -53,7 +53,7 @@ export default {};
   .mining-banner {
     width: 100%;
     height: 180px;
-    background-image: url('../../assets/img/banner_mining_h5.png');
+    background-image: url('../../assets/img/helmet/minning_banner@2x.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     display: flex;

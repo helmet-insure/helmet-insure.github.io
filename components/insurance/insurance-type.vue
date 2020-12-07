@@ -76,7 +76,7 @@ export default {
         }
         &:nth-of-type(2) {
           color: #ff6400;
-          background: rgba(255, 100, 0, 0.04);
+          background: rgba(255, 100, 0, 0.06);
           i {
             background-image: url('../../assets/img/helmet/put@2x.png');
           }

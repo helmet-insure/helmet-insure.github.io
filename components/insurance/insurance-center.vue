@@ -8,10 +8,13 @@
         我要承保
       </button>
     </div>
-    <CoinType></CoinType>
+    <CoinType
+      @changeCoin="handleClickCoinType"
+      :currentCoin="curCoin"
+    ></CoinType>
     <Echart></Echart>
     <InsuranceType></InsuranceType>
-    <Balance></Balance>
+    <Balance :currentCoin="curCoin"></Balance>
     <InsuranceList v-if="type == 1"></InsuranceList>
     <InsuranceForm v-if="type == 2"></InsuranceForm>
   </div>
@@ -36,12 +39,16 @@ export default {
   data() {
     return {
       type: 1,
+      curCoin: 'BNB',
     };
   },
   mounted() {},
   methods: {
     handleClickType(type) {
       this.type = type;
+    },
+    handleClickCoinType(coin) {
+      this.curCoin = coin;
     },
   },
 };

@@ -7,13 +7,8 @@
     :rightBtnText="$t('Table.Confirm')"
   >
     <div class="depositeInput">
-      <PInput
-        type="number"
-        v-model="DepositeNum"
-        fix="20"
-        :right="'LP Token'"
-        maxValue="10000"
-      ></PInput>
+      <input type="number" v-model="DepositeNum" />
+      <span>BNB</span>
     </div>
     <p class="total-token">
       <span>{{ current }} LP token：{{ lptBalance }}</span
@@ -30,13 +25,13 @@
     >
     <div class="check" v-if="!hiddenGlobal">
       <img
-        src="~/assets/img/icon/checked1.png"
+        src="~/assets/img/helmet/checked2.png"
         alt=""
         v-if="checked"
         @click="depositeCheck"
       />
       <img
-        src="~/assets/img/icon/checked2.png"
+        src="~/assets/img/helmet/checked1.png"
         alt=""
         v-else
         @click="depositeCheck"
@@ -93,6 +88,7 @@ export default {
     submitDeposite() {
       let flag = this.hiddenGlobal || this.checked;
       let type = this.current.replace('-', '_');
+      console.log(type);
       toDeposite(type, { amount: this.DepositeNum }, flag, (status) => {});
     },
     // 获取余额
@@ -119,6 +115,20 @@ export default {
 @media screen and (min-width: 750px) {
   .depositeInput {
     margin-top: 44px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid #cfcfd2;
+      padding: 0 50px 0 12px;
+    }
+    span {
+      position: absolute;
+      right: 12px;
+      color: #919aa6;
+    }
   }
   .total-token {
     margin-top: 4px;
@@ -128,31 +138,33 @@ export default {
     line-height: 20px;
     span {
       font-size: 12px;
-      color: $text-g;
+      color: #121212;
     }
     a {
       font-size: 12px;
-      color: $text-l;
+      color: #ff9600;
     }
   }
   .to-gettoken {
     margin-top: 4px;
     font-size: 12px;
-    color: $text-l;
+    color: #ff9600;
   }
   .check {
     margin-top: 26px;
     margin-bottom: 32px;
     display: flex;
+    align-items: center;
     img {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       margin-right: 5px;
       cursor: pointer;
     }
     p {
+      height: 18px;
       font-size: 12px;
-      color: $text-t;
+      color: #121212;
     }
   }
 }

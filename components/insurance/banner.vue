@@ -4,15 +4,15 @@
       <li>
         <!-- 已经成交的保险品种的种类 -->
         <p>
-          <label>{{ $t('Banner.HelmetVarieties') }}</label>
-          <span>{{ helmetVarieties }}</span>
+          <label>已成交保单</label>
+          <span>{{ addCommom(frequency, 2) }}</span>
         </p>
         <img src="~/assets/img/helmet/ba1@2x.png" alt="" />
       </li>
       <li>
         <!-- 保险交易过的资金量 -->
         <p>
-          <label>{{ $t('Banner.TotalHelmetsBorrowedVolume') }}</label>
+          <label>LONG当前总价值</label>
           <span> {{ helmetVarieties }}</span>
         </p>
         <img src="~/assets/img/helmet/ba2@2x.png" alt="" />
@@ -20,8 +20,16 @@
       <li>
         <!-- 24小时Long token 铸造量 -->
         <p>
-          <label>{{ $t('Banner.LongToken') }}</label>
-          <span>{{ helmetVarieties }}</span>
+          <label>Helmet流通量</label>
+          <span>{{
+            addCommom(
+              precision.plus(
+                precision.minus(totalHelmet, balanceMine),
+                claimAbleHelmet
+              ),
+              2
+            )
+          }}</span>
         </p>
         <img src="~/assets/img/helmet/ba3@2x.png" alt="" />
       </li>
@@ -29,12 +37,15 @@
   </div>
 </template>
 <script>
-import { fixD } from '~/assets/js/util.js';
+import precision from '~/assets/js/precision.js';
+import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 export default {
   name: 'insurance-banner',
   data() {
     return {
+      precision: precision,
       fixD: fixD,
+      addCommom: addCommom,
     };
   },
   computed: {
@@ -49,6 +60,31 @@ export default {
     longTokenCreatedVolume() {
       // 24小时Long token 铸造量
       return this.$store.state.longTokenCreatedVolume;
+    },
+    totalHelmet() {
+      return this.$store.state.assets.totalHelmet;
+    },
+    balanceMine() {
+      return this.$store.state.assets.balanceMine;
+    },
+    claimAbleHelmet() {
+      return this.$store.state.assets.claimAbleHelmet;
+    },
+    frequency() {
+      return this.$store.state.assets.validBorrowing;
+    },
+  },
+  mounted() {
+    this.getBannerData();
+  },
+  methods: {
+    async getBannerData() {
+      setTimeout(() => {
+        this.$store.dispatch('getTotalHelmet'); //获取 Helmet 总量
+        this.$store.dispatch('getBalanceMine'); //获取 Helmet 矿山余额
+        this.$store.dispatch('getClaimAbleHelmet'); //获取 所有待结算 Helmet
+        this.$store.dispatch('getValidBorrowing'); //获取 有效成交
+      }, 1000);
     },
   },
 };
@@ -114,6 +150,11 @@ export default {
       li:nth-of-type(2) {
         background: #ff9600;
         border-radius: 3px;
+        p {
+          span {
+            color: #fff !important;
+          }
+        }
       }
       li:nth-of-type(3) {
         background: #f7f7fa;
@@ -160,6 +201,11 @@ export default {
         background: #ff9600;
         margin-bottom: 20px;
         border-radius: 3px;
+        p {
+          span {
+            color: #fff !important;
+          }
+        }
       }
       li:nth-of-type(3) {
         background: #f7f7fa;

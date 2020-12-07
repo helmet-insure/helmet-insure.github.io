@@ -9,7 +9,7 @@ import {
   Route,
   TokenAmount,
   TradeType,
-} from "@uniswap/sdk";
+} from "@pancakeswap-libs/sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import precision from "~/assets/js/precision.js";
 
@@ -19,6 +19,8 @@ const selectNetwork = (charID) => {
       return "Main";
     case 3:
       return "Ropsten";
+    case 56:
+      return "BSC";
     default:
       // return 'Ropsten';
       return "Rinkeby";
@@ -159,14 +161,14 @@ export const getID = async () => {
 
 // UniSwap SDK
 export const uniswap = async (token1, token2) => {
-  console.log(token1, token2, "####################uniswap");
   // const WEB3 = await web();
-  const address1 = getAddress(token1);
-  const address2 = getAddress(token2);
+  const address1 = getAddress(token1, window.chainID);
+  const address2 = getAddress(token2, window.chainID);
   // console.log('window.chainID####', window.chainID);
   // console.log('token1####', token1);
   // console.log('token2####', token2);
   // 令牌实体表示特定链上特定地址处的 ERC-20令牌
+
   const TOKEN1 = new Token(
     window.chainID,
     address1,
@@ -204,7 +206,8 @@ export const uniswap = async (token1, token2) => {
     }
     return route.midPrice.toSignificant(6);
   } catch (error) {
-    // console.log('进到这里了是吗');
+    console.log("进到这里了是吗");
+
     const charID = 1;
     const adress1 = getAddress(token1, charID);
     const adress2 = getAddress(token2, charID);

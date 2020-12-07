@@ -28,7 +28,6 @@
       />
       <polyline
         :points="str"
-        transform="translate(50%,50%)"
         style="fill: none; stroke: #000; stroke-width: 2; stroke: #ff9600"
       />
       <path

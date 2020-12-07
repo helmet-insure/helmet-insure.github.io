@@ -19,7 +19,7 @@ import {
   asks,
   frequency,
   totalSupply,
-  TotalMined,
+  BalanceMine,
   MyPayaso,
   claimable,
 } from "~/interface/order.js";
@@ -39,10 +39,10 @@ export const state = () => ({
       key: "po_TU",
       name: "Português",
     },
-    // {
-    //   key: "zh_CN",
-    //   name: "简体中文",
-    // },
+    {
+      key: "zh_CN",
+      name: "简体中文",
+    },
   ],
   // typeList: ["WETH", "UNI", "WBTC", "CRV", "OTHERS"],
   typeList: ["WETH", "WBTC", "OTHERS"],
@@ -86,11 +86,11 @@ export const state = () => ({
   },
   assets: {
     validBorrowing: 0,
-    totalPaya: 0,
-    mined: 0,
+    totalHelmet: 0,
+    balanceMine: 0,
     myPaya: 0,
     payaSettle: 0,
-    claimAblePaya: 0,
+    claimAbleHelmet: 0,
   },
   DAI_ETH: 0,
   ETH_DAI_LPT: 0,
@@ -164,11 +164,11 @@ export const mutations = {
     if (data.frequency) {
       state.assets.validBorrowing = data.frequency;
     }
-    if (data.totalPaya) {
-      state.assets.totalPaya = data.totalPaya;
+    if (data.totalHelmet) {
+      state.assets.totalHelmet = data.totalHelmet;
     }
-    if (data.mined) {
-      state.assets.mined = data.mined;
+    if (data.balanceMine) {
+      state.assets.balanceMine = data.balanceMine;
     }
     if (data.myPaya) {
       state.assets.myPaya = data.myPaya;
@@ -176,8 +176,8 @@ export const mutations = {
     if (data.payaSettle) {
       state.assets.payaSettle = data.payaSettle;
     }
-    if (data.claimAblePaya) {
-      state.assets.claimAblePaya = data.claimAblePaya;
+    if (data.claimAbleHelmet) {
+      state.assets.claimAbleHelmet = data.claimAbleHelmet;
     }
   },
   SET_ETH_DAI_LPT(state, data) {
@@ -505,25 +505,26 @@ export const actions = {
   },
   // 有效成交
   async getValidBorrowing({ commit, state }, data) {
-    let res = await frequency();
+    let res = await frequency("HELMET");
     commit("SET_ASSETS_VALUE", { frequency: res });
   },
-  //PAYA总发行量
-  async getTotalPaya({ commit, state }, data) {
-    let res = await totalSupply("PAYA");
-    commit("SET_ASSETS_VALUE", { totalPaya: res });
+  //Helmet总发行量
+  async getTotalHelmet({ commit, state }, data) {
+    let res = await totalSupply("HELMET");
+    commit("SET_ASSETS_VALUE", { totalHelmet: res });
   },
-  //矿山余额
-  async getTotalMined({ commit, state }, data) {
-    let res = await TotalMined("PAYA", "FARM");
-    commit("SET_ASSETS_VALUE", { mined: res });
+  //Helmet矿山余额
+  async getBalanceMine({ commit, state }, data) {
+    let res = await BalanceMine("HELMET", "FARM");
+    commit("SET_ASSETS_VALUE", { balanceMine: res });
   },
-  async getClaimAblePaya({ commit, state }, data) {
+  // 可结算helmet
+  async getClaimAbleHelmet({ commit, state }, data) {
     let res = await claimable(
       "ORDER",
       "0x0000000000000000000000000000000000000000"
     );
-    commit("SET_ASSETS_VALUE", { claimAblePaya: res });
+    commit("SET_ASSETS_VALUE", { claimAbleHelmet: res });
   },
   // 我的PAYA
   async getMyPayaso({ commit, state }, data) {

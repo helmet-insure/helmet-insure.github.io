@@ -13,10 +13,16 @@
 
 <script>
 export default {
+  props: ['currentCoin'],
   data() {
     return {
       curCoin: 'BNB',
     };
+  },
+  watch: {
+    currentCoin(val) {
+      this.curCoin = val;
+    },
   },
   computed: {
     coinList() {
@@ -25,6 +31,7 @@ export default {
   },
   methods: {
     handleClickCoin(coin) {
+      this.$emit('changeCoin', coin);
       this.curCoin = coin;
     },
   },

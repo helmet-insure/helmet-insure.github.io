@@ -12,7 +12,11 @@
           <button class="cancel" @click="closeDialog" v-if="!noCancel">
             {{ leftBtnText }}
           </button>
-          <button class="confirm" @click="confirmDialog" :disabled="!cansubmit">
+          <button
+            class="b_button"
+            @click="confirmDialog"
+            :disabled="!cansubmit"
+          >
             {{ rightBtnText }}
           </button>
         </slot>
@@ -89,14 +93,14 @@ export default {
   align-items: center;
   z-index: 100;
   .p-dialog-content {
-    background: $bg-d;
-    border-radius: 10px;
+    background: #fff;
+    border-radius: 3px;
     padding: 20px 30px;
     position: relative;
     z-index: 102;
     .title {
       font-size: 16px;
-      color: $text-t;
+      color: #121212;
     }
     .close {
       display: block;
@@ -120,8 +124,6 @@ export default {
     justify-content: flex-end;
     padding-top: 10px;
     button {
-      height: 32px;
-      border-radius: 3px;
       cursor: pointer;
       margin-left: 8px;
       padding: 0px 10px;

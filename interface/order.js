@@ -323,7 +323,7 @@ export const getMint = async (callback) => {
         toBlock: "latest",
       },
       (error, events) => {
-        callback(error, events);
+        // callback(error, events);
       }
     );
   });
@@ -415,9 +415,12 @@ export const claim = async () => {
   return result;
 };
 // 有效交易总量
-export const frequency = async () => {
+export const frequency = async (address) => {
   let charID = window.charID;
-  let adress = getContract("PAYA", charID);
+  let adress = address;
+  if (adress.indexOf("0x") === -1) {
+    adress = getContract(address, charID);
+  }
   const order = await Order();
   if (!adress) {
     return 0;
@@ -462,7 +465,6 @@ export const getBalance = async (type, currcy) => {
     .balanceOf(window.CURRENTADDRESS)
     .call()
     .then((res) => {
-      // console.log(res)
       let tocurrcy = currcy || type;
       return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
     });
@@ -476,6 +478,7 @@ export const totalSupply = async (address) => {
   if (!adress) {
     return 0;
   }
+  console.log(adress, address);
   const Contract = await expERC20(adress);
   return Contract.methods
     .totalSupply()
@@ -485,7 +488,7 @@ export const totalSupply = async (address) => {
       return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
     });
 };
-export const TotalMined = async (address1, address2) => {
+export const BalanceMine = async (address1, address2) => {
   const charID = window.chainID;
   let adress1 = address1;
   let adress2 = address2;

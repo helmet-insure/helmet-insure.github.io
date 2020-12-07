@@ -1455,6 +1455,19 @@
     mustache "^2.3.0"
     stack-trace "0.0.10"
 
+"@pancakeswap-libs/sdk@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/@pancakeswap-libs/sdk/download/@pancakeswap-libs/sdk-1.0.1.tgz#602e6da34fd5bde0f3c869f9abe63bb5f4aaf063"
+  integrity sha1-YC5to0/VveDzyGn5q+Y7tfSq8GM=
+  dependencies:
+    "@uniswap/v2-core" "^1.0.0"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"

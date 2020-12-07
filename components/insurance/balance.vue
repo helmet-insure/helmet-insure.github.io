@@ -22,12 +22,17 @@
         <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-BNB"></use></svg
-          >200.0100 BNB
+          >{{ this.BNB }} BNB
         </p>
         <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Helmet"></use></svg
-          >200.0100 HELMET
+          >{{ this.HELMET }} HELMET
+        </p>
+        <p>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-Qusd"></use></svg
+          >{{ this.QUSD }} QUSD
         </p>
       </div>
     </div>
@@ -36,7 +41,44 @@
 
 <script>
 import '~/assets/svg/iconfont.js';
-export default {};
+import { getBalance } from '~/interface/order.js';
+export default {
+  props: ['currentCoin'],
+  data() {
+    return {
+      curCoin: 'BNB',
+      QUSD: 0,
+      BNB: 0,
+      CAKE: 0,
+      HELMET: 0,
+    };
+  },
+  watch: {
+    currentCoin(val) {
+      this.curCoin = val;
+    },
+  },
+  mounted() {
+    this.$bus.$on('REFRESH_BALANCE', () => {
+      this.getBalance();
+    });
+    setTimeout(() => {
+      this.getBalance();
+    }, 1000);
+  },
+  methods: {
+    async getBalance() {
+      const bnbAmount = await getBalance('WBNB');
+      const qusdAmount = await getBalance('QUSD');
+      const cakeAmount = await getBalance('CAKE');
+      const helmetAmount = await getBalance('HELMET');
+      this.BNB = bnbAmount;
+      this.QUSD = qusdAmount;
+      this.CAKE = cakeAmount;
+      this.HELMET = helmetAmount;
+    },
+  },
+};
 </script>
 
 <style lang='scss' scoped>

@@ -121,12 +121,12 @@ export default {
     },
     async getAssets() {
       setTimeout(() => {
-        this.$store.dispatch('getValidBorrowing');
-        this.$store.dispatch('getTotalPaya');
-        this.$store.dispatch('getTotalMined');
-        this.$store.dispatch('getMyPayaso');
-        this.$store.dispatch('getPayaSettle');
-        this.$store.dispatch('getClaimAblePaya');
+        // this.$store.dispatch('getValidBorrowing');
+        // this.$store.dispatch('getTotalPaya');
+        // this.$store.dispatch('getTotalMined');
+        // this.$store.dispatch('getMyPayaso');
+        // this.$store.dispatch('getPayaSettle');
+        // this.$store.dispatch('getClaimAblePaya');
         // this.$store.dispatch("getmyUNI");
         // this.$store.dispatch("getmyPAYA");
       }, 1000);

@@ -3,7 +3,7 @@ import ERC20_abi from "~/abi/ERC20_abi.json";
 import payaso_abi from "~/abi/payaso_abi.json";
 import factory_abi from "~/abi/factory_abi.json";
 import order_abi from "~/abi/order_abi.json";
-import deposite_abi from "~/abi/deposite.json";
+import deposite_abi from "~/abi/deposite_abi.json";
 import { getAddress, getContract, getID } from "~/assets/utils/address-pool.js";
 
 export const getCurrentAccount = async () => {

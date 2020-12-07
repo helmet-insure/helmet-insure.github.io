@@ -5,130 +5,55 @@
       v-for="(item, index) in miningList"
       :key="index"
     >
-      <div class="mining-list-left">
-        <div class="list-item-title">
-          <span>{{ item.name }}</span>
-          <p>{{ item.name }} Lp token</p>
-        </div>
-        <div class="list-item-content">
-          <p>{{ $t('Table.RewardsAvailable') }}：</p>
-          <img
-            class="dataloading"
-            src="~/assets/img/loading.gif"
-            v-if="item.lpt == 'noData'"
-          />
-          <span v-else>{{ item.lpt }}</span>
-        </div>
-        <!-- <p class="list-item-locked">
-          {{ $t('Table.Locked', { type: item.name }) }}:{{ item.lpt }}
-        </p> -->
-        <p class="list-item-time">
-          <img
-            class="dataloading"
-            src="~/assets/img/loading.gif"
-            v-if="item.lastTime == 'noData'"
-          />
-          <template v-else>
-            {{ $t('Dialog.LastTime') }}：{{
-              item.lastTime == 0
-                ? '- -'
-                : moment(item.lastTime * 1000).format('YYYY/MM/DD HH:mm:ss')
-            }}
-          </template>
-        </p>
-      </div>
-      <div class="mining-list-right">
-        <div class="mined">
-          <div class="mining-list-stake">
-            <div class="list-item-title">
-              <span>{{ $t('Table.Minted') }}</span>
-            </div>
-            <div class="list-item-content">
-              <p>PAYA</p>
-              <img
-                class="dataloading"
-                src="~/assets/img/loading.gif"
-                v-if="item.paya == 'noData'"
-              />
-              <span v-else>{{ item.paya }}</span>
-            </div>
-            <div class="list-item-btn">
-              <button
-                class="red"
-                @click="toDeposite(item, index)"
-                :class="StakeIndex == index && depositeLoading ? 'loading' : ''"
-              >
-                <img
-                  src="~/assets/img/loading.gif"
-                  v-if="StakeIndex == index && depositeLoading"
-                />
-                {{ $t('Table.StakeTokens') }}
-              </button>
-              <button
-                class="line"
-                :class="claimloading && claimIndex == index ? 'loading' : ''"
-                @click="toClaim(item, index)"
-              >
-                <img
-                  src="~/assets/img/loading.gif"
-                  v-if="claimloading && claimIndex == index"
-                />
-                {{ $t('Table.ClaimRewards') }}
+      <h3>{{ item.title }}</h3>
+      <p>距离挖矿结束还剩：<span>10:14:34:12</span></p>
+      <div>
+        <div class="left">
+          <p>翻倍险<span>100%</span><i></i></p>
+          <div>
+            <div>
+              <span>Minted</span>
+              <p>HELMET</p>
+              <strong>{{ item.callMined }}</strong>
+              <button class="o_button" @click="toClaim(item, index)">
+                Claim Rewards
               </button>
             </div>
-          </div>
-          <i class="cut_line"></i>
-          <div class="mining-list-unstake">
-            <div class="list-item-title">
-              <span>{{ $t('Table.CurrentlyStaked') }}</span>
-            </div>
-            <div class="list-item-content">
-              <p>{{ item.name }} LP tokens</p>
-              <img
-                class="dataloading"
-                src="~/assets/img/loading.gif"
-                v-if="item.lptoken == 'noData'"
-              />
-              <span v-else>{{ item.lptoken }}</span>
-            </div>
-            <div class="list-item-btn">
-              <button
-                class="red"
-                @click="toWithdraw(item, index)"
-                :class="
-                  withdrawLoading && unStakeIndex == index ? 'loading' : ''
-                "
-              >
-                <img
-                  src="~/assets/img/loading.gif"
-                  v-if="withdrawLoading && unStakeIndex == index"
-                />
-                {{ $t('Table.UnstakeTokens') }}
-              </button>
-              <button
-                class="line"
-                @click="toExit(item, index)"
-                :class="unclaimloading && exitIndex == index ? 'loading' : ''"
-              >
-                <img
-                  src="~/assets/img/loading.gif"
-                  v-if="unclaimloading && exitIndex == index"
-                />
-                {{ $t('Table.ClaimUnstake') }}
+            <section class="cut_line"></section>
+            <div>
+              <span>Currently Staked</span>
+              <p>BNB-QUSD Short Token</p>
+              <strong>0</strong>
+              <button class="o_button">Claim&Unstake</button>
+              <button class="b_button" @click="toDeposite(item, index)">
+                Stake
               </button>
             </div>
           </div>
         </div>
-        <Protect>
-          <img
-            class="dataloading"
-            src="~/assets/img/loading.gif"
-            v-if="item.protected == 'noData'"
-          />
-          <template v-else>
-            {{ $t('Table.Protected', { num: item.protected }) }}
-          </template>
-        </Protect>
+        <div class="right">
+          <p>腰斩险<span>-50%</span><i></i></p>
+          <div>
+            <div>
+              <span>Minted</span>
+              <p>HELMET</p>
+              <strong>{{ item.putMined }}</strong>
+              <button class="o_button" @click="toClaim(item, index)">
+                Claim Rewards
+              </button>
+            </div>
+            <section class="cut_line"></section>
+            <div>
+              <span>Currently Staked</span>
+              <p>BNB-QUSD Short Token</p>
+              <strong>0</strong>
+              <button class="o_button">Claim&Unstake</button>
+              <button class="b_button" @click="toDeposite(item, index)">
+                Stake
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -156,7 +81,10 @@ export default {
     return {
       miningList: [
         {
-          name: 'ETH-DAI',
+          title: 'QUSD-BNB Short Token POOL',
+          name: 'BNB-QUSD',
+          callMined: 0,
+          putMined: 0,
           lpt: 'noData',
           protected: 'noData',
           lptoken: 'noData',
@@ -164,7 +92,10 @@ export default {
           lastTime: 'noData',
         },
         {
-          name: 'ETH-USDT',
+          title: 'CAKE-BNB Short Token POOL',
+          name: 'CAKE-BNB',
+          callMined: 0,
+          putMined: 0,
           lpt: 'noData',
           protected: 'noData',
           lptoken: 'noData',
@@ -172,15 +103,10 @@ export default {
           lastTime: 'noData',
         },
         {
-          name: 'ETH-USDC',
-          lpt: 'noData',
-          protected: 'noData',
-          lptoken: 'noData',
-          paya: 'noData',
-          lastTime: 'noData',
-        },
-        {
-          name: 'ETH-WBTC',
+          title: 'FOR-BNB Short Token POOL',
+          name: 'FOR-BNB',
+          callMined: 0,
+          putMined: 0,
           lpt: 'noData',
           protected: 'noData',
           lptoken: 'noData',
@@ -250,7 +176,7 @@ export default {
       }
     },
     async getAllData() {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 3; i++) {
         const charID = window.chainID;
         let type = this.miningList[i].name.replace('-', '_');
         let typeLPT = type + '_LPT';
@@ -317,7 +243,7 @@ export default {
     // 获取授权状态
     async getAllowance() {
       let approveList = {};
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 3; i++) {
         let type = this.miningList[i].name.replace('-', '_');
         let res = await approveStatus(type);
         let value = res.length > 30 ? true : false;
@@ -344,140 +270,119 @@ export default {
   width: 24px !important;
   height: 24px !important;
 }
+.main-container {
+  background: #f7f7fa;
+}
 @media screen and (min-width: 750px) {
   .cut_line {
-    margin: 40px 0 0 0;
     width: 1px;
-    border-left: 1px dashed #2f2f2f;
+    border-left: 1px dashed #cfcfd2;
     display: block;
+    height: 100%;
   }
   .mining-list {
-    width: 1100px;
-    margin: 44px auto 0;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    width: 1200px;
     display: flex;
     flex-direction: column;
     .mining-list-item {
+      background: #fff;
       width: 100%;
       display: flex;
-      background: $bg-f;
-      height: 280px;
-      margin-bottom: 10px;
-    }
-    .mining-list-left {
-      width: 360px;
-      background-image: url('../../assets/img/miningbg.png');
-      background-repeat: no-repeat;
-      background-size: cover;
-      padding: 40px 0;
-      .list-item-title {
-        text-align: center;
-        span {
-          font-size: 24px;
-          font-weight: 500;
-          color: $text-m;
-          line-height: 33px;
-        }
-        p {
-          margin-top: 10px;
-        }
-      }
-      .list-item-content {
-        margin-top: 20px;
-        text-align: center;
-        p {
-          font-size: 14px;
-          font-weight: 400;
-          color: #be3a3b;
-          line-height: 20px;
-        }
-        span {
-          font-size: 40px;
-          font-weight: 500;
-          color: $text-t;
-          line-height: 60px;
-        }
-      }
-      .list-item-locked {
-        margin-top: 15px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 400;
-        color: #acacac;
-      }
-      .list-item-time {
-        margin-top: 15px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 400;
-        color: #acacac;
-      }
-    }
-    .mining-list-right {
-      flex: 1;
-      display: flex;
       flex-direction: column;
-      .mined {
+      height: 444px;
+      margin-bottom: 10px;
+      padding: 40px;
+      > h3 {
         text-align: center;
+        font-weight: 600;
+      }
+      > p {
+        text-align: center;
+        margin: 15px 0 30px;
+        font-size: 14px;
+        color: #919aa6;
+        span {
+          color: #121212;
+        }
+      }
+      > div {
         display: flex;
-        padding: 40px 0 0 0;
-        > div {
-          flex: 1;
-          padding: 0 30px;
-        }
-        .list-item-title {
-          font-size: 18px;
-          color: $text-t;
-          line-height: 20px;
-        }
-        .list-item-content {
-          margin-top: 25px;
-          p {
-            font-size: 12px;
-            color: #acacac;
-            line-height: 12px;
-          }
-          span {
-            display: block;
-            margin-top: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            color: $text-t;
-          }
-        }
-        .list-item-btn {
-          display: flex;
-          align-items: center;
-          justify-content: space-evenly;
-          .red {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 120px;
-            height: 36px;
-            background: $main-color;
-            border-radius: 5px;
-            color: #fff;
-            margin-top: 20px;
-            padding: 0 15px;
-            &:hover {
-              background: $main-hover;
+        height: 100%;
+        justify-content: space-between;
+        .left {
+          background: rgba(0, 185, 0, 0.04);
+          border-top: 2px solid #00b900;
+          > p {
+            color: #00b900;
+            i {
+              background-image: url('../../assets/img/helmet/call@2x.png');
             }
           }
-          .line {
+        }
+        .right {
+          background: rgba(255, 100, 0, 0.04);
+          border-top: 2px solid #ff6400;
+          > p {
+            color: #ff6400;
+            i {
+              background-image: url('../../assets/img/helmet/put@2x.png');
+            }
+          }
+        }
+        > div {
+          width: 540px;
+          display: flex;
+          flex-direction: column;
+          > p {
             display: flex;
-            align-items: center;
             justify-content: center;
-            min-width: 120px;
-            height: 36px;
-            border-radius: 5px;
-            border: 1px solid $main-color;
-            color: $main-color;
-            background: transparent;
-            margin-top: 20px;
-            padding: 0 15px;
-            &:hover {
-              border-color: $main-hover;
-              color: $main-hover;
+            height: 30px;
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+            span {
+              font-size: 16px;
+              font-weight: bold;
+              line-height: 22px;
+              margin: 0 4px 0 4px;
+            }
+            i {
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              background-repeat: no-repeat;
+              background-size: cover;
+              transform: translateY(2px);
+            }
+          }
+          > div {
+            flex: 1;
+            padding: 20px 0 30px;
+            display: flex;
+            justify-content: space-between;
+            > div {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              span {
+                font-size: 18px;
+                font-weight: 500;
+              }
+              p {
+                color: #919aa6;
+                font-size: 12px;
+                margin: 20px 0 8px;
+              }
+              button {
+                min-width: 100px;
+                margin-top: 20px;
+              }
+              .b_button {
+                width: 134px;
+              }
             }
           }
         }
@@ -486,130 +391,109 @@ export default {
   }
 }
 @media screen and (max-width: 750px) {
+  .cut_line {
+    width: 1px;
+    border-left: 1px dashed #cfcfd2;
+    display: block;
+    height: 190px;
+  }
   .mining-list {
-    padding-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     .mining-list-item {
-      margin-top: 10px;
-      padding-top: 20px;
+      background: #fff;
       width: 100%;
-      background: #1c1c1c;
-      border-radius: 4px;
-    }
-    .mining-list-left {
-      padding-top: 20px;
-      margin: 0 16px;
-      height: 268px;
-      background-image: url('../../assets/img/miningbg_h5.png');
-      background-repeat: no-repeat;
-      background-size: cover;
-      text-align: center;
-      border-radius: 3px;
-      .list-item-title {
-        span {
-          font-size: 24px;
-          font-weight: 500;
-          color: #ffffff;
-        }
-        p {
-          margin-top: 8px;
-          font-size: 16px;
-          color: #dbdbdb;
-          line-height: 22px;
-        }
-      }
-      .list-item-content {
-        margin-top: 30px;
-        p {
-          font-size: 14px;
-          color: #be3a3b;
-          line-height: 20px;
-        }
-        span {
-          margin-top: 8px;
-          font-size: 40px;
-          font-weight: 500;
-          color: #dbdbdb;
-        }
-      }
-      .list-item-locked {
-        margin-top: 20px;
-        margin-bottom: 12px;
-      }
-      p {
-        font-size: 12px;
-        font-weight: 400;
-        color: #acacac;
-      }
-    }
-    .mining-list-right {
       display: flex;
       flex-direction: column;
-      .cut_line {
-        width: 1px;
-        border-left: 1px dashed #2f2f2f;
-        display: block;
+      margin-bottom: 10px;
+      padding: 30px 16px;
+      > h3 {
+        text-align: center;
+        font-weight: 600;
       }
-      .mined {
-        display: flex;
-        margin-top: 27px;
+      > p {
+        text-align: center;
+        margin: 15px 0 30px;
+        font-size: 14px;
+        color: #919aa6;
+        span {
+          color: #121212;
+        }
+      }
+      > div {
+        height: 100%;
+        .left {
+          background: rgba(0, 185, 0, 0.04);
+          border-top: 2px solid #00b900;
+          > p {
+            color: #00b900;
+            i {
+              background-image: url('../../assets/img/helmet/call@2x.png');
+            }
+          }
+        }
+        .right {
+          background: rgba(255, 100, 0, 0.04);
+          border-top: 2px solid #ff6400;
+          > p {
+            color: #ff6400;
+            i {
+              background-image: url('../../assets/img/helmet/put@2x.png');
+            }
+          }
+        }
         > div {
-          flex: 1;
-          text-align: center;
-          .list-item-title {
+          display: flex;
+          flex-direction: column;
+          > p {
+            display: flex;
+            justify-content: center;
+            height: 30px;
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
             span {
               font-size: 16px;
-              color: #dbdbdb;
-              line-height: 20px;
-            }
-          }
-          .list-item-content {
-            margin-top: 20px;
-            p {
-              font-size: 12px;
-              color: #acacac;
-            }
-            span {
-              display: block;
-              margin-top: 8px;
-              font-size: 18px;
               font-weight: bold;
-              color: #dbdbdb;
+              line-height: 22px;
+              margin: 0 4px 0 4px;
+            }
+            i {
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              background-repeat: no-repeat;
+              background-size: cover;
+              transform: translateY(2px);
             }
           }
-          .list-item-btn {
+          > div {
+            flex: 1;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            .red {
+            padding: 20px 0 30px;
+            > div {
+              flex: 1;
               display: flex;
+              flex-direction: column;
               align-items: center;
-              justify-content: center;
-              min-width: 120px;
-              height: 36px;
-              background: $main-color;
-              border-radius: 5px;
-              color: #fff;
-              margin-top: 20px;
-              padding: 0 15px;
-              &:hover {
-                background: $main-hover;
+              span {
+                font-size: 18px;
+                font-weight: 500;
               }
-            }
-            .line {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              min-width: 120px;
-              height: 36px;
-              border-radius: 5px;
-              border: 1px solid $main-color;
-              color: $main-color;
-              background: transparent;
-              margin-top: 20px;
-              padding: 0 15px;
-              &:hover {
-                border-color: $main-hover;
-                color: $main-hover;
+              p {
+                color: #919aa6;
+                font-size: 12px;
+                margin: 20px 0 8px;
+              }
+              button {
+                min-width: 100px;
+                margin-top: 20px;
+              }
+              .b_button {
+                width: 134px;
               }
             }
           }

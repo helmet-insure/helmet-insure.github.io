@@ -53,6 +53,13 @@
       "font_class": "BNB",
       "unicode": "e607",
       "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "18603186",
+      "name": "Qusd",
+      "font_class": "Qusd",
+      "unicode": "e608",
+      "unicode_decimal": 58888
     }
   ]
 }

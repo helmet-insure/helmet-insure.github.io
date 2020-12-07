@@ -83,7 +83,6 @@ export default {
       height: 40px;
       border-radius: 3px;
       border: 1px solid #212121;
-      margin-left: 20px;
       position: relative;
       display: flex;
       align-items: center;
@@ -108,7 +107,7 @@ export default {
     .hint_box {
       display: none;
       position: absolute;
-      top: calc(-100% - 50px);
+      top: calc(-100% - 85px);
       z-index: 9;
       margin-bottom: 40px;
       ul {
