@@ -1,7 +1,7 @@
 <template>
   <div class="no-data">
     <div class="img-box">
-      <img src="~/assets/img/queshen.png" />
+      <!-- <img src="~/assets/img/queshen.png" /> -->
     </div>
     <p>{{ text || $t('Content.NoData') }}</p>
   </div>

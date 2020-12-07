@@ -168,26 +168,28 @@ export const uniswap = async (token1, token2) => {
   // console.log('token1####', token1);
   // console.log('token2####', token2);
   // 令牌实体表示特定链上特定地址处的 ERC-20令牌
-
+  console.log(address1, address2);
   const TOKEN1 = new Token(
     window.chainID,
     address1,
     getWei_2(token1),
-    token1,
-    token1
+    "Cake",
+    "Cake"
   );
   const TOKEN2 = new Token(
     window.chainID,
     address2,
     getWei_2(token2),
-    token2,
-    token2
+    "BNB",
+    "BNB"
   );
+  console.log(TOKEN1, TOKEN2);
   // Pair 实体表示一个 Uniswap 对，其中每个对标记都有一个平衡。
   // 从两个 token 初始化一个类实例
   try {
     // console.log('TOKEN1#####', TOKEN1);
     // console.log('TOKEN2#####', TOKEN2);
+    console.log(Fetcher.fetchPairData);
     const pair = await Fetcher.fetchPairData(TOKEN2, TOKEN1);
     // console.log('pair####', pair);
     // Route 实体表示一个或多个有序 Uniswap 对，具有从输入令牌到输出令牌的完全指定的路径。

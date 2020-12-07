@@ -5,13 +5,13 @@
       <h3 class="title">{{ data.title }}</h3>
       <span class="close" @click="closeDialog"></span>
       <div class="img-box">
-        <img
+        <!-- <img
           class="pending"
           v-if="data.type === 'pending'"
           src="~/assets/img/waitting.png"
-        />
-        <img v-if="data.type === 'submit'" src="~/assets/img/submit.png" />
-        <img v-if="data.type === 'success'" src="~/assets/img/success.png" />
+        /> -->
+        <!-- <img v-if="data.type === 'submit'" src="~/assets/img/submit.png" /> -->
+        <!-- <img v-if="data.type === 'success'" src="~/assets/img/success.png" /> -->
       </div>
       <!-- 请在钱包中确认进行交易 -->
       <h3 class="con-tit" v-html="data.conTit"></h3>

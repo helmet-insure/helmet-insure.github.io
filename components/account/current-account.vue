@@ -43,7 +43,14 @@ export default {
   methods: {
     userInfoWatch(newValue) {
       let account = newValue.data.account;
-      this.accountText = account.substr(0, 6) + '...' + account.substr(-5);
+      this.accountText =
+        account.substr(0, 1) +
+        ' ' +
+        account.substr(1, 1) +
+        ' ' +
+        account.substr(2, 4) +
+        '...' +
+        account.substr(-5);
     },
     closeDialog() {
       this.$emit('close');
@@ -76,7 +83,6 @@ export default {
     padding: 16px 30px;
     position: relative;
     background: #ffffff;
-    border-radius: 10px;
     z-index: 102;
     .title {
       font-size: 20px;
@@ -111,13 +117,12 @@ export default {
         }
         > a {
           display: inline-block;
-          background: $main-color;
+          background: #ff9600;
           padding: 3px 15px;
-          border-radius: 3px;
           cursor: pointer;
           border: none;
           &:hover {
-            background: $main-hover;
+            background: #ffa000;
           }
         }
       }

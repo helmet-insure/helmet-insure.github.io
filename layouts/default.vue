@@ -226,6 +226,8 @@ export default {
 .layout-container {
   min-height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
   > p {
     color: #ffc819;
     text-align: center;
@@ -241,6 +243,7 @@ export default {
     .main-container {
       width: 1200px;
       margin: 20px auto 0;
+      flex: 1;
     }
   }
 }

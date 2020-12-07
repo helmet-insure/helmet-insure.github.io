@@ -14,7 +14,7 @@ export default {};
   .security-banner {
     width: 1200px;
     height: 180px;
-    background: url('../../assets/img/banner.png') right 36px no-repeat;
+    // background: url('../../assets/img/banner.png') right 36px no-repeat;
     background-size: auto 80%;
     font-size: 40px;
     font-weight: 500;
@@ -26,7 +26,7 @@ export default {};
   .security-banner {
     width: 100%;
     height: 180px;
-    background: url('../../assets/img/banner_h5.png') right 36px no-repeat;
+    // background: url('../../assets/img/banner_h5.png') right 36px no-repeat;
     background-size: auto 80%;
     font-size: 30px;
     font-weight: 500;

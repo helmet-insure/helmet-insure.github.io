@@ -42,6 +42,7 @@
 <script>
 import '~/assets/svg/iconfont.js';
 import { getBalance } from '~/interface/order.js';
+import { uniswap } from '~/assets/utils/address-pool.js';
 export default {
   props: ['currentCoin'],
   data() {
@@ -76,6 +77,9 @@ export default {
       this.QUSD = qusdAmount;
       this.CAKE = cakeAmount;
       this.HELMET = helmetAmount;
+    },
+    async getIndexPrice() {
+      let res = await uniswap('WBNB', 'BUSD');
     },
   },
 };

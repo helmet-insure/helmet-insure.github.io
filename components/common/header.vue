@@ -24,7 +24,7 @@
         v-if="!userInfo.data.isLogin"
         class="connect-wallet-btn"
         @click="openWallectSelect"
-        >{{ $t('Assets.ConnectWallet') }}</a
+        >CONNECT WALLET</a
       >
       <div v-else class="wallet-address" @click="openCurrentAccount">
         <span>{{ accountText }}</span>

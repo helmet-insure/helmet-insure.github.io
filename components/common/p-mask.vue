@@ -2,7 +2,7 @@
   <div class="p-mask" v-if="showMask">
     <div class="p-mask-title">
       <a href="/">
-        <img src="~/assets/img/logo_1.png" alt="" />
+        <!-- <img src="~/assets/img/logo_1.png" alt="" /> -->
       </a>
       <span @click="closeMask"></span>
     </div>
@@ -21,7 +21,7 @@
       v-if="!userInfo.data.isLogin"
       class="connect-wallet-btn"
       @click="openWallectSelect"
-      >{{ $t('Assets.ConnectWallet') }}</a
+      >Connect to a wallet</a
     >
     <div v-else class="wallet-address" @click="openCurrentAccount">
       <span>{{ accountText }}</span>
@@ -107,35 +107,35 @@ export default {
     renderList() {
       return [
         {
-          url: '/',
+          url: '/product',
           link: false,
-          text: this.$t('Header.Market'),
-        },
-        {
-          url: '/buy',
-          link: false,
-          text: this.$t('Header.MySafetyHelmet'),
-        },
-        {
-          url: '/sell',
-          link: false,
-          text: this.$t('Header.MySupply'),
+          text: this.$t('Header.Trade'),
         },
         {
           url: '/mining',
           link: false,
-          text: this.$t('Header.LPMining'),
+          text: this.$t('Header.Mining'),
         },
-        {
-          url: 'http://www.payaso.io/guides',
-          link: true,
-          text: this.$t('Header.GuideBook'),
-        },
-        {
-          type: 'PAYASO',
-          link: false,
-          text: this.$t('Assets.My') + ' ' + 'PAYA',
-        },
+        // {
+        //   url: '/sell',
+        //   link: false,
+        //   text: this.$t('Header.MySupply'),
+        // },
+        // {
+        //   url: '/mining',
+        //   link: false,
+        //   text: this.$t('Header.LPMining'),
+        // },
+        // {
+        //   url: 'http://www.payaso.io/guides',
+        //   link: true,
+        //   text: this.$t('Header.GuideBook'),
+        // },
+        // {
+        //   type: 'PAYASO',
+        //   link: false,
+        //   text: this.$t('Assets.My') + ' ' + 'PAYA',
+        // },
       ];
     },
   },
@@ -165,7 +165,15 @@ export default {
     userInfoWatch(newValue) {
       if (newValue.data && newValue.data.account) {
         let account = newValue.data.account;
-        this.accountText = account.substr(0, 6) + '...' + account.substr(-5);
+        account = account.toUpperCase();
+        this.accountText =
+          account.substr(0, 1) +
+          ' ' +
+          account.substr(1, 1) +
+          ' ' +
+          account.substr(2, 4) +
+          '...' +
+          account.substr(-5);
       }
     },
     openWallectSelect() {
@@ -245,32 +253,38 @@ export default {
     margin-top: 30px;
     display: block;
     width: 180px;
-    border: 1px solid #ffffff;
-    display: block;
     height: 40px;
     line-height: 40px;
     background: transparent;
-    border-radius: 20px;
     padding: 0px 12px;
+    background: #ff9600;
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 16px;
+    text-align: center;
   }
   .wallet-address {
+    display: flex;
     margin-top: 30px;
-    display: block;
-    width: 180px;
-    border: 1px solid #ffffff;
-    display: block;
+    background: #ff9600;
     height: 40px;
     line-height: 40px;
-    background: transparent;
-    border-radius: 20px;
     padding: 0px 12px;
+    align-items: center;
+    width: 180px;
+    span {
+      font-size: 16px;
+      font-weight: 500;
+      color: #ffffff;
+      margin-right: 10px;
+    }
     i {
       display: inline-block;
       width: 12px;
       height: 12px;
       border-radius: 50%;
       background-color: #14b465;
-      margin-left: 5px;
+      border: 2px solid #fff;
     }
   }
 }

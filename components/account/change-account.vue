@@ -15,15 +15,15 @@
       </div>
       <ul class="wallet-list">
         <li
-          v-if="userInfo.data.name === 'WalletConnect'"
+          v-if="userInfo.data.name === 'Math'"
           @click="changeWallet('MetaMask')"
         >
           <span>MetaMask</span>
           <img src="~/assets/img/wallet-icon/MetaMask@2x.png" />
         </li>
-        <li v-else @click="changeWallet('WalletConnect')">
-          <span>Wallet Connect</span>
-          <img src="~/assets/img/wallet-icon/WalletConnect@2x.png" />
+        <li v-else @click="changeWallet('Math')">
+          <span>Math Wallet</span>
+          <img src="~/assets/img/wallet-icon/Math@2x.png" />
         </li>
       </ul>
     </div>
@@ -89,20 +89,21 @@ export default {
       }
     },
     async connectWallet() {
-      const walletConnectProvider = new WalletConnectProvider({
-        infuraId: '3cd774e14cf34ff78167908f8377051c', // Required
-        // qrcode: true
-      });
-      await walletConnectProvider.enable();
-      const web3 = new Web3(walletConnectProvider);
-      const coinbase = walletConnectProvider.wc.accounts[0];
-      window.WEB3 = web3;
-      let userInfo = await mateMaskInfo(coinbase, 'WalletConnect');
-      this.$store.dispatch('setUserInfo', userInfo);
-      window.localStorage.setItem('currentType', 'WalletConnect');
-      this.$bus.$emit('REFRESH_ALL_DATA');
-      this.$bus.$emit('REFRESH_MINING');
-      this.closeDialog();
+      console.log(window);
+      try {
+        window.ethereum
+          .request({ method: 'eth_requestAccounts' })
+          .then(async (account) => {
+            window.localStorage.setItem('currentType', 'Math');
+            let userInfo = await mateMaskInfo(account[0], 'Math');
+            this.$store.dispatch('setUserInfo', userInfo);
+            this.$bus.$emit('REFRESH_ALL_DATA');
+            this.$bus.$emit('REFRESH_MINING');
+            this.closeDialog();
+          });
+      } catch (error) {
+        console.log('Math 扩展插件未安装或未启用##', error);
+      }
     },
   },
 };
@@ -115,7 +116,6 @@ export default {
     padding: 16px 30px;
     position: relative;
     background: #ffffff;
-    border-radius: 10px;
     position: relative;
     z-index: 102;
     padding-top: 60px;
@@ -128,7 +128,6 @@ export default {
     padding: 8px 16px;
     position: relative;
     background: #ffffff;
-    border-radius: 10px;
     position: relative;
     z-index: 102;
     padding-top: 60px;
@@ -180,7 +179,6 @@ export default {
       display: flex;
       align-items: center;
       background: rgba($bg-a, 0.1);
-      border-radius: 3px;
       height: 60px;
       padding: 0px 16px;
       .circle {
@@ -205,7 +203,6 @@ export default {
     .wallet-list {
       li {
         border: 1px solid rgba($bg-a, 0.1);
-        border-radius: 3px;
         height: 60px;
         display: flex;
         align-items: center;
@@ -220,7 +217,7 @@ export default {
           height: 30px;
         }
         &:hover {
-          border: 1px solid $main-hover;
+          border: 1px solid #ff9600;
         }
       }
     }
