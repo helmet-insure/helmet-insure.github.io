@@ -1,6 +1,5 @@
 import Web3 from "web3";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-
 const walletConnectProvider = new WalletConnectProvider({
   infuraId: "3cd774e14cf34ff78167908f8377051c", // Required
   // bridge: 'https://bridge.myhostedserver.com'

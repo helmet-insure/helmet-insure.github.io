@@ -12,7 +12,7 @@ import { fixD, toRounding } from "~/assets/js/util.js";
 import bus from "~/assets/js/bus";
 import Notification from "~/components/common/Notification";
 import Message from "~/components/common/Message";
-import { ChainId } from "@pancakeswap-libs/sdk";
+
 const netObj = {
   1: "",
   3: "ropsten.",

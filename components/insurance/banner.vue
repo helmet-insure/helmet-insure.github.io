@@ -76,6 +76,7 @@ export default {
   },
   mounted() {
     this.getBannerData();
+    console.log(this.$store.state.assets);
   },
   methods: {
     async getBannerData() {

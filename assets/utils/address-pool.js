@@ -1,17 +1,20 @@
 // import {web3} from './web3-obj.js';
 import addressList from "~/abi/config.js";
 import {
-  ChainId,
   Token,
-  WETH,
   Fetcher,
-  Trade,
   Route,
+  Pair,
   TokenAmount,
-  TradeType,
+  sortsBefore,
 } from "@pancakeswap-libs/sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import precision from "~/assets/js/precision.js";
+import { Contract } from "@ethersproject/contracts";
+import { getNetwork } from "@ethersproject/networks";
+import { getDefaultProvider } from "@ethersproject/providers";
+import IPancakePair from "@pancakeswap-libs/pancake-swap-core/build/IPancakePair.json";
+import ERC20 from "~/abi/ERC20_abi.json";
 
 const selectNetwork = (charID) => {
   switch (charID) {
@@ -161,66 +164,54 @@ export const getID = async () => {
 
 // UniSwap SDK
 export const uniswap = async (token1, token2) => {
-  // const WEB3 = await web();
   const address1 = getAddress(token1, window.chainID);
   const address2 = getAddress(token2, window.chainID);
-  // console.log('window.chainID####', window.chainID);
-  // console.log('token1####', token1);
-  // console.log('token2####', token2);
-  // 令牌实体表示特定链上特定地址处的 ERC-20令牌
-  console.log(address1, address2);
   const TOKEN1 = new Token(
     window.chainID,
     address1,
     getWei_2(token1),
-    "Cake",
-    "Cake"
+    token1,
+    token1
   );
   const TOKEN2 = new Token(
     window.chainID,
     address2,
     getWei_2(token2),
-    "BNB",
-    "BNB"
+    token2,
+    token2
   );
-  console.log(TOKEN1, TOKEN2);
-  // Pair 实体表示一个 Uniswap 对，其中每个对标记都有一个平衡。
-  // 从两个 token 初始化一个类实例
+  console.log(token1, token2);
   try {
-    // console.log('TOKEN1#####', TOKEN1);
-    // console.log('TOKEN2#####', TOKEN2);
-    console.log(Fetcher.fetchPairData);
-    const pair = await Fetcher.fetchPairData(TOKEN2, TOKEN1);
-    // console.log('pair####', pair);
-    // Route 实体表示一个或多个有序 Uniswap 对，具有从输入令牌到输出令牌的完全指定的路径。
+    // 获取交易对地址
+    const address = Pair.getAddress(TOKEN1, TOKEN2);
+    // 获取Provider
+    let provider = getDefaultProvider(getNetwork("56"));
+    // 获取合约方法
+    const Contracts = await new window.WEB3.eth.Contract(
+      IPancakePair.abi,
+      address,
+      provider
+    );
+    // 获取getReserves
+    let result = await Contracts.methods
+      .getReserves()
+      .call()
+      .then((res) => {
+        return res;
+      });
+    const balances = TOKEN1.sortsBefore(TOKEN2)
+      ? [result.reserve0, result.reserve1]
+      : [result.reserve1, result.reserve0];
+    let pair = new Pair(
+      new TokenAmount(TOKEN1, balances[0]),
+      new TokenAmount(TOKEN2, balances[1])
+    );
     const route = new Route([pair], TOKEN1);
-    // console.log('route#####', route);
-    // // 贸易实体代表一条路线上完全指定的贸易。这个实体提供了制作路由器事务所需的所有信息。
-    // const trade = new Trade(route, new TokenAmount(TOKEN1, window.WEB3.utils.toWei('1', getWei(token1))), TradeType.EXACT_INPUT);
-    // console.log(trade.nextMidPrice.toSignificant(6));
-    // return trade.executionPrice.toSignificant(6);
-    // console.log(
-    //   'route.midPrice.toSignificant(6)####',
-    //   route.midPrice.toSignificant(6)
-    // );
     if (token1 === "WBTC") {
       return route.midPrice.toSignificant(6) / 10000000000;
     }
     return route.midPrice.toSignificant(6);
   } catch (error) {
-    console.log("进到这里了是吗");
-
-    const charID = 1;
-    const adress1 = getAddress(token1, charID);
-    const adress2 = getAddress(token2, charID);
-    const TOKEN1 = new Token(charID, adress1, getWei_2(token1), token1, token1);
-    const TOKEN2 = new Token(charID, adress2, getWei_2(token2), token2, token2);
-    const pair = await Fetcher.fetchPairData(TOKEN2, TOKEN1);
-    const route = new Route([pair], TOKEN1);
-
-    if (token1 == "WBTC") {
-      return route.midPrice.toSignificant(6) / 10000000000;
-    }
-    return route.midPrice.toSignificant(6);
+    return 0;
   }
 };

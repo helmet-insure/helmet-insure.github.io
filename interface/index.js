@@ -65,8 +65,5 @@ export const Deposite = async (adress) => {
 export const expERC20 = async (address) => {
   const WEB3 = await web3();
   // console.log('window.WEB3###', window.WEB3);
-  return await new WEB3.eth.Contract(
-    ERC20_abi.abi,
-    "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
-  );
+  return await new WEB3.eth.Contract(ERC20_abi.abi, address);
 };

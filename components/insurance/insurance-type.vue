@@ -26,6 +26,7 @@ export default {
   },
   methods: {
     handleClickInsurance(type) {
+      this.$emit('changeType', type);
       this.insurance_type = type;
     },
   },

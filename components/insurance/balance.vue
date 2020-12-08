@@ -3,7 +3,7 @@
     <section>
       <div>
         <span>{{ $t('Content.InsurancePrice') }}</span>
-        <p>200.0100 BNB</p>
+        <p>{{ indexPx || 0 }} {{ unit }}</p>
       </div>
       <div>
         <span>{{ $t('Content.ProtectTheCycle') }}</span>
@@ -43,20 +43,43 @@
 import '~/assets/svg/iconfont.js';
 import { getBalance } from '~/interface/order.js';
 import { uniswap } from '~/assets/utils/address-pool.js';
+import precision from '~/assets/js/precision.js';
 export default {
-  props: ['currentCoin'],
+  props: ['currentCoin', 'currentType'],
   data() {
     return {
-      curCoin: 'BNB',
+      underly: 'WBNB', //标的物
+      curType: 1,
+      collateral: 'WBNB', //抵押物
       QUSD: 0,
       BNB: 0,
       CAKE: 0,
       HELMET: 0,
+      indexPx: 0,
+      unit: 'WBNB',
     };
+  },
+  computed: {
+    CoinType() {
+      if (this.underly && this.collateral && this.curType) {
+        return {
+          underly: this.underly,
+          collateral: this.collateral,
+          Type: this.curType,
+        };
+      }
+    },
   },
   watch: {
     currentCoin(val) {
-      this.curCoin = val;
+      this.underly = val;
+    },
+    currentType(val) {
+      this.curType = val;
+    },
+    CoinType: {
+      handler: 'CoinTypeWatch',
+      immediate: true,
     },
   },
   mounted() {
@@ -65,6 +88,7 @@ export default {
     });
     setTimeout(() => {
       this.getBalance();
+      this.getIndexPrice();
     }, 1000);
   },
   methods: {
@@ -78,8 +102,28 @@ export default {
       this.CAKE = cakeAmount;
       this.HELMET = helmetAmount;
     },
+    async CoinTypeWatch(newValue) {
+      if (newValue.Type == 2) {
+        if (newValue.underly != 'WBNB') {
+          this.collateral = this.underly;
+          this.underly = this.underly;
+          this.unit = this.underly;
+        } else {
+          this.collateral = 'QUSD';
+          this.unit = 'QUSD';
+          this.underly = this.underly;
+        }
+      } else {
+        this.collateral = 'WBNB';
+        this.underly = this.underly;
+        this.unit = 'WBNB';
+      }
+      const px = await uniswap(this.underly, this.collateral, window.chainID);
+      this.indexPx = precision.round(px, 4);
+    },
     async getIndexPrice() {
-      let res = await uniswap('WBNB', 'BUSD');
+      const px = await uniswap(this.underly, this.collateral);
+      this.indexPx = precision.round(px, 4);
     },
   },
 };

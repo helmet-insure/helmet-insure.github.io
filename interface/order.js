@@ -14,7 +14,6 @@ import { fixD, toRounding } from "~/assets/js/util.js";
 import bus from "~/assets/js/bus";
 import Notification from "~/components/common/Notification";
 import Message from "~/components/common/Message";
-import { ChainId } from "@pancakeswap-libs/sdk";
 
 const netObj = {
   1: "",
@@ -478,7 +477,6 @@ export const totalSupply = async (address) => {
   if (!adress) {
     return 0;
   }
-  console.log(adress, address);
   const Contract = await expERC20(adress);
   return Contract.methods
     .totalSupply()

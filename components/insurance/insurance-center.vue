@@ -1,10 +1,16 @@
 <template>
   <div class="insurance_center">
     <div class="buy-type">
-      <button @click="handleClickType(1)" :class="type == 1 ? 'active' : ''">
+      <button
+        @click="handleClickType('buy')"
+        :class="type == 'buy' ? 'active' : ''"
+      >
         {{ $t('Type.BuyInsurance') }}
       </button>
-      <button @click="handleClickType(2)" :class="type == 2 ? 'active' : ''">
+      <button
+        @click="handleClickType('sell')"
+        :class="type == 'sell' ? 'active' : ''"
+      >
         {{ $t('Type.ToInsurance') }}
       </button>
     </div>
@@ -13,10 +19,10 @@
       :currentCoin="curCoin"
     ></CoinType>
     <Echart></Echart>
-    <InsuranceType></InsuranceType>
-    <Balance :currentCoin="curCoin"></Balance>
-    <InsuranceList v-if="type == 1"></InsuranceList>
-    <InsuranceForm v-if="type == 2"></InsuranceForm>
+    <InsuranceType @changeType="handleClickTradeType"></InsuranceType>
+    <Balance :currentCoin="curCoin" :currentType="TradeType"></Balance>
+    <InsuranceList v-if="type == 'buy'"></InsuranceList>
+    <InsuranceForm v-if="type == 'sell'"></InsuranceForm>
   </div>
 </template>
 
@@ -38,17 +44,24 @@ export default {
   },
   data() {
     return {
-      type: 1,
+      type: 'buy',
       curCoin: 'BNB',
+      TradeType: 1,
     };
   },
   mounted() {},
   methods: {
+    // 选择买卖类型
     handleClickType(type) {
       this.type = type;
     },
+    // 选择币种类型
     handleClickCoinType(coin) {
       this.curCoin = coin;
+    },
+    //选择保险品种
+    handleClickTradeType(type) {
+      this.TradeType = type;
     },
   },
 };
