@@ -13,7 +13,7 @@ import precision from "~/assets/js/precision.js";
 import { Contract } from "@ethersproject/contracts";
 import { getNetwork } from "@ethersproject/networks";
 import { getDefaultProvider } from "@ethersproject/providers";
-import IPancakePair from "@pancakeswap-libs/pancake-swap-core/build/IPancakePair.json";
+import IPancakePair from "~/abi/IPancakePair.json";
 import ERC20 from "~/abi/ERC20_abi.json";
 
 const selectNetwork = (charID) => {
