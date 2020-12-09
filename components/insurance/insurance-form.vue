@@ -2,7 +2,7 @@
   <div class="insurance_form">
     <div>
       <div class="dpr">
-        <input type="text" value="3" readonly />
+        <input type="text" v-model="dpr"  />
         <span class="left">DPR</span>
         <span class="right">%</span>
       </div>
@@ -24,18 +24,35 @@
 import { onIssue } from '~/interface/order.js';
 export default {
   data() {
-    return {};
+    return {
+      dpr:''
+    };
   },
   methods: {
     submitSupply() {
       let Options = this.$store.state.Options;
-      console.log(Options);
-      // 私有化
+      let{ _expiry,_strikePrice,_underlying } = Options;
+      // 私有化  不要
       // 标的物
       // 执行价格
       // 到期日
       // 结算token
       // 单价
+      const option = {
+        
+      }
+      if (this.indexPx && this.dueDate && this.price && this.dpr) {
+        let dpr = this.dpr / 100;
+        let time1 = new Date(this.dueDate).getTime();
+        let time2 = new Date().getTime();
+        let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
+        let premium = precision.minus(
+          precision.times(dpr, this.price, day),
+          precision.minus(this.indexPx, this.price)
+        );
+        return premium;
+      }
+      return '--';
       const data = {
         private: this.private,
         annual: this.dpr,

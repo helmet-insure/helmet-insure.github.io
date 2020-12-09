@@ -11,11 +11,9 @@
           >{{ $t('Header.Trade') }}</nuxt-link
         >
         <!-- <nuxt-link to="/buy">{{ $t('Header.MySafetyHelmet') }}</nuxt-link> -->
-        <!-- <nuxt-link to="/sell">{{ $t('Header.MySupply') }}</nuxt-link> -->
         <nuxt-link to="/mining">{{ $t('Header.Mining') }}</nuxt-link>
-        <!-- <a href="http://www.payaso.io/guides" target="_blank">{{
-          $t('Header.GuideBook')
-        }}</a> -->
+        <nuxt-link to="/sell">{{ $t('Header.Govern') }}</nuxt-link>
+        <a href="https://helmet-insure.gitbook.io/helmet/" target="_blank">{{$t('Header.GuideBook')}}</a>
       </div>
       <!-- <Assets v-if="userInfo.data.isLogin"></Assets> -->
       <!-- 分割线 -->

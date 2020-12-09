@@ -107,7 +107,7 @@ export default {
     .hint_box {
       display: none;
       position: absolute;
-      top: calc(-100% - 85px);
+      top: calc(-100% - 45px);
       z-index: 9;
       margin-bottom: 40px;
       ul {

@@ -28,17 +28,17 @@ import { accDiv, add, mul } from "~/assets/utils/calculate.js";
 import { toRounding } from "~/assets/js/util.js";
 
 export const state = () => ({
-  locales: ["en_US", "zh_CN", "po_TU"],
+  locales: ["en_US", "zh_CN"],
   locale: "en_US",
   localeList: [
     {
       key: "en_US",
       name: "English",
     },
-    {
-      key: "po_TU",
-      name: "Português",
-    },
+    // {
+    //   key: "po_TU",
+    //   name: "Português",
+    // },
     {
       key: "zh_CN",
       name: "简体中文",
@@ -112,6 +112,8 @@ export const state = () => ({
   },
   Options: {
     _strikePrice: 0,
+    _underlying: "HELMET",
+    _expiry: 0,
   },
 });
 
@@ -214,8 +216,17 @@ export const mutations = {
   SET_APPROVE_LIST(state, data) {
     state.approveList = data;
   },
+  // 保存执行价格
   SET_INDEX_PRICE(state, data) {
     state.Options._strikePrice = data;
+  },
+  // 保存标的物
+  SET_COIN_TYPE(state, data) {
+    state.Options._underlying = data;
+  },
+  // 保存到期时间
+  SET_DUR_DATE(state, data) {
+    state.Options._expiry = data;
   },
 };
 

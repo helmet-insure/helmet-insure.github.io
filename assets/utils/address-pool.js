@@ -133,7 +133,7 @@ export const getWei_2 = (token) => {
     token = getSymbol(token)[0];
   }
   switch (token) {
-    case "USDT":
+    case "CTK":
       return 6; // 6
     case "USDC":
       return 6; // 6
@@ -207,11 +207,10 @@ export const uniswap = async (token1, token2) => {
       new TokenAmount(TOKEN2, balances[1])
     );
     const route = new Route([pair], TOKEN1);
-    if (token1 === "WBTC") {
-      return route.midPrice.toSignificant(6) / 10000000000;
-    }
+    // if (token1 == "CTK") {
+    //   return route.midPrice.toSignificant(6);
+    // }
     console.log(route.midPrice.toSignificant(6));
-
     return route.midPrice.toSignificant(6);
   } catch (error) {
     return 0;

@@ -44,6 +44,7 @@ import '~/assets/svg/iconfont.js';
 import { getBalance } from '~/interface/order.js';
 import { uniswap } from '~/assets/utils/address-pool.js';
 import precision from '~/assets/js/precision.js';
+import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 export default {
   props: ['currentCoin', 'currentType'],
   data() {
@@ -57,27 +58,14 @@ export default {
       CAKE: 0,
       HELMET: 0,
       indexPx: 0,
-      unit: 'WBNB',
+      unit: 'BNB',
     };
   },
   computed: {
     // 保费
     // 预期日化收益 = ((指数价格 - 执行价格) + 保费) / (执行价格 * 天数)
     // 保费 = 预期日化收益 * 执行价格 * 天数 - 指数价格-执行价格);
-    rent() {
-      if (this.indexPx && this.dueDate && this.price && this.dpr) {
-        let dpr = this.dpr / 100;
-        let time1 = new Date(this.dueDate).getTime();
-        let time2 = new Date().getTime();
-        let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
-        let premium = precision.minus(
-          precision.times(dpr, this.price, day),
-          precision.minus(this.indexPx, this.price)
-        );
-        return premium;
-      }
-      return '--';
-    },
+ 
     CoinType() {
       if (this.underly && this.collateral && this.curType) {
         return {
@@ -115,45 +103,34 @@ export default {
       const qusdAmount = await getBalance('QUSD');
       const cakeAmount = await getBalance('CAKE');
       const helmetAmount = await getBalance('HELMET');
-      this.BNB = bnbAmount;
-      this.QUSD = qusdAmount;
-      this.CAKE = cakeAmount;
-      this.HELMET = helmetAmount;
+      this.BNB = fixD(bnbAmount,4);
+      this.QUSD = fixD(qusdAmount,4);
+      this.CAKE = fixD(cakeAmount,4);
+      this.HELMET = fixD(helmetAmount,4) ;
     },
     async CoinTypeWatch(newValue) {
-      if (newValue.Type == 2) {
-        if (newValue.underly != 'WBNB') {
-          this.collateral = this.underly;
-          this.underly = this.underly;
-          this.unit = this.underly;
-        } else {
-          this.collateral = 'QUSD';
-          this.unit = 'QUSD';
-          this.underly = this.underly;
-        }
-      } else {
         this.collateral = 'WBNB';
         this.underly = this.underly;
-        this.unit = 'WBNB';
-      }
+        this.unit = 'BNB';
       const px = await uniswap(this.underly, this.collateral, window.chainID);
       if (newValue.Type == 1) {
-        this.indexPx = precision.round(px, 4) * 2;
+        this.indexPx = fixD(px * 2, 4);
       } else {
-        this.indexPx = precision.round(px, 4) / 2;
+        this.indexPx = fixD(px / 2, 4);
       }
       this.$store.commit('SET_INDEX_PRICE', this.indexPx);
     },
     async getIndexPrice() {
       const px = await uniswap(this.underly, this.collateral);
-      this.indexPx = precision.round(px, 4);
+      this.indexPx = fixD(px, 4);
       if (this.curType == 1) {
-        this.indexPx = precision.round(px, 4) * 2;
+        this.indexPx = fixD(px * 2, 4);
       } else {
-        this.indexPx = precision.round(px, 4) / 2;
+        this.indexPx = fixD(px / 2, 4);
       }
       this.$store.commit('SET_INDEX_PRICE', this.indexPx);
-    },
+      this.$store.commit('SET_DUR_DATE',this.dueDate)
+    }
   },
 };
 </script>
@@ -166,7 +143,7 @@ export default {
     section {
       display: flex;
       > div {
-        margin-right: 100px;
+        width: 200px;
         span {
           font-size: 14px;
           color: #919aa6;
@@ -186,7 +163,6 @@ export default {
       }
     }
     > div {
-      margin-right: 100px;
       span {
         font-size: 14px;
         color: #919aa6;
