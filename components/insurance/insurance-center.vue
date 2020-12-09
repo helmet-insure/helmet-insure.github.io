@@ -19,7 +19,10 @@
       :currentCoin="curCoin"
     ></CoinType>
     <Echart></Echart>
-    <InsuranceType @changeType="handleClickTradeType"></InsuranceType>
+    <InsuranceType
+      @changeType="handleClickTradeType"
+      :currentType="type"
+    ></InsuranceType>
     <Balance :currentCoin="curCoin" :currentType="TradeType"></Balance>
     <InsuranceList v-if="type == 'buy'"></InsuranceList>
     <InsuranceForm v-if="type == 'sell'"></InsuranceForm>

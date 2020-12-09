@@ -167,10 +167,10 @@ export default {
       /* @include themeify {
       background: rgba(themed('color-success'), 0.08);
     } */
-      background: #1d2c24;
+      background: #e5f8e5;
     }
     &.ex-message-error {
-      background: #471111;
+      background: #ffefe5;
       /* @include themeify {
       background: rgba(themed('color-error'), 0.08);
     } */

@@ -15,7 +15,21 @@
               <span>Minted</span>
               <p>HELMET</p>
               <strong>{{ item.callMined }}</strong>
-              <button class="o_button" @click="toClaim(item, index)">
+              <button
+                :class="
+                  claimLoading && claimIndex == index && claimType == 'call'
+                    ? 'loading o_button'
+                    : 'o_button'
+                "
+                @click="toClaim(item, index, 'call')"
+              >
+                <i
+                  :class="
+                    claimLoading && claimIndex == index && claimType == 'call'
+                      ? 'loading_pic'
+                      : ''
+                  "
+                ></i>
                 Claim Rewards
               </button>
             </div>
@@ -24,8 +38,42 @@
               <span>Currently Staked</span>
               <p>BNB-QUSD Short Token</p>
               <strong>0</strong>
-              <button class="o_button">Claim&Unstake</button>
-              <button class="b_button" @click="toDeposite(item, index)">
+              <button
+                :class="
+                  exitLoading && exitIndex == index && exitType == 'call'
+                    ? 'loading o_button'
+                    : 'o_button'
+                "
+                @click="toExit(item, index, 'call')"
+              >
+                <i
+                  :class="
+                    exitLoading && exitIndex == index && exitType == 'call'
+                      ? 'loading_pic'
+                      : ''
+                  "
+                ></i>
+                Claim&Unstake
+              </button>
+              <button
+                :class="
+                  depositeLoading &&
+                  depositeIndex == index &&
+                  depositeType == 'call'
+                    ? 'loading b_button'
+                    : 'b_button'
+                "
+                @click="toDeposite(item, index, 'call')"
+              >
+                <i
+                  :class="
+                    depositeLoading &&
+                    depositeIndex == index &&
+                    depositeType == 'call'
+                      ? 'loading_pic'
+                      : ''
+                  "
+                ></i>
                 Stake
               </button>
             </div>
@@ -38,7 +86,22 @@
               <span>Minted</span>
               <p>HELMET</p>
               <strong>{{ item.putMined }}</strong>
-              <button class="o_button" @click="toClaim(item, index)">
+              <button
+                class="o_button"
+                :class="
+                  claimLoading && claimIndex == index && claimType == 'put'
+                    ? 'loading o_button'
+                    : 'o_button'
+                "
+                @click="toClaim(item, index, 'put')"
+              >
+                <i
+                  :class="
+                    claimLoading && claimIndex == index && claimType == 'put'
+                      ? 'loading_pic'
+                      : ''
+                  "
+                ></i>
                 Claim Rewards
               </button>
             </div>
@@ -47,8 +110,42 @@
               <span>Currently Staked</span>
               <p>BNB-QUSD Short Token</p>
               <strong>0</strong>
-              <button class="o_button">Claim&Unstake</button>
-              <button class="b_button" @click="toDeposite(item, index)">
+              <button
+                :class="
+                  exitLoading && exitIndex == index && exitType == 'put'
+                    ? 'loading o_button'
+                    : 'o_button'
+                "
+                @click="toExit(item, index, 'put')"
+              >
+                <i
+                  :class="
+                    exitLoading && exitIndex == index && exitType == 'put'
+                      ? 'loading_pic'
+                      : ''
+                  "
+                ></i>
+                Claim&Unstake
+              </button>
+              <button
+                :class="
+                  depositeLoading &&
+                  depositeIndex == index &&
+                  depositeType == 'put'
+                    ? 'loading b_button'
+                    : 'b_button'
+                "
+                @click="toDeposite(item, index, 'put')"
+              >
+                <i
+                  :class="
+                    depositeLoading &&
+                    depositeIndex == index &&
+                    depositeType == 'put'
+                      ? 'loading_pic'
+                      : ''
+                  "
+                ></i>
                 Stake
               </button>
             </div>
@@ -81,52 +178,54 @@ export default {
     return {
       miningList: [
         {
-          title: 'BNB-QUSD Short Token POOL',
-          name: 'BNB-QUSD',
+          title: 'HELMET-BNB Short Token POOL',
+          call: 'HELMET-BNB',
+          put: 'BNB-HELMET',
           callMined: 0,
           putMined: 0,
-          lpt: 'noData',
-          protected: 'noData',
-          lptoken: 'noData',
-          paya: 'noData',
-          lastTime: 'noData',
         },
         {
           title: 'CAKE-BNB Short Token POOL',
-          name: 'CAKE-BNB',
+          call: 'CAKE-BNB',
+          put: 'BNB-CAKE',
           callMined: 0,
           putMined: 0,
-          lpt: 'noData',
-          protected: 'noData',
-          lptoken: 'noData',
-          paya: 'noData',
-          lastTime: 'noData',
+        },
+        {
+          title: 'CTK-BNB Short Token POOL',
+          call: 'CTK-BNB',
+          put: 'BNB-CTK',
+          callMined: 0,
+          putMined: 0,
         },
         {
           title: 'FOR-BNB Short Token POOL',
-          name: 'FOR-BNB',
+          call: 'FOR-BNB',
+          put: 'BNB-FOR',
           callMined: 0,
           putMined: 0,
-          lpt: 'noData',
-          protected: 'noData',
-          lptoken: 'noData',
-          paya: 'noData',
-          lastTime: 'noData',
         },
       ],
       moment: moment,
-      claimloading: false, //结算loading
-      unclaimloading: false, //推出loading
+      claimLoading: false, //结算loading
+      claimIndex: '', //结算ID
+      claimType: '', //结算类型
       depositeLoading: false, //结质押loading
-      withdrawLoading: false, //赎回loading
-      current: '', //当前结算LPT币种
-      exitCoin: '', //当前退出LPT币种
-      curStake: '', //当前质押LPT币种
-      curUnStake: '', //当前赎回LPT币种
-      claimIndex: '', //当前结算key
-      exitIndex: '', //当前退出key
-      StakeIndex: '', //当前质押key
-      unStakeIndex: '', //当前赎回key
+      depositeIndex: '', //抵押ID
+      depositeType: '', //抵押类型
+      exitLoading: false, //退出loading
+      exitIndex: '', //退出ID
+      exitType: '', //退出类型
+      typeList: [
+        'HELMET-BNB',
+        'BNB-HELMET',
+        'CAKE-BNB',
+        'BNB-CAKE',
+        'CTK-BNB',
+        'BNB-CTK',
+        'FOR-BNB',
+        'BNB-FOR',
+      ],
     };
   },
   watch: {
@@ -136,33 +235,18 @@ export default {
     },
   },
   mounted() {
+    this.getAllowance();
     setTimeout(() => {
       this.getAllData();
-      this.getAllowance();
     }, 1000);
     this.$bus.$on('DEPOSITE_LOADING', (data) => {
-      let current = this.curStake.replace('-', '_');
-      if (data.type == current && data.status) {
-        this.depositeLoading = true;
-      } else {
-        this.depositeLoading = false;
-        this.StakeIndex = '';
-      }
-    });
-    this.$bus.$on('WITHDRAW_LOADING', (data) => {
-      let current = this.curUnStake.replace('-', '_');
-      if (data.type == current && data.status) {
-        this.withdrawLoading = true;
-      } else {
-        this.withdrawLoading = false;
-        this.unStakeIndex = '';
-      }
+      this.depositeLoading = data.status;
     });
     this.$bus.$on('CLAIM_LOADING', (data) => {
-      this.claimloading = false;
+      this.claimLoading = false;
     });
     this.$bus.$on('EXIT_LOADING', (data) => {
-      this.unclaimloading = false;
+      this.exitLoading = false;
     });
     this.$bus.$on('REFRESH_MINING', (data) => {
       this.getAllData();
@@ -178,79 +262,100 @@ export default {
     async getAllData() {
       for (let i = 0; i < 3; i++) {
         const charID = window.chainID;
-        let type = this.miningList[i].name.replace('-', '_');
-        let typeLPT = type + '_LPT';
-        let PoolAdress = getContract(type, charID);
-        let LptAdress = getContract(typeLPT, charID);
-        if (PoolAdress && LptAdress) {
-          // 获取时间
-          let time = await getLastTime(type);
-          this.miningList[i].lastTime = time;
-          // 获取待领取paya
-          let paya = await CangetPAYA(type);
-          this.miningList[i].paya = addCommom(paya, 8);
-          // 获取Lp-Tokens
-          let lpTokens = await getLPTOKEN(type);
-          this.miningList[i].lptoken = addCommom(lpTokens, 8);
-          //获取当前池子的总量
-          let DOUBLEPOOL = await totalSupply(type);
-          //获取当前LPT的总量
-          let ETH_COIN = await totalSupply(typeLPT);
-          this.miningList[i].lpt = addCommom(ETH_COIN, 2);
-          // 计算当前保护的WETH
-          let WETHCOIN = await balanceOf('WETH', LptAdress);
-          this.miningList[i].protected = addCommom(
-            (WETHCOIN * DOUBLEPOOL) / ETH_COIN,
-            2
-          );
-        } else {
-          this.miningList[i].paya = 0;
-          this.miningList[i].lptoken = 0;
-          this.miningList[i].lpt = 0;
-          this.miningList[i].protected = 0;
-          this.miningList[i].lastTime = 0;
-        }
+        // call地址
+        let callType = this.miningList[i].call.replace('-', '_');
+        let callTypeLPT = callType + '_LPT';
+        let callPoolAdress = getContract(callType, charID);
+        let callLptAdress = getContract(callTypeLPT, charID);
+        // put地址
+        let putType = this.miningList[i].put.replace('-', '_');
+        let putTypeLPT = putType + '_LPT';
+        let putPoolAdress = getContract(putType, charID);
+        let putLptAdress = getContract(putTypeLPT, charID);
+
+        // 获取时间
+        // let time = await getLastTime(type);
+        // this.miningList[i].lastTime = time;
+        // 获取待领取paya
+        let callMined = await CangetPAYA(callType);
+        let putMined = await CangetPAYA(putType);
+        this.miningList[i].callMined = addCommom(callMined, 8) || 0;
+        this.miningList[i].putMined = addCommom(putMined, 8) || 0;
+        // 获取Lp-Tokens
+        // let lpTokens = await getLPTOKEN(type);
+        // this.miningList[i].lptoken = addCommom(lpTokens, 8);
+        //获取当前池子的总量
+        // let DOUBLEPOOL = await totalSupply(type);
+        //获取当前LPT的总量
+        // let ETH_COIN = await totalSupply(typeLPT);
+        // this.miningList[i].lpt = addCommom(ETH_COIN, 2);
+        // 计算当前保护的WETH
+        // let WETHCOIN = await balanceOf('WETH', LptAdress);
+        // this.miningList[i].protected = addCommom(
+        //   (WETHCOIN * DOUBLEPOOL) / ETH_COIN,
+        //   2
+        // );
       }
     },
     // 结算Paya
-    async toClaim(item, index) {
-      this.claimloading = true;
+    async toClaim(item, index, tradeType) {
+      if (this.claimLoading) {
+        return;
+      }
+      this.claimLoading = true;
       this.claimIndex = index;
-      this.current = item.name;
-      let type = item.name.replace('-', '_');
+      this.claimType = tradeType;
+      let type;
+      if (tradeType === 'call') {
+        type = item.call.replace('-', '_');
+      } else {
+        type = item.put.replace('-', '_');
+      }
       let res = await getPAYA(type);
     },
     // 抵押
-    toDeposite(item, index) {
-      this.curStake = item.name;
-      this.StakeIndex = index;
-      this.$bus.$emit('OPEN_DEPOSITE', { current: item.name });
-    },
-    // 赎回
-    toWithdraw(item, index) {
-      this.curUnStake = item.name;
-      this.unStakeIndex = index;
-      this.$bus.$emit('OPEN_WITHDRAW', { current: item.name });
+    toDeposite(item, index, tradeType) {
+      if (this.depositeLoading) {
+        return;
+      }
+      this.depositeIndex = index; //抵押ID
+      this.depositeType = tradeType; //抵押类型
+      let type;
+      if (tradeType === 'call') {
+        type = item.call.replace('-', '_');
+      } else {
+        type = item.put.replace('-', '_');
+      }
+      this.$bus.$emit('OPEN_DEPOSITE', { current: type });
     },
     // 退出
-    async toExit(item, index) {
-      this.unclaimloading = true;
+    async toExit(item, index, tradeType) {
+      if (this.exitLoading) {
+        return;
+      }
+      this.exitLoading = true;
       this.exitIndex = index;
-      this.exitCoin = item.name;
-      let type = item.name.replace('-', '_');
+      this.exitType = tradeType;
+      let type;
+      if (tradeType === 'call') {
+        type = item.call.replace('-', '_');
+      } else {
+        type = item.put.replace('-', '_');
+      }
       let res = await exitStake(type);
     },
     // 获取授权状态
     async getAllowance() {
       let approveList = {};
-      for (let i = 0; i < 3; i++) {
-        let type = this.miningList[i].name.replace('-', '_');
+      for (let i = 0; i < 8; i++) {
+        let type = this.typeList[i].replace('-', '_');
         let res = await approveStatus(type);
         let value = res.length > 30 ? true : false;
-        const key = this.miningList[i].name;
+        const key = this.typeList[i];
         approveList[key] = value;
       }
       this.$store.commit('SET_APPROVE_LIST', approveList);
+      console.log(approveList);
     },
   },
 };
@@ -258,18 +363,31 @@ export default {
 
 <style lang='scss' soped>
 @import '~/assets/css/base.scss';
-.loading {
-  pointer-events: none;
-  img {
-    width: 24px;
-    height: 24px;
-    margin-right: 4px;
+.loading_pic {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-image: url('../../assets/img/helmet/loading.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: loading 2s 0s linear infinite;
+}
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
-.dataloading {
-  width: 24px !important;
-  height: 24px !important;
+
+.loading {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .main-container {
   background: #f7f7fa;
 }

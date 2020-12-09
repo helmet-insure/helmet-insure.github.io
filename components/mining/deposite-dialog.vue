@@ -50,7 +50,7 @@ import { fixD, addCommom } from '~/assets/js/util.js';
 import { getAddress } from '~/assets/utils/address-pool.js';
 
 export default {
-  props: ['current'],
+  props: ['current', 'TradeType'],
   components: {
     PDialog,
     PInput,
@@ -86,10 +86,13 @@ export default {
       this.$emit('close');
     },
     submitDeposite() {
+      if (this.DepositeNum == '') {
+        return;
+      }
       let flag = this.hiddenGlobal || this.checked;
-      let type = this.current.replace('-', '_');
-      console.log(type);
+      let type = this.current;
       toDeposite(type, { amount: this.DepositeNum }, flag, (status) => {});
+      this.$bus.$emit('DEPOSITE_LOADING', { status: true });
     },
     // 获取余额
     getBalance() {

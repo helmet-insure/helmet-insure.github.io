@@ -6,14 +6,10 @@
     <!-- <Protect :styleClass="'mining-home'"></Protect> -->
     <Deposite
       :current="current"
+      :TradeType="TradeType"
       @close="closeDeposite"
       v-if="showDeposite"
     ></Deposite>
-    <Withdraw
-      :current="current"
-      @close="closeWithdraw"
-      v-if="showWithdraw"
-    ></Withdraw>
   </div>
 </template>
 
@@ -37,22 +33,17 @@ export default {
       showDeposite: false,
       showWithdraw: false,
       current: '',
+      TradeType: '',
     };
   },
   mounted() {
     this.$bus.$on('OPEN_DEPOSITE', (data) => {
       this.current = data.current;
+      this.TradeType = data.TradeType;
       this.showDeposite = true;
     });
     this.$bus.$on('CLOSE_DEPOSITE', (data) => {
       this.showDeposite = false;
-    });
-    this.$bus.$on('OPEN_WITHDRAW', (data) => {
-      this.current = data.current;
-      this.showWithdraw = true;
-    });
-    this.$bus.$on('CLOSE_WITHDRAW', (data) => {
-      this.showWithdraw = false;
     });
   },
   methods: {

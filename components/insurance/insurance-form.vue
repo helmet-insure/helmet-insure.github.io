@@ -10,9 +10,10 @@
         <input type="text" />
         <span class="right">全部</span>
       </div>
-      <button class="b_b_button">立即创建</button>
+      <button class="b_b_button" @click="submitSupply">立即创建</button>
     </div>
     <p>预期最大收益：<span>11111 BNB</span></p>
+
     <span>
       如果在行权日之前，价格没有达到 <i>XXX</i> ，您将获得无风险收益。
     </span>
@@ -20,7 +21,46 @@
 </template>
 
 <script>
-export default {};
+import { onIssue } from '~/interface/order.js';
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    submitSupply() {
+      let Options = this.$store.state.Options;
+      console.log(Options);
+      // 私有化
+      // 标的物
+      // 执行价格
+      // 到期日
+      // 结算token
+      // 单价
+      const data = {
+        private: this.private,
+        annual: this.dpr,
+        category: this.col,
+        currency: this.und,
+        expire: this.dueDate,
+        premium: this.rent,
+        price: this.price,
+        volume: this.qty,
+        address: this.address,
+        _yield: 0,
+      };
+      onIssue(data, (status) => {
+        // console.log('onIssue####status#####', status);
+        // if (status === 'pending') {
+        //   console.log('onIssue####pending');
+        // } else if (status === 'approve') {
+        //   console.log('onIssue####approve');
+        // } else if (status === 'success' || status === 'failed') {
+        //   console.log('onIssue####success or failed###', status);
+        // }
+      });
+    },
+  },
+};
 </script>
 
 <style lang='scss' scoped>

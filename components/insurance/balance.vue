@@ -11,7 +11,7 @@
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-time"></use>
           </svg>
-          200.0100 BNB
+          {{ dueDate }}
         </p>
       </div>
     </section>
@@ -51,6 +51,7 @@ export default {
       underly: 'WBNB', //标的物
       curType: 1,
       collateral: 'WBNB', //抵押物
+      dueDate: '2020-12-09 00:00',
       QUSD: 0,
       BNB: 0,
       CAKE: 0,
@@ -60,6 +61,23 @@ export default {
     };
   },
   computed: {
+    // 保费
+    // 预期日化收益 = ((指数价格 - 执行价格) + 保费) / (执行价格 * 天数)
+    // 保费 = 预期日化收益 * 执行价格 * 天数 - 指数价格-执行价格);
+    rent() {
+      if (this.indexPx && this.dueDate && this.price && this.dpr) {
+        let dpr = this.dpr / 100;
+        let time1 = new Date(this.dueDate).getTime();
+        let time2 = new Date().getTime();
+        let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
+        let premium = precision.minus(
+          precision.times(dpr, this.price, day),
+          precision.minus(this.indexPx, this.price)
+        );
+        return premium;
+      }
+      return '--';
+    },
     CoinType() {
       if (this.underly && this.collateral && this.curType) {
         return {
@@ -119,11 +137,22 @@ export default {
         this.unit = 'WBNB';
       }
       const px = await uniswap(this.underly, this.collateral, window.chainID);
-      this.indexPx = precision.round(px, 4);
+      if (newValue.Type == 1) {
+        this.indexPx = precision.round(px, 4) * 2;
+      } else {
+        this.indexPx = precision.round(px, 4) / 2;
+      }
+      this.$store.commit('SET_INDEX_PRICE', this.indexPx);
     },
     async getIndexPrice() {
       const px = await uniswap(this.underly, this.collateral);
       this.indexPx = precision.round(px, 4);
+      if (this.curType == 1) {
+        this.indexPx = precision.round(px, 4) * 2;
+      } else {
+        this.indexPx = precision.round(px, 4) / 2;
+      }
+      this.$store.commit('SET_INDEX_PRICE', this.indexPx);
     },
   },
 };

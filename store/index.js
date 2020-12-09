@@ -46,7 +46,7 @@ export const state = () => ({
   ],
   // typeList: ["WETH", "UNI", "WBTC", "CRV", "OTHERS"],
   typeList: ["WETH", "WBTC", "OTHERS"],
-  coinList: ["WBNB", "HELMET", "CAKE", "FORTUBE"],
+  coinList: ["HELMET", "CAKE", "WBNB", "FORTUBE"],
   typeFixObj: {
     WETH: 0,
     UNI: 0,
@@ -101,10 +101,17 @@ export const state = () => ({
   totalHelmetsBorrowedVolume: 0, // 保险交易过的资金量  （保单数量累加， vol 用抵押物处理）
   longTokenCreatedVolume: 0, // 24小时Long token 铸造量
   approveList: {
-    "ETH-DAI": false,
-    "ETH-USDC": false,
-    "ETH-USDT": false,
-    "ETH-WBTC": false,
+    "HELMET-BNB": false,
+    "BNB-HELMET": false,
+    "CAKE-BNB": false,
+    "BNB-CAKE": false,
+    "CTK-BNB": false,
+    "BNB-CTK": false,
+    "FOR-BNB": false,
+    "BNB-FOR": false,
+  },
+  Options: {
+    _strikePrice: 0,
   },
 });
 
@@ -207,6 +214,9 @@ export const mutations = {
   SET_APPROVE_LIST(state, data) {
     state.approveList = data;
   },
+  SET_INDEX_PRICE(state, data) {
+    state.Options._strikePrice = data;
+  },
 };
 
 export const actions = {
@@ -215,6 +225,7 @@ export const actions = {
   //     store.commit('SET_LANG', req.locale);
   //   }
   // },
+
   setLanguage({ commit }, data) {
     commit("SET_LANG", data);
   },

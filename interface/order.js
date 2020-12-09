@@ -64,9 +64,8 @@ export const onIssue = async (data_, callBack) => {
     const orderContract = await Order();
     orderContract.methods
       .sell(
-        data.private,
         data.currency, // 抵押物 DAI
-        data.category ? data.category : data.address, // 保险品类 WETH
+        data.category, // 保险品类 WETH
         data.price, // 触发保险金额 抵押物单位   // 1/200
         data.expire,
         data.volume, // 200
