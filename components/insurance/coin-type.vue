@@ -16,7 +16,7 @@ export default {
   props: ['currentCoin'],
   data() {
     return {
-      curCoin: 'CAKE',
+      curCoin: 'HELMET',
     };
   },
   watch: {

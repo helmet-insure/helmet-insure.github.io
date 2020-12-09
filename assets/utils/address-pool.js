@@ -210,6 +210,8 @@ export const uniswap = async (token1, token2) => {
     if (token1 === "WBTC") {
       return route.midPrice.toSignificant(6) / 10000000000;
     }
+    console.log(route.midPrice.toSignificant(6));
+
     return route.midPrice.toSignificant(6);
   } catch (error) {
     return 0;

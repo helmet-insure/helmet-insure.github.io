@@ -46,7 +46,7 @@ export const state = () => ({
   ],
   // typeList: ["WETH", "UNI", "WBTC", "CRV", "OTHERS"],
   typeList: ["WETH", "WBTC", "OTHERS"],
-  coinList: ["HELMET", "CAKE", "WBNB", "FORTUBE"],
+  coinList: ["HELMET", "CAKE", "CTK", "FORTUBE"],
   typeFixObj: {
     WETH: 0,
     UNI: 0,

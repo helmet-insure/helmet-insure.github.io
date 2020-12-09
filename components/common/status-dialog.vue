@@ -90,7 +90,6 @@ export default {
 
     .status-dialog-content {
       background: #ffffff;
-      border-radius: 10px;
       padding: 16px 30px;
       position: relative;
       text-align: center;
@@ -156,14 +155,14 @@ export default {
         text-align: right;
         padding-top: 35px;
         button {
+          min-width: 96px;
           height: 32px;
           padding: 0px 12px;
-          background: $main-color;
+          background:#FF9600;
           color: $text-m;
           font-size: 14px;
-          border-radius: 10px;
           &:hover {
-            background: $main-hover;
+            background: #FFA000;
           }
         }
       }
@@ -202,7 +201,6 @@ export default {
 
     .status-dialog-content {
       background: #ffffff;
-      border-radius: 10px;
       padding: 16px 30px;
       position: relative;
       text-align: center;
@@ -268,14 +266,14 @@ export default {
         text-align: right;
         padding-top: 35px;
         button {
+          min-width: 96px;
           height: 32px;
           padding: 0px 12px;
-          background: $main-color;
+          background: #FF9600;
           color: $text-m;
           font-size: 14px;
-          border-radius: 10px;
           &:hover {
-            background: $main-hover;
+            background: #FFA000;
           }
         }
       }

@@ -48,7 +48,7 @@ export default {
   props: ['currentCoin', 'currentType'],
   data() {
     return {
-      underly: 'WBNB', //标的物
+      underly: 'HELMET', //标的物
       curType: 1,
       collateral: 'WBNB', //抵押物
       dueDate: '2020-12-09 00:00',

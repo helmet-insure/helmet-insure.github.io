@@ -37,7 +37,7 @@
             <div>
               <span>Currently Staked</span>
               <p>BNB-QUSD Short Token</p>
-              <strong>0</strong>
+              <strong>{{item.callSpToken}}</strong>
               <button
                 :class="
                   exitLoading && exitIndex == index && exitType == 'call'
@@ -109,7 +109,7 @@
             <div>
               <span>Currently Staked</span>
               <p>BNB-QUSD Short Token</p>
-              <strong>0</strong>
+              <strong>{{item.putSpToken}}</strong>
               <button
                 :class="
                   exitLoading && exitIndex == index && exitType == 'put'
@@ -183,27 +183,32 @@ export default {
           put: 'BNB-HELMET',
           callMined: 0,
           putMined: 0,
+          callSpToken: 0,
+          putSpToken: 0,
         },
         {
           title: 'CAKE-BNB Short Token POOL',
           call: 'CAKE-BNB',
           put: 'BNB-CAKE',
           callMined: 0,
-          putMined: 0,
+          putMined: 0,callSpToken: 0,
+          putSpToken: 0,
         },
         {
           title: 'CTK-BNB Short Token POOL',
           call: 'CTK-BNB',
           put: 'BNB-CTK',
           callMined: 0,
-          putMined: 0,
+          putMined: 0,callSpToken: 0,
+          putSpToken: 0,
         },
         {
           title: 'FOR-BNB Short Token POOL',
           call: 'FOR-BNB',
           put: 'BNB-FOR',
           callMined: 0,
-          putMined: 0,
+          putMined: 0,callSpToken: 0,
+          putSpToken: 0,
         },
       ],
       moment: moment,
@@ -282,8 +287,10 @@ export default {
         this.miningList[i].callMined = addCommom(callMined, 8) || 0;
         this.miningList[i].putMined = addCommom(putMined, 8) || 0;
         // 获取Lp-Tokens
-        // let lpTokens = await getLPTOKEN(type);
-        // this.miningList[i].lptoken = addCommom(lpTokens, 8);
+        let callLpTokens = await getLPTOKEN(callType);
+        let putLpTokens = await getLPTOKEN(putType);
+        this.miningList[i].callSpToken = addCommom(callLpTokens, 8);
+        this.miningList[i].putSpToken = addCommom(putLpTokens, 8);
         //获取当前池子的总量
         // let DOUBLEPOOL = await totalSupply(type);
         //获取当前LPT的总量
