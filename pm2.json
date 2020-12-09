@@ -1,0 +1,11 @@
+{
+  "name": "TRXAGE",
+  "script": "build/main.js",
+  "instances": "1",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "env_development": {
+    "NODE_ENV": "production"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "18536262",
+      "name": "Twitter",
+      "font_class": "Twitter",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "18536263",
+      "name": "medium",
+      "font_class": "medium",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "18536268",
+      "name": "Discord",
+      "font_class": "Discord",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "18536270",
+      "name": "Telegram",
+      "font_class": "Telegram",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "18561555",
+      "name": "Helmet",
+      "font_class": "Helmet",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "18561556",
+      "name": "time",
+      "font_class": "time",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "18561557",
+      "name": "BNB",
+      "font_class": "BNB",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "18603186",
+      "name": "Qusd",
+      "font_class": "Qusd",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    }
+  ]
+}

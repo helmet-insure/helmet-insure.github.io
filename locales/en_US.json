@@ -1,0 +1,54 @@
+{
+  "Header": {
+    "Trade": "Tradingview",
+    "Mining": "Mining",
+    "Govern": "Governance",
+    "Question ": "Guide"
+  },
+  "Banner": {
+    "ClosedPolicy": "Total Insurance Policies Volume",
+    "LongValue": "LONG Token Be Created",
+    "HelmetTransfer": "HELMET In Circulation"
+  },
+  "Type": {
+    "BuyInsurance": "Buy Policy",
+    "ToInsurance": "Supply Policy",
+    "MyGuarantee": "Policy You Hold",
+    "IssueInsurance": "Policy You Supply"
+  },
+  "Content": {
+    "SpotPrice": "Price Now",
+    "Earnings": "Earnings",
+    "DoubleInsurance": "Cover",
+    "HalfInsurance": "Cover",
+    "InsurancePrice": "Insurance Price",
+    "NoData": "No data",
+    "ProtectTheCycle": "Guard Period",
+    "UsableBalance": "Balance"
+  },
+  "Table": {
+    "ID": "ID",
+    "Rent": "Premium(HELMET)",
+    "Amount": "Policies In Supply",
+    "Insure": "Buy",
+    "Options": "Insure",
+    "Type": "Type",
+    "InsurancePrice": "Insurance Price",
+    "Position": "Amount",
+    "CountDonm": "Expires At",
+    "outSure": "Active",
+    "ExecutivePrice": "Insurance Price",
+    "CanCollateral": "Short Token",
+    "DueTime": "Expires At",
+    "Cancel": "Cancel",
+    "Stake": "Mining",
+    "Deposite": "抵押",
+    "Confirm": "提交",
+    "ALL": "全部",
+    "InfiniteApproval": "本次合约使用最佳矿工费，后续将不再提示",
+    "Total": "总量",
+    "Surplus": "剩余",
+    "StakeMining": "抵押挖矿",
+    "SurplusTime": "距离挖矿结束还剩"
+  }
+}
