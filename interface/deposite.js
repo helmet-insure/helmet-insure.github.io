@@ -59,16 +59,13 @@ export const toDeposite = async (type, data, flag, callBack) => {
   const address = window.CURRENTADDRESS;
   let amount = data.amount;
   let num = data.amount;
-  console.log(type);
   amount = toWei(amount, type);
-  console.log(amount);
   let adress = type;
   let adressLPT = type;
   if (type.indexOf("0x") === -1) {
     adress = getContract(type, charID);
     adressLPT = getContract(type + "_LPT", charID);
   }
-  console.log(adress, adressLPT, "#######");
   if (!adress || !adressLPT || !address) {
     return;
   }
@@ -107,9 +104,7 @@ export const toDeposite = async (type, data, flag, callBack) => {
         bus.$emit("CLOSE_STATUS_DIALOG");
         bus.$emit("OPEN_STATUS_DIALOG", {
           type: "submit",
-          conText: `<a href="https://${
-            netObj[Number(window.chainID)]
-          }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+          conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
         });
       })
       .on("confirmation", function(confirmationNumber, receipt) {
@@ -124,11 +119,7 @@ export const toDeposite = async (type, data, flag, callBack) => {
               type: "success",
               title: "Successfully stake",
               conTit: "<div>Stake activated successfully</div>",
-              conText: `<a href="https://${
-                netObj[Number(window.chainID)]
-              }etherscan.io/tx/${
-                receipt.transactionHash
-              }" target="_blank">View on Etherscan</a>`,
+              conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
             });
           } else {
             Message({
@@ -210,9 +201,7 @@ export const toWithdraw = async (type, data, flag, callBack) => {
         bus.$emit("CLOSE_STATUS_DIALOG");
         bus.$emit("OPEN_STATUS_DIALOG", {
           type: "submit",
-          conText: `<a href="https://${
-            netObj[Number(window.chainID)]
-          }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+          conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
         });
       })
       .on("confirmation", function(confirmationNumber, receipt) {
@@ -227,11 +216,7 @@ export const toWithdraw = async (type, data, flag, callBack) => {
               type: "success",
               title: "Successfully unstake",
               conTit: "<div>Unstake activated successfully</div>",
-              conText: `<a href="https://${
-                netObj[Number(window.chainID)]
-              }etherscan.io/tx/${
-                receipt.transactionHash
-              }" target="_blank">View on Etherscan</a>`,
+              conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>  `,
             });
           } else {
             Message({
@@ -295,7 +280,6 @@ export const CangetPAYA = async (type) => {
     .earned(window.CURRENTADDRESS)
     .call()
     .then((res) => {
-      console.log(res);
       let tocurrcy = "HELMET";
       return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
     });

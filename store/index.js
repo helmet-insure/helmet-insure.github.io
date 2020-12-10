@@ -361,6 +361,7 @@ export const actions = {
       // 过滤未创建settleable 之前的数据
       // if (!longInfo) return;
       // if (charID === 1 || (longInfo && parseInt(longInfo.count) >= 63 && parseInt(longInfo._expiry) >= createTime)) {
+      console.log(item);
       if (
         Number(item.price) < Math.pow(10, 30) &&
         ((longInfo && charID === 1) ||
@@ -460,7 +461,6 @@ export const actions = {
 
   async getCountByType({ commit, state }, data) {
     const aboutInfoSell = state.aboutInfoSell;
-    console.log(aboutInfoSell, "#####################");
     let expiry;
     let current = new Date().getTime();
     let _col;

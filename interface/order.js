@@ -19,11 +19,11 @@ const netObj = {
   1: "",
   3: "ropsten.",
   4: "rinkeby.",
+  56: "BSC",
 };
 
 export const onIssue = async (data_, callBack) => {
   let data = { ...data_ };
-  // console.log('data_#######', data_);
   data.category = getAddress(data.category);
   data.currency = getAddress(data.currency);
   let cwei = getWei(data.currency);
@@ -37,6 +37,7 @@ export const onIssue = async (data_, callBack) => {
   premium = toWei(premium);
   data.premium = premium;
   let volume = fixD(precision.times(data.volume, data.price), fix);
+  console.log(volume);
   volume = toWei(volume, data_.currency);
   // volume = toWei(volume);
   data.volume = volume;
@@ -49,12 +50,13 @@ export const onIssue = async (data_, callBack) => {
   price = window.WEB3.utils.toWei(String(price), priceUnit);
   // window.WEB3.utils.toWei(String(number), unit);
   data.price = price;
-
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
-    conText: `<p>Rent <span>${data_.volume} ${data_.category}</span> hats, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
+    conText: `<p>Rent <span>${data_.volume} ${data_.category}</span>, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
   });
+  console.log("data_#######", data);
+
   try {
     const Contract = await expERC20(data.currency);
     // 一键判断是否需要授权，给予无限授权
@@ -77,9 +79,7 @@ export const onIssue = async (data_, callBack) => {
         bus.$emit("CLOSE_STATUS_DIALOG");
         bus.$emit("OPEN_STATUS_DIALOG", {
           type: "submit",
-          conText: `<a href="https://${
-            netObj[Number(window.chainID)]
-          }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+          conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
         });
       })
       // .on('receipt', function(receipt){
@@ -94,11 +94,7 @@ export const onIssue = async (data_, callBack) => {
               title: "Successfully rented",
               conTit:
                 '<div>The rental advertisement is published successfully, you can check it on <a href="/sell" target="blank">my rental advertisement page</a></div>',
-              conText: `<a href="https://${
-                netObj[Number(window.chainID)]
-              }etherscan.io/tx/${
-                receipt.transactionHash
-              }" target="_blank">View on Etherscan</a>`,
+              conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
             });
           } else {
             Message({

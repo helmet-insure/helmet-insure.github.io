@@ -86,9 +86,9 @@ export default {
         category:_underlying, // 
         currency:'WBNB', // 
         expire:_expiry, // 
-        premium: this.Rent,
-        price:_strikePrice,
-        volume:Rent, // 
+        premium: Rent,
+        price:indexPrice,
+        volume:this.volume, // 
         _yield: 0,
       }      
       

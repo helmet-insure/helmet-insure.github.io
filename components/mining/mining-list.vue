@@ -6,7 +6,9 @@
       :key="index"
     >
       <h3>{{ item.title }}</h3>
-      <p>距离挖矿结束还剩：<span>10:14:34:12</span></p>
+      <p>
+        距离挖矿结束还剩：<span>{{ item.downTime }}</span>
+      </p>
       <div>
         <div class="left">
           <p>翻倍险<span>100%</span><i></i></p>
@@ -36,8 +38,8 @@
             <section class="cut_line"></section>
             <div>
               <span>Currently Staked</span>
-              <p>{{item.call}} Short Token</p>
-              <strong>{{item.callSpToken}}</strong>
+              <p>{{ item.call }} Short Token</p>
+              <strong>{{ item.callSpToken }}</strong>
               <button
                 :class="
                   exitLoading && exitIndex == index && exitType == 'call'
@@ -108,8 +110,8 @@
             <section class="cut_line"></section>
             <div>
               <span>Currently Staked</span>
-              <p>{{item.put}} Short Token</p>
-              <strong>{{item.putSpToken}}</strong>
+              <p>{{ item.put }} Short Token</p>
+              <strong>{{ item.putSpToken }}</strong>
               <button
                 :class="
                   exitLoading && exitIndex == index && exitType == 'put'
@@ -185,6 +187,8 @@ export default {
           putMined: 0,
           callSpToken: 0,
           putSpToken: 0,
+          dueDate: '2020-12-15 00:00',
+          downTime: '',
         },
         {
           title: 'CAKE-BNB Short Token POOL',
@@ -194,14 +198,18 @@ export default {
           putMined: 0,
           callSpToken: 0,
           putSpToken: 0,
+          dueDate: '2020-12-15 00:00',
+          downTime: '',
         },
         {
           title: 'CTK-BNB Short Token POOL',
           call: 'BNB-CTK',
           put: 'CTK-BNB',
           callMined: 0,
-          putMined: 0,callSpToken: 0,
+          putMined: 0, callSpToken: 0,
           putSpToken: 0,
+          dueDate: '2020-12-15 00:00',
+          downTime: '',
         },
         {
           title: 'FOR-BNB Short Token POOL',
@@ -211,6 +219,8 @@ export default {
           putMined: 0,
           callSpToken: 0,
           putSpToken: 0,
+          dueDate: '2020-12-15 00:00',
+          downTime: '',
         },
       ],
       moment: moment,
@@ -242,6 +252,12 @@ export default {
     },
   },
   mounted() {
+    setInterval(() => {
+      setTimeout(() => {
+        this.getDownTime()
+      });
+      clearTimeout()
+    }, 1000);
     this.getAllowance();
     setTimeout(() => {
       this.getAllData();
@@ -250,7 +266,7 @@ export default {
       this.depositeLoading = data.status;
     });
     this.$bus.$on('CLAIM_LOADING', (data) => {
-      this.claimLoading = false;
+      this.claimLoading = false; s
     });
     this.$bus.$on('EXIT_LOADING', (data) => {
       this.exitLoading = false;
@@ -264,6 +280,21 @@ export default {
     miningListWatch(newValue) {
       if (newValue) {
         this.miningList = newValue;
+      }
+    },
+    getDownTime() {
+      let now = new Date() * 1
+      let list = this.miningList
+      for (let i = 0; i < 4; i++) {
+        let dueDate = list[i].dueDate
+        dueDate = new Date(dueDate)
+        let DonwTime = dueDate - now
+        let day = Math.floor(DonwTime / (24 * 3600000))
+        let hour = Math.floor((DonwTime - (day * 24 * 3600000)) / 3600000)
+        let minute = Math.floor(((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) / 60000)
+        let second = Math.floor((((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) - (minute * 60000)) / 1000)
+        let template = `${day}天${hour}时${minute}分${second}秒`
+        this.miningList[i].downTime = template
       }
     },
     async getAllData() {
@@ -286,8 +317,8 @@ export default {
         // 获取待领取paya
         let callMined = await CangetPAYA(callType);
         let putMined = await CangetPAYA(putType);
-        this.miningList[i].callMined = addCommom(callMined, 8) ;
-        this.miningList[i].putMined = addCommom(putMined, 8) ;
+        this.miningList[i].callMined = addCommom(callMined, 8);
+        this.miningList[i].putMined = addCommom(putMined, 8);
         // 获取Lp-Tokens
         let callLpTokens = await getLPTOKEN(callType);
         let putLpTokens = await getLPTOKEN(putType);
@@ -371,12 +402,12 @@ export default {
 </script>
 
 <style lang='scss' soped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 .loading_pic {
   display: block;
   width: 24px;
   height: 24px;
-  background-image: url('../../assets/img/helmet/loading.png');
+  background-image: url("../../assets/img/helmet/loading.png");
   background-repeat: no-repeat;
   background-size: cover;
   animation: loading 2s 0s linear infinite;
@@ -444,7 +475,7 @@ export default {
           > p {
             color: #00b900;
             i {
-              background-image: url('../../assets/img/helmet/call@2x.png');
+              background-image: url("../../assets/img/helmet/call@2x.png");
             }
           }
         }
@@ -454,7 +485,7 @@ export default {
           > p {
             color: #ff6400;
             i {
-              background-image: url('../../assets/img/helmet/put@2x.png');
+              background-image: url("../../assets/img/helmet/put@2x.png");
             }
           }
         }
@@ -558,7 +589,7 @@ export default {
           > p {
             color: #00b900;
             i {
-              background-image: url('../../assets/img/helmet/call@2x.png');
+              background-image: url("../../assets/img/helmet/call@2x.png");
             }
           }
         }
@@ -568,7 +599,7 @@ export default {
           > p {
             color: #ff6400;
             i {
-              background-image: url('../../assets/img/helmet/put@2x.png');
+              background-image: url("../../assets/img/helmet/put@2x.png");
             }
           }
         }
