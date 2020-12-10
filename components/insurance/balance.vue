@@ -21,19 +21,19 @@
       <div>
         <p>
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-BNB"></use></svg
-          >{{ this.BNB }} BNB
-        </p>
-        <p>
-          <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Helmet"></use></svg
           >{{ this.HELMET }} HELMET
         </p>
         <p>
           <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-BNB"></use></svg
+          >{{ this.BNB }} BNB
+        </p>
+        <!-- <p>
+          <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Qusd"></use></svg
           >{{ this.QUSD }} QUSD
-        </p>
+        </p> -->
       </div>
     </div>
   </div>
@@ -57,15 +57,18 @@ export default {
       BNB: 0,
       CAKE: 0,
       HELMET: 0,
+      CKT: 0,
+      FORTUBE: 0,
       indexPx: 0,
       unit: 'BNB',
+      precision,
     };
   },
   computed: {
     // 保费
     // 预期日化收益 = ((指数价格 - 执行价格) + 保费) / (执行价格 * 天数)
     // 保费 = 预期日化收益 * 执行价格 * 天数 - 指数价格-执行价格);
- 
+
     CoinType() {
       if (this.underly && this.collateral && this.curType) {
         return {
@@ -99,38 +102,43 @@ export default {
   },
   methods: {
     async getBalance() {
-      const bnbAmount = await getBalance('WBNB');
-      const qusdAmount = await getBalance('QUSD');
-      const cakeAmount = await getBalance('CAKE');
       const helmetAmount = await getBalance('HELMET');
-      this.BNB = fixD(bnbAmount,4);
-      this.QUSD = fixD(qusdAmount,4);
-      this.CAKE = fixD(cakeAmount,4);
-      this.HELMET = fixD(helmetAmount,4) ;
+      const cakeAmount = await getBalance('CAKE');
+      const ctkAmount = await getBalance('CKT');
+      const fortubeAmount = await getBalance('FORTUBE');
+      const bnbAmount = await getBalance('BNB');
+      const qusdAmount = await getBalance('QUSD');
+      this.BNB = fixD(bnbAmount, 4);
+      this.QUSD = fixD(qusdAmount, 4);
+      this.CAKE = fixD(cakeAmount, 4);
+      this.HELMET = fixD(helmetAmount, 4);
+      this.CKT = fixD(helmetAmount, 4);
+      this.FORTUBE = fixD(helmetAmount, 4);
     },
     async CoinTypeWatch(newValue) {
-        this.collateral = 'WBNB';
-        this.underly = this.underly;
-        this.unit = 'BNB';
+      this.collateral = 'WBNB';
+      this.underly = this.underly;
+      this.unit = 'BNB';
       const px = await uniswap(this.underly, this.collateral, window.chainID);
+      this.$store.commit('SET_INDEX_PRICE', fixD(px, 4));
       if (newValue.Type == 1) {
         this.indexPx = fixD(px * 2, 4);
       } else {
         this.indexPx = fixD(px / 2, 4);
       }
-      this.$store.commit('SET_INDEX_PRICE', this.indexPx);
     },
     async getIndexPrice() {
       const px = await uniswap(this.underly, this.collateral);
+      this.$store.commit('SET_INDEX_PRICE', fixD(px, 4));
       this.indexPx = fixD(px, 4);
       if (this.curType == 1) {
         this.indexPx = fixD(px * 2, 4);
       } else {
         this.indexPx = fixD(px / 2, 4);
       }
-      this.$store.commit('SET_INDEX_PRICE', this.indexPx);
-      this.$store.commit('SET_DUR_DATE',this.dueDate)
-    }
+      this.$store.commit('SET_STRIKE_PRICE', this.indexPx);
+      this.$store.commit('SET_DUR_DATE', this.dueDate);
+    },
   },
 };
 </script>

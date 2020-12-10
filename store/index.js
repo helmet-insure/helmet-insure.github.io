@@ -101,14 +101,14 @@ export const state = () => ({
   totalHelmetsBorrowedVolume: 0, // 保险交易过的资金量  （保单数量累加， vol 用抵押物处理）
   longTokenCreatedVolume: 0, // 24小时Long token 铸造量
   approveList: {
-    "HELMET-BNB": false,
-    "BNB-HELMET": false,
-    "CAKE-BNB": false,
-    "BNB-CAKE": false,
-    "CTK-BNB": false,
-    "BNB-CTK": false,
-    "FOR-BNB": false,
-    "BNB-FOR": false,
+    HELMET_BNB: false,
+    BNB_HELMET: false,
+    CAKE_BNB: false,
+    BNB_CAKE: false,
+    CTK_BNB: false,
+    BNB_CTK: false,
+    FOR_BNB: false,
+    BNB_FOR: false,
   },
   Options: {
     _strikePrice: 0,
@@ -216,8 +216,12 @@ export const mutations = {
   SET_APPROVE_LIST(state, data) {
     state.approveList = data;
   },
-  // 保存执行价格
+  // 保存指数价格
   SET_INDEX_PRICE(state, data) {
+    state.Options.indexPrice = data;
+  },
+  // 保存执行价格
+  SET_STRIKE_PRICE(state, data) {
     state.Options._strikePrice = data;
   },
   // 保存标的物

@@ -33,7 +33,7 @@ export default {
     handleClickCoin(coin) {
       this.$emit('changeCoin', coin);
       this.curCoin = coin;
-      this.dispatch('SET_COIN_TYPE',coin)
+      this.$store.commit('SET_COIN_TYPE', coin);
     },
   },
 };

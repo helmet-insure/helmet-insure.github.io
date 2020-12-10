@@ -179,8 +179,8 @@ export default {
       miningList: [
         {
           title: 'HELMET-BNB Short Token POOL',
-          call: 'HELMET-BNB',
-          put: 'BNB-HELMET',
+          call: 'BNB-HELMET',
+          put: 'HELMET-BNB',
           callMined: 0,
           putMined: 0,
           callSpToken: 0,
@@ -188,24 +188,24 @@ export default {
         },
         {
           title: 'CAKE-BNB Short Token POOL',
-          call: 'CAKE-BNB',
-          put: 'BNB-CAKE',
+          call: 'BNB-CAKE',
+          put: 'CAKE-BNB',
           callMined: 0,
           putMined: 0,callSpToken: 0,
           putSpToken: 0,
         },
         {
           title: 'CTK-BNB Short Token POOL',
-          call: 'CTK-BNB',
-          put: 'BNB-CTK',
+          call: 'BNB-CTK',
+          put: 'CTK-BNB',
           callMined: 0,
           putMined: 0,callSpToken: 0,
           putSpToken: 0,
         },
         {
           title: 'FOR-BNB Short Token POOL',
-          call: 'FOR-BNB',
-          put: 'BNB-FOR',
+          call: 'BNB-FOR',
+          put: 'FOR-BNB',
           callMined: 0,
           putMined: 0,callSpToken: 0,
           putSpToken: 0,
@@ -222,14 +222,14 @@ export default {
       exitIndex: '', //退出ID
       exitType: '', //退出类型
       typeList: [
-        'HELMET-BNB',
-        'BNB-HELMET',
-        'CAKE-BNB',
-        'BNB-CAKE',
-        'CTK-BNB',
-        'BNB-CTK',
-        'FOR-BNB',
-        'BNB-FOR',
+        'HELMET_BNB',
+        'BNB_HELMET',
+        'CAKE_BNB',
+        'BNB_CAKE',
+        'CTK_BNB',
+        'BNB_CTK',
+        'FOR_BNB',
+        'BNB_FOR',
       ],
     };
   },
@@ -355,7 +355,7 @@ export default {
     async getAllowance() {
       let approveList = {};
       for (let i = 0; i < 8; i++) {
-        let type = this.typeList[i].replace('-', '_');
+        let type = this.typeList[i];
         let res = await approveStatus(type);
         let value = res.length > 30 ? true : false;
         const key = this.typeList[i];

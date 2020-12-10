@@ -180,7 +180,6 @@ export const uniswap = async (token1, token2) => {
     token2,
     token2
   );
-  console.log(token1, token2);
   try {
     // 获取交易对地址
     const address = Pair.getAddress(TOKEN1, TOKEN2);
@@ -210,7 +209,6 @@ export const uniswap = async (token1, token2) => {
     // if (token1 == "CTK") {
     //   return route.midPrice.toSignificant(6);
     // }
-    console.log(route.midPrice.toSignificant(6));
     return route.midPrice.toSignificant(6);
   } catch (error) {
     return 0;

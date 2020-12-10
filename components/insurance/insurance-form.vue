@@ -2,18 +2,26 @@
   <div class="insurance_form">
     <div>
       <div class="dpr">
-        <input type="text" v-model="dpr"  />
+        <input type="text" v-model="dpr" />
         <span class="left">DPR</span>
         <span class="right">%</span>
       </div>
       <div class="num">
-        <input type="text" />
+        <input type="text" v-model="volume" />
         <span class="right">全部</span>
       </div>
       <button class="b_b_button" @click="submitSupply">立即创建</button>
     </div>
-    <p>预期最大收益：<span>11111 BNB</span></p>
-
+    <div class="pay">
+      <p>
+        折合：<span>{{ precision.times(volume * indexPrice, 4) }} BNB</span>
+      </p>
+      <p>预期最大收益：<span>11111 BNB</span></p>
+      <!-- <p>
+        保费：<span>{{ Rent }} BNB</span>
+      </p> -->
+      <!-- <p>预期最大收益：<span>11111 BNB</span></p> -->
+    </div>
     <span>
       如果在行权日之前，价格没有达到 <i>XXX</i> ，您将获得无风险收益。
     </span>
@@ -22,37 +30,70 @@
 
 <script>
 import { onIssue } from '~/interface/order.js';
+import precision from '~/assets/js/precision.js';
 export default {
   data() {
     return {
-      dpr:''
+      dpr: '', //DPR
+      volume: '', //数量
+      precision,
+      Rent: 0,
     };
+  },
+  computed: {
+    indexPrice() {
+      return this.$store.state.Options.indexPrice;
+    },
+    _expiry() {
+      return this.$store.state.Options._expiry;
+    },
+    _strikePrice() {
+      return this.$store.state.Options._strikePrice;
+    },
+    _underlying() {
+      return this.$store.state.Options._underlying;
+    },
+    RentGrounp() {
+      return {
+        dpr: this.dpr,
+        indexPrice: this.$store.state.Options.indexPrice,
+      };
+    },
+  },
+  watch: {
+    RentGrounp: {
+      handler: {
+        handler: 'watchRent',
+        deep: true,
+        immediate: true,
+      },
+    },
   },
   methods: {
     submitSupply() {
       let Options = this.$store.state.Options;
-      let{ _expiry,_strikePrice,_underlying } = Options;
+      let { indexPrice, _expiry, _strikePrice, _underlying } = Options;
       // 私有化  不要
       // 标的物
       // 执行价格
       // 到期日
       // 结算token
       // 单价
-      const option = {
-        
-      }
-      if (this.indexPx && this.dueDate && this.price && this.dpr) {
-        let dpr = this.dpr / 100;
-        let time1 = new Date(this.dueDate).getTime();
-        let time2 = new Date().getTime();
-        let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
-        let premium = precision.minus(
-          precision.times(dpr, this.price, day),
-          precision.minus(this.indexPx, this.price)
-        );
-        return premium;
-      }
-      return '--';
+      let Rent = this.getRent(indexPrice, _strikePrice, _expiry);
+      // const Options={
+      //   private:false,
+      //   _underlying:_underlying,
+      //   _strikePrice:_strikePrice,
+      //   _expiry:_expiry
+      // }      
+        false,
+        data.currency, // 抵押物 DAI
+        data.category, // 保险品类 WETH
+        data.price, // 触发保险金额 抵押物单位   // 1/200
+        data.expire,
+        data.volume, // 200
+        data.currency, // 支付货币
+        data.premium // 单价
       const data = {
         private: this.private,
         annual: this.dpr,
@@ -65,16 +106,33 @@ export default {
         address: this.address,
         _yield: 0,
       };
-      onIssue(data, (status) => {
-        // console.log('onIssue####status#####', status);
-        // if (status === 'pending') {
-        //   console.log('onIssue####pending');
-        // } else if (status === 'approve') {
-        //   console.log('onIssue####approve');
-        // } else if (status === 'success' || status === 'failed') {
-        //   console.log('onIssue####success or failed###', status);
-        // }
-      });
+      // onIssue(data, (status) => {
+      // console.log('onIssue####status#####', status);
+      // if (status === 'pending') {
+      //   console.log('onIssue####pending');
+      // } else if (status === 'approve') {
+      //   console.log('onIssue####approve');
+      // } else if (status === 'success' || status === 'failed') {
+      //   console.log('onIssue####success or failed###', status);
+      // }
+      // });
+    },
+    watchRent(newValue) {
+    },
+    getRent(indexPrice, _strikePrice, _expiry) {
+      // 指数价格 执行价格 时间
+      if (this.dpr && indexPrice && _strikePrice && _expiry) {
+        let DPR = this.dpr / 100;
+        let time1 = new Date(_expiry).getTime();
+        let time2 = new Date().getTime();
+        let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
+        let premium = precision.minus(
+          precision.times(DPR, _strikePrice, day),
+          precision.minus(indexPrice, _strikePrice)
+        );
+        this.Rent = premium;
+        return premium;
+      }
     },
   },
 };
@@ -136,14 +194,17 @@ input:focus {
         }
       }
     }
-    > p {
-      margin: 8px 0 4px 0;
-      font-size: 14px;
-      color: #919aa6;
-      span {
-        color: #121212;
+    .pay {
+      > p {
+        margin: 8px 30px 4px 0;
+        font-size: 14px;
+        color: #919aa6;
+        span {
+          color: #121212;
+        }
       }
     }
+
     > span {
       font-size: 14px;
       color: #ff9600;

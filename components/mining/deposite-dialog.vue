@@ -77,6 +77,8 @@ export default {
   methods: {
     filterApporve() {
       let list = this.$store.state.approveList;
+      console.log(list)
+      console.log(this.current)
       this.hiddenGlobal = list[this.current];
     },
     depositeCheck() {
