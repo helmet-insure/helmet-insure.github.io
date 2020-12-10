@@ -111,6 +111,7 @@ export const state = () => ({
     BNB_FOR: false,
   },
   Options: {
+    indexPrice: 0,
     _strikePrice: 0,
     _underlying: "HELMET",
     _expiry: 0,
@@ -459,6 +460,7 @@ export const actions = {
 
   async getCountByType({ commit, state }, data) {
     const aboutInfoSell = state.aboutInfoSell;
+    console.log(aboutInfoSell, "#####################");
     let expiry;
     let current = new Date().getTime();
     let _col;

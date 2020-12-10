@@ -59,7 +59,9 @@ export const toDeposite = async (type, data, flag, callBack) => {
   const address = window.CURRENTADDRESS;
   let amount = data.amount;
   let num = data.amount;
-  amount = toWei(amount);
+  console.log(type);
+  amount = toWei(amount, type);
+  console.log(amount);
   let adress = type;
   let adressLPT = type;
   if (type.indexOf("0x") === -1) {
@@ -293,7 +295,8 @@ export const CangetPAYA = async (type) => {
     .earned(window.CURRENTADDRESS)
     .call()
     .then((res) => {
-      let tocurrcy = type;
+      console.log(res);
+      let tocurrcy = "HELMET";
       return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
     });
 };
@@ -513,6 +516,7 @@ export const getBalance = async (type, currcy) => {
     .balanceOf(window.CURRENTADDRESS)
     .call()
     .then((res) => {
+      console.log(res);
       let tocurrcy = currcy || type;
       return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
     });

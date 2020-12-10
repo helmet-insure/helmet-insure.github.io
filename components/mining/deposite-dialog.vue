@@ -8,7 +8,7 @@
   >
     <div class="depositeInput">
       <input type="number" v-model="DepositeNum" />
-      <span>BNB</span>
+      <span>Token</span>
     </div>
     <p class="total-token">
       <span>{{ current }} LP token：{{ lptBalance }}</span
@@ -77,8 +77,6 @@ export default {
   methods: {
     filterApporve() {
       let list = this.$store.state.approveList;
-      console.log(list)
-      console.log(this.current)
       this.hiddenGlobal = list[this.current];
     },
     depositeCheck() {

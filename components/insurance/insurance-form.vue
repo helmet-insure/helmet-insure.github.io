@@ -75,47 +75,45 @@ export default {
       let { indexPrice, _expiry, _strikePrice, _underlying } = Options;
       // 私有化  不要
       // 标的物
-      // 执行价格
+      // 执行价格 行权价
       // 到期日
       // 结算token
       // 单价
       let Rent = this.getRent(indexPrice, _strikePrice, _expiry);
-      // const Options={
-      //   private:false,
-      //   _underlying:_underlying,
-      //   _strikePrice:_strikePrice,
-      //   _expiry:_expiry
-      // }      
-        false,
-        data.currency, // 抵押物 DAI
-        data.category, // 保险品类 WETH
-        data.price, // 触发保险金额 抵押物单位   // 1/200
-        data.expire,
-        data.volume, // 200
-        data.currency, // 支付货币
-        data.premium // 单价
-      const data = {
-        private: this.private,
-        annual: this.dpr,
-        category: this.col,
-        currency: this.und,
-        expire: this.dueDate,
-        premium: this.rent,
-        price: this.price,
-        volume: this.qty,
-        address: this.address,
+      const data={
+        private:false, // 
+        annual:this.dpr,
+        category:_underlying, // 
+        currency:'WBNB', // 
+        expire:_expiry, // 
+        premium: this.Rent,
+        price:_strikePrice,
+        volume:Rent, // 
         _yield: 0,
-      };
-      // onIssue(data, (status) => {
-      // console.log('onIssue####status#####', status);
-      // if (status === 'pending') {
-      //   console.log('onIssue####pending');
-      // } else if (status === 'approve') {
-      //   console.log('onIssue####approve');
-      // } else if (status === 'success' || status === 'failed') {
-      //   console.log('onIssue####success or failed###', status);
-      // }
-      // });
+      }      
+      
+      // const data = {
+        // private: this.private,
+        // annual: this.dpr,
+        // category: this.col,
+        // currency: this.und,
+        // expire: this.dueDate,
+        // premium: this.rent,
+        // price: this.price,
+        // volume: this.qty,
+        // address: this.address,
+        // _yield: 0,
+      // };
+      onIssue(data, (status) => {
+      console.log('onIssue####status#####', status);
+      if (status === 'pending') {
+        console.log('onIssue####pending');
+      } else if (status === 'approve') {
+        console.log('onIssue####approve');
+      } else if (status === 'success' || status === 'failed') {
+        console.log('onIssue####success or failed###', status);
+      }
+      });
     },
     watchRent(newValue) {
     },

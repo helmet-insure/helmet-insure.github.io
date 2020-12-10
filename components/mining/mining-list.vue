@@ -36,7 +36,7 @@
             <section class="cut_line"></section>
             <div>
               <span>Currently Staked</span>
-              <p>BNB-QUSD Short Token</p>
+              <p>{{item.call}} Short Token</p>
               <strong>{{item.callSpToken}}</strong>
               <button
                 :class="
@@ -108,7 +108,7 @@
             <section class="cut_line"></section>
             <div>
               <span>Currently Staked</span>
-              <p>BNB-QUSD Short Token</p>
+              <p>{{item.put}} Short Token</p>
               <strong>{{item.putSpToken}}</strong>
               <button
                 :class="
@@ -191,7 +191,8 @@ export default {
           call: 'BNB-CAKE',
           put: 'CAKE-BNB',
           callMined: 0,
-          putMined: 0,callSpToken: 0,
+          putMined: 0,
+          callSpToken: 0,
           putSpToken: 0,
         },
         {
@@ -207,7 +208,8 @@ export default {
           call: 'BNB-FOR',
           put: 'FOR-BNB',
           callMined: 0,
-          putMined: 0,callSpToken: 0,
+          putMined: 0,
+          callSpToken: 0,
           putSpToken: 0,
         },
       ],
@@ -265,7 +267,7 @@ export default {
       }
     },
     async getAllData() {
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 4; i++) {
         const charID = window.chainID;
         // call地址
         let callType = this.miningList[i].call.replace('-', '_');
@@ -284,8 +286,8 @@ export default {
         // 获取待领取paya
         let callMined = await CangetPAYA(callType);
         let putMined = await CangetPAYA(putType);
-        this.miningList[i].callMined = addCommom(callMined, 8) || 0;
-        this.miningList[i].putMined = addCommom(putMined, 8) || 0;
+        this.miningList[i].callMined = addCommom(callMined, 8) ;
+        this.miningList[i].putMined = addCommom(putMined, 8) ;
         // 获取Lp-Tokens
         let callLpTokens = await getLPTOKEN(callType);
         let putLpTokens = await getLPTOKEN(putType);

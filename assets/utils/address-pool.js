@@ -86,15 +86,14 @@ export const getWei = (token) => {
     token = getSymbol(token)[0];
   }
   switch (token) {
-    case "USDT":
+    case "BNB_CTK_LPT":
       return "lovelace"; // 6
-    case "USDC":
+    case "BNB_CTK":
       return "lovelace"; // 6
     default:
       return "ether"; // 18
   }
 };
-
 export const getWeiWithFix = (fix) => {
   switch (fix) {
     case 30:

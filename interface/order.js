@@ -24,7 +24,6 @@ const netObj = {
 export const onIssue = async (data_, callBack) => {
   let data = { ...data_ };
   // console.log('data_#######', data_);
-  // return;
   data.category = getAddress(data.category);
   data.currency = getAddress(data.currency);
   let cwei = getWei(data.currency);
@@ -63,13 +62,13 @@ export const onIssue = async (data_, callBack) => {
 
     const orderContract = await Order();
     orderContract.methods
-      .sell(
+      .sellOnETH(
         false,
-        data.currency, // 抵押物 DAI
+        // data.currency, // 抵押物 DAI
         data.category, // 保险品类 WETH
         data.price, // 触发保险金额 抵押物单位   // 1/200
         data.expire,
-        data.volume, // 200
+        // data.volume, // 200
         data.currency, // 支付货币
         data.premium // 单价
       )
@@ -191,7 +190,7 @@ export const buyInsurance = async (_data, callBack) => {
     await oneKeyArrpove(Contract, "ORDER", data.payPrice, callBack);
     const orderContract = await Order();
     orderContract.methods
-      .buy(data.askID, data.volume)
+      .buyInETH(data.askID, data.volume)
       .send({ from: window.CURRENTADDRESS })
       .on("transactionHash", function(hash) {
         bus.$emit("CLOSE_STATUS_DIALOG");
@@ -580,7 +579,7 @@ export const onExercise = async (data, callBack) => {
   });
 
   order.methods
-    .exercise(data.bidID)
+    .exerciseETH(data.bidID)
     .send({ from: window.CURRENTADDRESS })
     .on("transactionHash", function(hash) {
       bus.$emit("CLOSE_STATUS_DIALOG");

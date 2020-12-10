@@ -52,7 +52,7 @@ export default {
       underly: 'HELMET', //标的物
       curType: 1,
       collateral: 'WBNB', //抵押物
-      dueDate: '2020-12-09 00:00',
+      dueDate: '2020-12-15 00:00',
       QUSD: 0,
       BNB: 0,
       CAKE: 0,
