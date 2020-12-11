@@ -2,11 +2,11 @@
   <div class="balance">
     <section>
       <div>
-        <span>{{ $t('Content.InsurancePrice') }}</span>
+        <span>{{ $t("Content.InsurancePrice") }}</span>
         <p>{{ indexPx || 0 }} {{ unit }}</p>
       </div>
       <div>
-        <span>{{ $t('Content.ProtectTheCycle') }}</span>
+        <span>{{ $t("Content.ProtectTheCycle") }}</span>
         <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-time"></use>
@@ -17,7 +17,7 @@
     </section>
 
     <div>
-      <span>{{ $t('Content.UsableBalance') }}</span>
+      <span>{{ $t("Content.UsableBalance") }}</span>
       <div>
         <p>
           <svg class="icon" aria-hidden="true">
@@ -52,7 +52,7 @@ export default {
       underly: 'HELMET', //标的物
       curType: 1,
       collateral: 'WBNB', //抵押物
-      dueDate: '2020-12-15 00:00',
+      dueDate: '2020-12-16 00:00',
       QUSD: 0,
       BNB: 0,
       CAKE: 0,
@@ -126,6 +126,8 @@ export default {
       } else {
         this.indexPx = fixD(px / 2, 4);
       }
+      this.$store.commit('SET_STRIKE_PRICE', this.indexPx);
+
     },
     async getIndexPrice() {
       const px = await uniswap(this.underly, this.collateral);

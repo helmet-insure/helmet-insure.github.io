@@ -24,32 +24,39 @@ const netObj = {
 
 export const onIssue = async (data_, callBack) => {
   let data = { ...data_ };
-  data.category = getAddress(data.category);
-  data.currency = getAddress(data.currency);
+  // 标的物
+  data.category = getAddress(data.category); //111
+  // 抵押物
+  data.currency = getAddress(data.currency); //1111
   let cwei = getWei(data.currency);
   let fix = cwei === "lovelace" ? 6 : 18;
   // let fix = 18;
+  // 保护天数
   data.expire = new Date(data.expire).getTime();
   data.expire = parseInt(precision.divide(data.expire, 1000));
+  //total  价格乘以数量  = 保单费用
   data.total = toWei(precision.times(data.price, data.volume), data_.currency);
-  let premium = fixD(precision.divide(data.premium, data.price), 18);
-  // premium = toWei(premium, data_.currency);
-  premium = toWei(premium);
-  data.premium = premium;
+  //
+  // let premium = fixD(precision.divide(data.premium, data.price), 18);
+
+  // premium = toWei(premium);
+  // data.premium = premium;
+  // volume  与 total 值一样
   let volume = fixD(precision.times(data.volume, data.price), fix);
-  console.log(volume);
   volume = toWei(volume, data_.currency);
-  // volume = toWei(volume);
   data.volume = volume;
 
+  let onePrice = toWei(data.price, data_.currency);
+  data.onePrice = onePrice;
   let priceFix = getStrikePriceFix(data_.currency, data_.category);
   let priceUnit = getWeiWithFix(priceFix);
-  // let price = fixD(precision.divide(1, data.price), fix);
+
   let price = fixD(precision.divide(1, data.price), priceFix);
-  // price = toWei(price, data_.currency);
+
   price = window.WEB3.utils.toWei(String(price), priceUnit);
   // window.WEB3.utils.toWei(String(number), unit);
   data.price = price;
+
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
@@ -68,13 +75,14 @@ export const onIssue = async (data_, callBack) => {
         false,
         // data.currency, // 抵押物 DAI
         data.category, // 保险品类 WETH
-        data.price, // 触发保险金额 抵押物单位   // 1/200
+        data.price, // 单价
+        // data.price, // 触发保险金额 抵押物单位   // 1/200
         data.expire,
         // data.volume, // 200
         data.currency, // 支付货币
-        data.premium // 单价
+        data.onePrice // 单价
       )
-      .send({ from: window.CURRENTADDRESS })
+      .send({ from: window.CURRENTADDRESS, value: data.volume })
       .on("transactionHash", function(hash) {
         bus.$emit("CLOSE_STATUS_DIALOG");
         bus.$emit("OPEN_STATUS_DIALOG", {
@@ -145,6 +153,7 @@ export const buyInsurance = async (_data, callBack) => {
   // 两个精度的差，可能是负数，因此，再加个18位精度
   // 比如 WETH/DAI，两者精度都是18，那么价格的精度就是18-18+18=18
   // USDT/USDT，精度=6-6+18=18  在抵押物和结算物相同时，总是18
+  console.log(_data);
   let data = { ..._data };
   // const WEB3 = new web3();
   const charID = window.chainID;
@@ -169,6 +178,11 @@ export const buyInsurance = async (_data, callBack) => {
   volume = toWei(volume, data.settleToken);
   // volume = toWei(volume);
   data.volume = volume;
+  let pay = precision.times(_data.price, _data.volume);
+  console.log(pay);
+
+  data.pay = toWei(pay, _data.settleToken);
+  console.log(data);
   // data.volume = window.WEB3.utils.toWei(
   //   data.volume / data._strikePrice + "",
   //   getWei(data.settleToken)
@@ -186,15 +200,13 @@ export const buyInsurance = async (_data, callBack) => {
     await oneKeyArrpove(Contract, "ORDER", data.payPrice, callBack);
     const orderContract = await Order();
     orderContract.methods
-      .buyInETH(data.askID, data.volume)
-      .send({ from: window.CURRENTADDRESS })
+      .buyInETH(data.askID, data.pay)
+      .send({ from: window.CURRENTADDRESS, value: data.pay })
       .on("transactionHash", function(hash) {
         bus.$emit("CLOSE_STATUS_DIALOG");
         bus.$emit("OPEN_STATUS_DIALOG", {
           type: "submit",
-          conText: `<a href="https://${
-            netObj[Number(window.chainID)]
-          }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+          conText: `<a href="https://bscscan.com/tx/tx/${hash}" target="_blank">View on BscScan</a>`,
         });
       })
       // .on('receipt', function(receipt){
@@ -209,7 +221,7 @@ export const buyInsurance = async (_data, callBack) => {
               title: "Successfully rented",
               conTit:
                 '<div>The hat is rented successfully, please check <a href="/buy" target="blank">the hat I rented</a></div>',
-              conText: `<a href="https://ropsten.etherscan.io/tx/${receipt.transactionHash}" target="_blank">View on Etherscan</a>`,
+              conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
             });
           } else {
             Message({

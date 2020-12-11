@@ -60,6 +60,48 @@
       "font_class": "Qusd",
       "unicode": "e608",
       "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "18752680",
+      "name": "Helmet备份 2",
+      "font_class": "Helmetbeifen2",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "18752681",
+      "name": "Helmet备份",
+      "font_class": "Helmetbeifen",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "18752766",
+      "name": "chevronleft",
+      "font_class": "chevronleft",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "18752767",
+      "name": "chevronright",
+      "font_class": "chevronright",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "18753223",
+      "name": "chevronleft",
+      "font_class": "chevronleft1",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "18753224",
+      "name": "chevronright",
+      "font_class": "chevronright1",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
     }
   ]
 }

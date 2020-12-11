@@ -329,52 +329,38 @@ $td-gap: 16px;
 .button-loading {
   color: rgba(255, 255, 255, 0.4) !important;
 }
-.page {
+.pages {
+  position: absolute;
+  width: 65px;
+  height: 32px;
+  border: 2px solid #cfcfd2;
+  border-radius: 3px;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-right: 30px;
+  box-sizing: border-box;
   margin-top: 20px;
-  .pre,
-  .next {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-position: center center;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    margin: 0px 6px;
+  right: 0;
+  p {
     cursor: pointer;
-  }
-  .pre {
-    background-image: url("../img/icon/left2.png");
-    &:hover {
-      background-image: url("../img/icon/left1.png");
-    }
-    &.disabled {
-      background-image: url("../img/icon/left3.png");
-      pointer-events: none;
-      cursor: default;
-      opacity: 0.6;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .icon {
+      width: 20px;
+      height: 20px;
+      transform: rotate(90deg);
+      fill: #cfcfd2;
       &:hover {
-        background-image: url("../img/icon/left3.png");
+        fill: #919aa6;
       }
     }
   }
-  .next {
-    background-image: url("../img/icon/right2.png");
-    &:hover {
-      background-image: url("../img/icon/right1.png");
-    }
-    &.disabled {
-      background-image: url("../img/icon/right3.png");
-      pointer-events: none;
-      cursor: default;
-      opacity: 0.6;
-      &:hover {
-        background-image: url("../img/icon/right3.png");
-      }
-    }
+
+  i {
+    display: block;
+    width: 1px;
+    height: 100%;
+    background: #cfcfd2;
   }
 }
 @media screen and (max-width: 750px) {

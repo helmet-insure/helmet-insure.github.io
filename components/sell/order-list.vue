@@ -7,7 +7,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th>{{ $t('Table.Type') }}</th>
+            <th>{{ $t("Table.Type") }}</th>
             <th>
               <Tooltip
                 :name="$t('Table.ExecutivePrice')"
@@ -15,8 +15,8 @@
                 :hint="$t('Tips.HoverTip5')"
               ></Tooltip>
             </th>
-            <th>{{ $t('Table.Amount') }}</th>
-            <th>{{ $t('Table.TotalCollateral') }}</th>
+            <th>{{ $t("Table.Amount") }}</th>
+            <th>{{ $t("Table.TotalCollateral") }}</th>
             <th>
               <Tooltip
                 :name="$t('Table.Rents')"
@@ -31,7 +31,7 @@
                 :hint="$t('Tips.HoverTip4')"
               ></Tooltip>
             </th>
-            <th>{{ $t('Table.Status') }}</th>
+            <th>{{ $t("Table.Status") }}</th>
           </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
             <!-- Rents -->
             <td>
               {{
-                item.settleToken === 'USDT' || item.settleToken === 'USDC'
+                item.settleToken === "USDT" || item.settleToken === "USDC"
                   ? addCommom(
                       precision.times(
                         precision.divide(item.price, 1000000000000),
@@ -67,7 +67,7 @@
             <!-- Due Date -->
             <td>
               {{
-                moment(parseInt(item._expiry)).format('MMMM Do YYYY, HH:mm:ss')
+                moment(parseInt(item._expiry)).format("MMMM Do YYYY, HH:mm:ss")
               }}
             </td>
             <td>{{ item.status }}</td>
@@ -89,14 +89,14 @@
         </div>
         <div class="tabs-item-box-text">
           <p>
-            <span>{{ $t('Table.ExecutivePrice') }}</span>
+            <span>{{ $t("Table.ExecutivePrice") }}</span>
             <span>
               {{ autoRounding(precision.divide(1, item._strikePrice)) }}
               {{ item._collateral }}
             </span>
           </p>
           <p>
-            <span>{{ $t('Table.Amount') }}</span>
+            <span>{{ $t("Table.Amount") }}</span>
             <span>
               {{ toRounding(precision.times(item.vol, item._strikePrice), 2) }}
             </span>
@@ -104,11 +104,11 @@
         </div>
         <div class="tabs-item-box-text">
           <p>
-            <span>{{ $t('Table.TotalCollateral') }}</span>
+            <span>{{ $t("Table.TotalCollateral") }}</span>
             <span>{{ addCommom(item.vol, 4) }} {{ item._collateral }} </span>
           </p>
           <p>
-            <span>{{ $t('Table.Rents') }}</span>
+            <span>{{ $t("Table.Rents") }}</span>
             <span>
               {{ addCommom(precision.times(item.price, item.vol), 4) }}
               {{ item.settleToken }}
@@ -117,10 +117,10 @@
         </div>
         <div class="tabs-item-box-text">
           <p>
-            <span>{{ $t('Dialog.DueDate') }}</span>
+            <span>{{ $t("Dialog.DueDate") }}</span>
             <span>
               {{
-                moment(parseInt(item._expiry)).format('MMMM Do YYYY, HH:mm:ss')
+                moment(parseInt(item._expiry)).format("MMMM Do YYYY, HH:mm:ss")
               }}
             </span>
           </p>

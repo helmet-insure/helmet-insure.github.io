@@ -14,7 +14,7 @@
     </div>
     <div class="pay">
       <p>
-        折合：<span>{{ precision.times(volume * indexPrice, 4) }} BNB</span>
+        折合：<span>{{ precision.times(volume * _strikePrice, 4) }} BNB</span>
       </p>
       <p>预期最大收益：<span>11111 BNB</span></p>
       <!-- <p>
@@ -32,12 +32,14 @@
 import { onIssue } from '~/interface/order.js';
 import precision from '~/assets/js/precision.js';
 export default {
+  props: ['currentType'],
   data() {
     return {
       dpr: '', //DPR
       volume: '', //数量
       precision,
       Rent: 0,
+      tradeType: 1,
     };
   },
   computed: {
@@ -61,6 +63,9 @@ export default {
     },
   },
   watch: {
+    currentType(newValue) {
+      this.tradeType = newValue
+    },
     RentGrounp: {
       handler: {
         handler: 'watchRent',
@@ -80,39 +85,40 @@ export default {
       // 结算token
       // 单价
       let Rent = this.getRent(indexPrice, _strikePrice, _expiry);
-      const data={
-        private:false, // 
-        annual:this.dpr,
-        category:_underlying, // 
-        currency:'WBNB', // 
-        expire:_expiry, // 
+      const data = {
+        private: false, // 
+        annual: this.dpr,
+        category: _underlying, // 
+        currency: 'WBNB', // 
+        expire: _expiry, // 
         premium: Rent,
-        price:indexPrice,
-        volume:this.volume, // 
+        price: indexPrice,
+        volume: this.volume, // 
         _yield: 0,
-      }      
-      
+      }
+      console.log(data)
+
       // const data = {
-        // private: this.private,
-        // annual: this.dpr,
-        // category: this.col,
-        // currency: this.und,
-        // expire: this.dueDate,
-        // premium: this.rent,
-        // price: this.price,
-        // volume: this.qty,
-        // address: this.address,
-        // _yield: 0,
+      // private: this.private,
+      // annual: this.dpr,
+      // category: this.col,
+      // currency: this.und,
+      // expire: this.dueDate,
+      // premium: this.rent,
+      // price: this.price,
+      // volume: this.qty,
+      // address: this.address,
+      // _yield: 0,
       // };
       onIssue(data, (status) => {
-      console.log('onIssue####status#####', status);
-      if (status === 'pending') {
-        console.log('onIssue####pending');
-      } else if (status === 'approve') {
-        console.log('onIssue####approve');
-      } else if (status === 'success' || status === 'failed') {
-        console.log('onIssue####success or failed###', status);
-      }
+        console.log('onIssue####status#####', status);
+        if (status === 'pending') {
+          console.log('onIssue####pending');
+        } else if (status === 'approve') {
+          console.log('onIssue####approve');
+        } else if (status === 'success' || status === 'failed') {
+          console.log('onIssue####success or failed###', status);
+        }
       });
     },
     watchRent(newValue) {
@@ -124,11 +130,20 @@ export default {
         let time1 = new Date(_expiry).getTime();
         let time2 = new Date().getTime();
         let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
-        let premium = precision.minus(
-          precision.times(DPR, _strikePrice, day),
-          precision.minus(indexPrice, _strikePrice)
-        );
+        let premium;
+        if (this.tradeType == 1) {
+          premium = precision.minus(
+            precision.times(DPR, _strikePrice, day),
+            precision.minus(indexPrice, _strikePrice)
+          );
+        } else {
+          premium = precision.minus(
+            precision.times(DPR, _strikePrice, day),
+            precision.minus(_strikePrice, indexPrice)
+          );
+        }
         this.Rent = premium;
+        console.log(precision.times(DPR, _strikePrice, day), Math.abs(precision.minus(indexPrice, _strikePrice)))
         return premium;
       }
     },

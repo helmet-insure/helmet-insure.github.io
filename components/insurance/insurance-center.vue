@@ -5,13 +5,13 @@
         @click="handleClickType('buy')"
         :class="type == 'buy' ? 'active' : ''"
       >
-        {{ $t('Type.BuyInsurance') }}
+        {{ $t("Type.BuyInsurance") }}
       </button>
       <button
         @click="handleClickType('sell')"
         :class="type == 'sell' ? 'active' : ''"
       >
-        {{ $t('Type.ToInsurance') }}
+        {{ $t("Type.ToInsurance") }}
       </button>
     </div>
     <CoinType
@@ -24,8 +24,15 @@
       :currentType="type"
     ></InsuranceType>
     <Balance :currentCoin="curCoin" :currentType="TradeType"></Balance>
-    <InsuranceList v-if="type == 'buy'"></InsuranceList>
-    <InsuranceForm v-if="type == 'sell'"></InsuranceForm>
+    <InsuranceList
+      v-if="type == 'buy'"
+      :currentCoin="curCoin"
+      :currentType="TradeType"
+    ></InsuranceList>
+    <InsuranceForm
+      v-if="type == 'sell'"
+      :currentType="TradeType"
+    ></InsuranceForm>
   </div>
 </template>
 
@@ -52,7 +59,7 @@ export default {
       TradeType: 1,
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     // 选择买卖类型
     handleClickType(type) {
@@ -71,7 +78,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and(min-width:750px) {
   .insurance_center {
     margin-bottom: 10px;

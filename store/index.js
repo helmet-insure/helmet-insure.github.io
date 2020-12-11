@@ -303,6 +303,7 @@ export const actions = {
       data.forEach((item, index) => {
         sell_map[item.returnValues.long + index] = item.returnValues;
       });
+      // console.log(data, "####################");
       commit("SET_SELL_MAP", sell_map);
     });
     // 创建Buy 映射对象
@@ -311,6 +312,7 @@ export const actions = {
         return;
       }
       let buy_map = {};
+      console.log(data, "%%%%%%%%%%%%%%%%%%%%%%");
       data.forEach((item, index) => {
         buy_map[item.returnValues.askID + index] = item.returnValues;
       });
@@ -347,7 +349,7 @@ export const actions = {
     const sellObj = {}; // 以askID为key的sell对象 (用在获取mapAboutInfoBuy)
     let item;
     let longInfo;
-    const createTime = new Date("2020-10-16").getTime() / 1000;
+    const createTime = new Date("2020-12-16").getTime() / 1000;
     const charID = await getID();
     const now = new Date().getTime() / 1000;
     const myAddress =
@@ -361,11 +363,10 @@ export const actions = {
       // 过滤未创建settleable 之前的数据
       // if (!longInfo) return;
       // if (charID === 1 || (longInfo && parseInt(longInfo.count) >= 63 && parseInt(longInfo._expiry) >= createTime)) {
-      console.log(item);
       if (
         Number(item.price) < Math.pow(10, 30) &&
         ((longInfo && charID === 1) ||
-          (longInfo && parseInt(longInfo._expiry) >= createTime))
+          (longInfo && parseInt(longInfo._expiry) >= 1607997600))
       ) {
         aboutInfoSell.push({
           ...item,
