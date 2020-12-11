@@ -213,3 +213,25 @@ export const uniswap = async (token1, token2) => {
     return 0;
   }
 };
+export const getTokenName = (address) => {
+  let tokenAddress = address.toLowerCase();
+  switch (tokenAddress) {
+    case "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c":
+      return "BNB";
+    case "0xb8c540d00dd0bf76ea12e4b4b95efc90804f924e":
+      return "QUSD";
+    case "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82":
+      return "CAKE";
+    case "0x658a109c5900bc6d2357c87549b651670e5b0539":
+      return "FORTUBE";
+    case "0xe9e7cea3dedca5984780bafc599bd69add087d56":
+      return "BUSD";
+    case "0x4e76dfea6fb3726e9a77628aaa23839e3298bc37":
+      return "HELMET";
+    case "0xa8c2b8eec3d368c0253ad3dae65a5f2bbb89c929":
+      return "CTK";
+    default:
+      return "--";
+      break;
+  }
+};

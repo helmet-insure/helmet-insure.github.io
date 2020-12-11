@@ -3,51 +3,51 @@
     <table>
       <thead>
         <tr>
-          <td>{{ $t('Table.ID') }}</td>
-          <td>{{ $t('Table.Type') }}</td>
-          <td>{{ $t('Table.InsurancePrice') }}</td>
-          <td>{{ $t('Table.Rent') }}</td>
-          <td>{{ $t('Table.Position') }}</td>
-          <td>{{ $t('Table.CountDonm') }}</td>
+          <td>{{ $t("Table.ID") }}</td>
+          <td>{{ $t("Table.Type") }}</td>
+          <td>{{ $t("Table.InsurancePrice") }}</td>
+          <td>{{ $t("Table.Rent") }}</td>
+          <td>{{ $t("Table.Position") }}</td>
+          <td>{{ $t("Table.CountDonm") }}</td>
           <td></td>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>0123</td>
-          <td>BNB</td>
-          <td>200.00 QUSD</td>
-          <td>21.000</td>
-          <td>53737</td>
-          <td>14天20时06分24秒</td>
+        <tr v-for="(item, index) in buyList" :key="index">
+          <td>{{ item.id }}</td>
+          <td>{{ item._underlying }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.Rent }}</td>
+          <td>{{ item.volume }}</td>
+          <td>{{ item.dueDate }}</td>
           <td>
-            <button class="b_b_button">{{ $t('Table.outSure') }}</button>
+            <button class="b_b_button">{{ $t("Table.outSure") }}</button>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
       <p>
-        <span>{{ $t('Table.ID') }}</span
+        <span>{{ $t("Table.ID") }}</span
         ><span>0123</span>
       </p>
       <div>
         <p>
-          <span>{{ $t('Table.Type') }}</span
+          <span>{{ $t("Table.Type") }}</span
           ><span>0123</span>
         </p>
         <p>
-          <span>{{ $t('Table.InsurancePrice') }}</span
+          <span>{{ $t("Table.InsurancePrice") }}</span
           ><span>0123</span>
         </p>
       </div>
       <div>
         <p>
-          <span>{{ $t('Table.Rent') }}</span
+          <span>{{ $t("Table.Rent") }}</span
           ><span>0123</span>
         </p>
         <p>
-          <span>{{ $t('Table.Position') }}</span
+          <span>{{ $t("Table.Position") }}</span
           ><span>0123</span>
         </p>
       </div>
@@ -58,7 +58,7 @@
           </svg>
           200.0100 BNB
         </span>
-        <button class="b_b_button">{{ $t('Table.outSure') }}</button>
+        <button class="b_b_button">{{ $t("Table.outSure") }}</button>
       </section>
     </div>
     <div>
@@ -86,11 +86,92 @@
 
 <script>
 import '~/assets/svg/iconfont.js';
-export default {};
+import precision from '~/assets/js/precision.js';
+import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
+import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
+import { getTokenName } from '~/assets/utils/address-pool.js';
+export default {
+  data() {
+    return {
+      precision,
+      addCommom: addCommom,
+      autoRounding: autoRounding,
+      toRounding: toRounding,
+      buyList: [],
+      getTokenName
+    }
+  },
+  computed: {
+    myAboutInfoBuy() {
+      return this.$store.state.myAboutInfoBuy;
+    },
+  },
+  watch: {
+    myAboutInfoBuy: {
+      handler: 'myAboutInfoBuyWatch',
+      immediate: true,
+    },
+  },
+  methods: {
+    myAboutInfoBuyWatch(newValue) {
+      if (newValue) {
+        this.setSettlementList(newValue);
+      }
+    },
+    setSettlementList(list) {
+      const result = [];
+      let item, resultItem, amount, InsurancePrice, Rent, _collateral, _underlying, settleToken, downTime;
+      for (let i = 0; i < list.length; i++) {
+        item = list[i]
+        // 数量
+        amount = precision.divide(item.sellInfo.volume, item.sellInfo.price)
+        // 保单价格
+        InsurancePrice = fromWei(item.sellInfo.price, item.sellInfo.settleToken)
+        // 保费
+        Rent = precision.times(amount, InsurancePrice)
+        // 标的物
+        _underlying = getTokenName(item.sellInfo.longInfo._underlying)
+        // 抵押物
+        _collateral = getTokenName(item.sellInfo.longInfo._collateral)
+        // 结算币种
+        settleToken = getTokenName(item.sellInfo.settleToken)
+        //倒计时
+        downTime = this.getDownTime(item.sellInfo.longInfo._expiry)
+
+        resultItem = {
+          id: item.sellInfo.askID,
+          price: InsurancePrice,
+          volume: amount,
+          Rent: Rent,
+          settleToken: settleToken,
+          dueDate: downTime,
+          _collateral: _collateral,
+          _strikePrice: item.sellInfo.longInfo._strikePrice,
+          _underlying: _underlying,
+        }
+        result.push(resultItem)
+      }
+      this.buyList = result
+    },
+    getDownTime(time) {
+      let now = new Date() * 1
+      let dueDate = time * 1000
+      dueDate = new Date(dueDate)
+      console.log(dueDate)
+      let DonwTime = dueDate - now
+      let day = Math.floor(DonwTime / (24 * 3600000))
+      let hour = Math.floor((DonwTime - (day * 24 * 3600000)) / 3600000)
+      let minute = Math.floor(((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) / 60000)
+      let second = Math.floor((((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) - (minute * 60000)) / 1000)
+      let template = `${day}天${hour}时${minute}分${second}秒`
+      return template
+    },
+  }
+};
 </script>
 
 <style lang='scss' scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
   .my_guarantee {
     > div {
@@ -100,6 +181,8 @@ export default {};
       width: 100%;
       display: flex;
       flex-direction: column;
+      margin-top: 20px;
+
       tr {
         width: 100%;
         display: flex;

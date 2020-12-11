@@ -3,57 +3,60 @@
     <table>
       <thead>
         <tr>
-          <td>{{ $t('Table.ID') }}</td>
-          <td>{{ $t('Table.Type') }}</td>
-          <td>{{ $t('Table.InsurancePrice') }}</td>
-          <td>总量</td>
-          <td>{{ $t('Table.CanCollateral') }}</td>
-          <td>{{ $t('Table.DueTime') }}</td>
-          <td>剩余</td>
+          <td>{{ $t("Table.ID") }}</td>
+          <td>{{ $t("Table.Type") }}</td>
+          <td>{{ $t("Table.InsurancePrice") }}</td>
+          <td>已出售</td>
+          <td>未出售</td>
+          <td>{{ $t("Table.CanCollateral") }}</td>
+          <td>{{ $t("Table.DueTime") }}</td>
           <td class="option"></td>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>0123</td>
-          <td>BNB</td>
-          <td>200.00 QUSD</td>
-          <td>21.000</td>
+        <tr v-for="(item, index) in sellList" :key="index">
+          <td>{{ item.id }}</td>
+          <td>{{ item._underlying }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.beSold }}</td>
+          <td>
+            {{ item.unSold }}
+            <span class="cancel">撤销</span>
+          </td>
           <td>53737</td>
-          <td>14天20时06分24秒</td>
-          <td>剩余</td>
+          <td>{{ item.dueDate }}</td>
           <td class="option">
-            <button class="o_button">{{ $t('Table.outSure') }}</button>
-            <button class="b_button">{{ $t('Table.Stake') }}</button>
+            <!-- <button class="o_button">{{ $t("Table.outSure") }}</button> -->
+            <button class="b_button">{{ $t("Table.Stake") }}</button>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
       <p>
-        <span>{{ $t('Table.ID') }}</span
+        <span>{{ $t("Table.ID") }}</span
         ><span>0123</span>
       </p>
       <div>
         <p>
-          <span>{{ $t('Table.Type') }}</span
+          <span>{{ $t("Table.Type") }}</span
           ><span>0123</span>
         </p>
         <p>
-          <span>{{ $t('Table.InsurancePrice') }}</span
+          <span>{{ $t("Table.InsurancePrice") }}</span
           ><span>0123</span>
         </p>
       </div>
       <div>
         <p><span>剩余/总量</span><span>0123</span></p>
         <p>
-          <span>{{ $t('Table.CanCollateral') }}</span
+          <span>{{ $t("Table.CanCollateral") }}</span
           ><span>0123</span>
         </p>
       </div>
       <div>
         <p>
-          <span>{{ $t('Table.DueTime') }}</span
+          <span>{{ $t("Table.DueTime") }}</span
           ><span>2020/12/29 14:20:90</span>
         </p>
       </div>
@@ -66,11 +69,101 @@
 </template>
 
 <script>
-export default {};
+import precision from '~/assets/js/precision.js';
+import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
+import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
+import { getTokenName } from '~/assets/utils/address-pool.js';
+export default {
+  data() {
+    return {
+      precision,
+      addCommom: addCommom,
+      autoRounding: autoRounding,
+      toRounding: toRounding,
+      sellList: [],
+      getTokenName
+    }
+  },
+  computed: {
+    myAboutInfoSell() {
+      return this.$store.state.myAboutInfoSell;
+    },
+    myAboutInfoBuy() {
+      return this.$store.state.myAboutInfoBuy;
+    },
+  },
+  watch: {
+    myAboutInfoSell: {
+      handler: 'myAboutInfoSellWatch',
+      immediate: true,
+    },
+  },
+  methods: {
+    myAboutInfoSellWatch(newValue) {
+      console.log(newValue, '#############')
+      if (newValue) {
+        this.setSettlementList(newValue);
+      }
+    },
+    setSettlementList(list) {
+      let result = []
+      let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold;
+      for (let i = 0; i < list.length; i++) {
+        item = list[i]
+        // 数量
+        amount = precision.divide(item.volume, item.price)
+        // 保单价格
+        InsurancePrice = fromWei(item.volume, item.settleToken)
+        // 标的物
+        _underlying = getTokenName(item.longInfo._underlying)
+        //倒计时
+        downTime = new Date(item.longInfo._expiry * 1000).toLocaleDateString();
+        //已出售
+        beSold = this.getBeSold(item.askID)
+        unSold = precision.minus(amount, beSold)
+        console.log(precision.minus(amount, beSold))
+        resultItem = {
+          id: item.askID,
+          volume: amount,
+          beSold: beSold,
+          unSold: unSold,
+          price: InsurancePrice,
+          dueDate: downTime,
+          _underlying: _underlying,
+        }
+        result.push(resultItem)
+      }
+      this.sellList = result
+    },
+    //获取已出售
+    getBeSold(id) {
+      let list = this.myAboutInfoBuy
+      let array = list.filter(item => item.askID == id)[0]
+      if (array) {
+        console.log(array.sellInfo)
+        let num = precision.divide(array.sellInfo.volume, array.sellInfo.price)
+        return num
+      } else {
+        return 0
+      }
+      console.log(array)
+    },
+  }
+};
 </script>
 
 <style lang='scss' scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
+.cancel {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #ff9600;
+  line-height: 20px;
+  margin-left: 10px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+}
 @media screen and (min-width: 750px) {
   .o_button {
     margin-right: 12px;
@@ -83,6 +176,7 @@ export default {};
       width: 100%;
       display: flex;
       flex-direction: column;
+      margin-top: 20px;
       tr {
         width: 100%;
         display: flex;
@@ -97,7 +191,7 @@ export default {};
       }
       .option {
         text-align: right;
-        width: 160px;
+        width: 100px;
       }
       thead {
         width: 100%;
@@ -138,6 +232,7 @@ export default {};
             display: flex;
             align-items: center;
             transform: translateX(20px);
+            justify-content: flex-end;
           }
         }
       }

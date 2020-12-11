@@ -2,10 +2,10 @@
   <div class="insurance_bottom">
     <div class="buy-type">
       <button @click="handleClickType(1)" :class="type == 1 ? 'active' : ''">
-        {{ $t('Type.MyGuarantee') }}
+        {{ $t("Type.MyGuarantee") }}
       </button>
       <button @click="handleClickType(2)" :class="type == 2 ? 'active' : ''">
-        {{ $t('Type.IssueInsurance') }}
+        {{ $t("Type.IssueInsurance") }}
       </button>
     </div>
     <MyGuarantee v-if="type == 1"></MyGuarantee>
@@ -27,7 +27,7 @@ export default {
       type: 1,
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     handleClickType(type) {
       this.type = type;
@@ -60,6 +60,7 @@ export default {
       font-size: 16px;
       font-weight: bold;
       color: #121212;
+      background: #f7f7fa;
       border-radius: 3px 3px 0px 0px;
     }
     .active {

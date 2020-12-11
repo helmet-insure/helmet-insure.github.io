@@ -103,6 +103,7 @@ export default {
       font-weight: bold;
       color: #121212;
       border-radius: 3px 3px 0px 0px;
+      background: #f7f7fa;
     }
     .active {
       background: #ff9600;

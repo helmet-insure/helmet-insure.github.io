@@ -41,7 +41,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
   .footer-container {
     width: 100%;
@@ -49,6 +49,7 @@ export default {
     background: #121212;
     display: flex;
     flex-direction: column;
+    min-width: 1200px;
     .footer_top {
       width: 300px;
       flex: 1;
