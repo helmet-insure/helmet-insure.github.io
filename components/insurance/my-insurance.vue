@@ -106,7 +106,6 @@ export default {
   },
   methods: {
     myAboutInfoSellWatch(newValue) {
-      console.log(newValue, '#############')
       if (newValue) {
         this.setSettlementList(newValue);
       }
@@ -127,7 +126,6 @@ export default {
         //已出售
         beSold = this.getBeSold(item.askID)
         unSold = precision.minus(amount, beSold)
-        console.log(precision.minus(amount, beSold))
         resultItem = {
           id: item.askID,
           volume: amount,
@@ -146,7 +144,6 @@ export default {
       let list = this.myAboutInfoBuy
       let array = list.filter(item => item.askID == id)[0]
       if (array) {
-        console.log(array.sellInfo)
         let num = precision.divide(array.sellInfo.volume, array.sellInfo.price)
         return num
       } else {
@@ -155,7 +152,6 @@ export default {
     },
     // 撤销
     handleClickCancel(data) {
-      console.log(data)
       onCancel(data.id, (status) => { });
     }
   }

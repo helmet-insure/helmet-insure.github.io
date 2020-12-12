@@ -33,7 +33,8 @@ export const onIssueSell = async (data_, callBack) => {
   data.expire = new Date(data.expire).getTime();
   data.expire = parseInt(precision.divide(data.expire, 1000));
   data.total = toWei(precision.times(data.price, data.volume), data_.currency);
-  let premium = fixD(precision.divide(data.premium, data.price), 18);
+  // let premium = fixD(precision.divide(data.premium, data.price), 18);
+  let premium = fixD(precision.divide(data.premium, data.volume), 18);
   // premium = toWei(premium, data_.currency);
   premium = toWei(premium);
   data.premium = premium;
@@ -56,7 +57,6 @@ export const onIssueSell = async (data_, callBack) => {
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
     conText: `<p>Rent <span>${data_.volume} ${data_.category}</span>, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
   });
-  console.log(data, "$$$$$$$$$$$$$$$$$$$$");
   try {
     const Contract = await expERC20(data.currency);
     // 一键判断是否需要授权，给予无限授权
@@ -133,7 +133,8 @@ export const onIssueSellOnETH = async (data_, callBack) => {
   data.expire = new Date(data.expire).getTime();
   data.expire = parseInt(precision.divide(data.expire, 1000));
   data.total = toWei(precision.times(data.price, data.volume), data_.currency);
-  let premium = fixD(precision.divide(data.premium, data.price), 18);
+  // let premium = fixD(precision.divide(data.premium, data.price), 18);
+  let premium = fixD(precision.divide(data.premium, data.volume), 18);
   // premium = toWei(premium, data_.currency);
   premium = toWei(premium);
   data.premium = premium;
@@ -156,6 +157,7 @@ export const onIssueSellOnETH = async (data_, callBack) => {
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
     conText: `<p>Rent <span>${data_.volume} ${data_.category}</span>, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
   });
+  console.log(data);
   try {
     const Contract = await expERC20(data.currency);
     // 一键判断是否需要授权，给予无限授权
@@ -220,12 +222,12 @@ export const onIssueSellOnETH = async (data_, callBack) => {
     console.log("onIssueSellOnETH", error);
   }
 };
-export const buyInsurance = async (_data, callBack) => {
+// 翻倍
+export const buyInsuranceBuy = async (_data, callBack) => {
   // 是的，不过价格是两个资产的比值，它的精度应该是两个token的精度的差
   // 两个精度的差，可能是负数，因此，再加个18位精度
   // 比如 WETH/DAI，两者精度都是18，那么价格的精度就是18-18+18=18
   // USDT/USDT，精度=6-6+18=18  在抵押物和结算物相同时，总是18
-  console.log(_data);
   let data = { ..._data };
   // const WEB3 = new web3();
   const charID = window.chainID;
@@ -254,7 +256,6 @@ export const buyInsurance = async (_data, callBack) => {
   console.log(pay);
 
   data.pay = toWei(pay, _data.settleToken);
-  console.log(data);
   // data.volume = window.WEB3.utils.toWei(
   //   data.volume / data._strikePrice + "",
   //   getWei(data.settleToken)
@@ -272,8 +273,8 @@ export const buyInsurance = async (_data, callBack) => {
     await oneKeyArrpove(Contract, "ORDER", data.payPrice, callBack);
     const orderContract = await Order();
     orderContract.methods
-      .buyInETH(data.askID, data.pay)
-      .send({ from: window.CURRENTADDRESS, value: data.pay })
+      .buy(data.askID, data.pay)
+      .send({ from: window.CURRENTADDRESS })
       .on("transactionHash", function(hash) {
         bus.$emit("CLOSE_STATUS_DIALOG");
         bus.$emit("OPEN_STATUS_DIALOG", {
@@ -331,7 +332,6 @@ export const buyInsurance = async (_data, callBack) => {
     // })
   } catch (error) {}
 };
-
 export const getSellLog = async (callback) => {
   Order().then((contract) => {
     contract.getPastEvents(
@@ -635,12 +635,13 @@ export const onExercise = async (data, callBack) => {
       data.settleToken
     }</span></p>`,
   });
-
   bus.$emit("ONEXERCISE_PENDING", data.bidID);
 
   // const WEB3 = await web3();
   const charID = window.chainID;
   let adress = getAddress(data.token, charID);
+  console.log(adress);
+
   const Contract = await expERC20(adress);
   const long = await expERC20(data.long);
   const order = await Order();
@@ -660,7 +661,7 @@ export const onExercise = async (data, callBack) => {
   });
 
   order.methods
-    .exerciseETH(data.bidID)
+    .exercise(data.bidID)
     .send({ from: window.CURRENTADDRESS })
     .on("transactionHash", function(hash) {
       bus.$emit("CLOSE_STATUS_DIALOG");

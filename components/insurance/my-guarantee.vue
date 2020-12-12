@@ -15,13 +15,15 @@
       <tbody>
         <tr v-for="(item, index) in buyList" :key="index">
           <td>{{ item.id }}</td>
-          <td>{{ item._underlying }}</td>
+          <td>{{ getTokenName(item._underlying) }}</td>
           <td>{{ item.price }}</td>
           <td>{{ item.Rent }}</td>
           <td>{{ item.volume }}</td>
           <td>{{ item.dueDate }}</td>
           <td>
-            <button class="b_b_button">{{ $t("Table.outSure") }}</button>
+            <button class="b_b_button" @click="toActive(item)">
+              {{ $t("Table.outSure") }}
+            </button>
           </td>
         </tr>
       </tbody>
@@ -90,6 +92,7 @@ import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
 import { getTokenName } from '~/assets/utils/address-pool.js';
+import { onExercise } from '~/interface/order.js'
 export default {
   data() {
     return {
@@ -129,27 +132,24 @@ export default {
         InsurancePrice = fromWei(item.sellInfo.price, item.sellInfo.settleToken)
         // 保费
         Rent = precision.times(amount, InsurancePrice)
-        // 标的物
-        _underlying = getTokenName(item.sellInfo.longInfo._underlying)
-        // 抵押物
-        _collateral = getTokenName(item.sellInfo.longInfo._collateral)
-        // 结算币种
-        settleToken = getTokenName(item.sellInfo.settleToken)
         //倒计时
         downTime = this.getDownTime(item.sellInfo.longInfo._expiry)
 
         resultItem = {
           id: item.sellInfo.askID,
+          bidID: item.bidID,
           price: InsurancePrice,
           volume: amount,
           Rent: Rent,
-          settleToken: settleToken,
+          settleToken: item.sellInfo.settleToken,
           dueDate: downTime,
-          _collateral: _collateral,
+          _collateral: item.sellInfo.longInfo._collateral,
           _strikePrice: item.sellInfo.longInfo._strikePrice,
-          _underlying: _underlying,
+          _underlying: item.sellInfo.longInfo._underlying,
+          long: item.sellInfo.long
         }
         result.push(resultItem)
+        console.log(list)
       }
       this.buyList = result
     },
@@ -166,6 +166,19 @@ export default {
       let template = `${day}天${hour}时${minute}分${second}秒`
       return template
     },
+    toActive(item) {
+      let data = {
+        token: getTokenName(item._underlying),
+        _underlying_vol: item.volume * item._strikePrice,
+        vol: toRounding(item.volume, 2),
+        bidID: item.bidID,
+        long: item.long,
+        exPrice: autoRounding(precision.divide(1, item._strikePrice)),
+        _underlying: item._underlying,
+        settleToken: item.settleToken,
+      }
+      onExercise(data)
+    }
   }
 };
 </script>

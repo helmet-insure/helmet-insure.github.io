@@ -13,9 +13,9 @@
       <button class="b_b_button" @click="submitSupply">立即创建</button>
     </div>
     <div class="pay">
-      <p>
+      <!-- <p>
         折合：<span>{{ strikePrice * volume }} {{ unit }}</span>
-      </p>
+      </p> -->
       <p>
         预期最大收益：<span>{{ earnings }} BNB</span>
       </p>
@@ -71,7 +71,8 @@ export default {
         dpr: this.dpr,
         indexPx: this.indexPx,
         strikePrice: this.strikePrice,
-        _expiry: new Date(this._expiry) * 1
+        _expiry: new Date(this._expiry) * 1,
+        num: this.volume,
       };
     },
     IndexPxArray() {
@@ -135,12 +136,10 @@ export default {
         }
         onIssueSell(data, (status) => { });
       }
-      console.log(data)
-
     },
     watchRent(newValue) {
-      let { dpr, indexPx, strikePrice, _expiry } = newValue
-      if (newValue.dpr && newValue.indexPx && newValue.strikePrice && newValue._expiry) {
+      let { dpr, indexPx, num, strikePrice, _expiry } = newValue
+      if (newValue.dpr && newValue.num && newValue.indexPx && newValue.strikePrice && newValue._expiry) {
         let DPR = dpr / 100;
         let time1 = new Date(_expiry).getTime();
         let time2 = new Date().getTime();
@@ -149,14 +148,14 @@ export default {
         let earnings;
         if (this.TradeType == 1) {
           premium = precision.minus(
-            precision.times(DPR, strikePrice, day),
-            precision.minus(indexPx, strikePrice)
+            precision.times(DPR, (strikePrice * num), day),
+            Math.min(precision.minus(strikePrice, indexPx), 0)
           );
           earnings = - (Math.max(indexPx - strikePrice, 0) - premium)
         } else {
           premium = precision.minus(
-            precision.times(DPR, strikePrice, day),
-            precision.minus(strikePrice, indexPx)
+            precision.times(DPR, (strikePrice * num), day),
+            Math.min(precision.minus(indexPx, strikePrice), 0)
           );
           earnings = - (Math.max(strikePrice - indexPx, 0) - premium)
         }

@@ -5,20 +5,20 @@
         <tr>
           <td>{{ $t("Table.ID") }}</td>
           <!-- <td>{{ $t("Table.Rent") }}</td> -->
-          <td>保单单价</td>
+          <td>保单单价(HELMET)</td>
           <td>{{ $t("Table.Amount") }}</td>
           <td class="option">{{ $t("Table.Options") }}</td>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in insuranceList" :key="index">
+        <tr v-for="(item, index) in showList" :key="index">
           <td>
             {{
               (
-                item.id.substr(0, 2) +
-                item.id.substr(2, 4) +
+                item.seller.substr(0, 2) +
+                item.seller.substr(2, 4) +
                 "..." +
-                item.id.substr(-5)
+                item.seller.substr(-5)
               ).toUpperCase()
             }}
           </td>
@@ -91,7 +91,7 @@ import '~/assets/svg/iconfont.js'
 import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
-import { buyInsurance } from '~/interface/order.js'
+import { buyInsuranceBuy } from '~/interface/order.js'
 import { getTokenName } from '~/assets/utils/address-pool.js';
 export default {
   props: ['currentCoin', 'currentType',],
@@ -110,7 +110,7 @@ export default {
       insuranceList: [],
       page: 0,
       limit: 10,
-      ListType: 'buy'
+      showList: [],
     };
   },
   watch: {
@@ -162,22 +162,26 @@ export default {
         this.setList(this.aboutInfoSell, newValue);
       }
     },
-    setList(sell, buy) {
+    setList(sell) {
       const sellResult = []
       const buyResult = []
       let spliceResult = []
       let item, volume, price, id, seller;
       let resultItem;
+      console.log(sell)
+
       for (let i = 0; i < sell.length; i++) {
         item = sell[i]
         let token = getTokenName(item.longInfo._underlying)
         if (token == 'WBNB') {
+          // call
           resultItem = {
-            id: item.seller,
+            seller: item.seller,
+            id: item.askID,
             volume: precision.divide(item.volume, item.longInfo._strikePrice),
-            price: fromWei(item.price, item.longInfo._underlying),
+            price: precision.divide(item.price, item.volume),
             settleToken: item.settleToken,
-            _strikePrice: item.longInfo._underlying,
+            _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._underlying),
             _underlying: item.longInfo._underlying,
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
@@ -185,27 +189,34 @@ export default {
           }
           buyResult.push(resultItem)
         } else {
+          let amount = fromWei(item.volume, item.longInfo._underlying)
+          let exPirce = fromWei(item.longInfo._strikePrice, item.longInfo._underlying)
+          exPirce = precision.divide(1, exPirce)
           resultItem = {
-            id: item.seller,
-            volume: precision.divide(item.volume, item.longInfo._strikePrice),
+            seller: item.seller,
+            id: item.askID,
+            volume: Math.ceil(precision.divide(amount, exPirce)),
             price: fromWei(item.price, item.longInfo._underlying),
             settleToken: item.settleToken,
-            _strikePrice: item.longInfo._underlying,
+            _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._underlying),
             _underlying: item.longInfo._underlying,
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
             buyNum: ''
           }
           sellResult.push(resultItem)
+
         }
       }
-      if (this.ListType == 'buy') {
-        spliceResult = buyResult.splice(this.page * this.limit, this.limit)
+      if (this.InsureType == 1) {
+        // call
+        this.insuranceList = buyResult
+        this.showList = buyResult.splice(this.page * this.limit, this.limit)
       } else {
-        spliceResult = sellResult.splice(this.page * this.limit, this.limit)
+        this.insuranceList = sellResult
+        this.showList = sellResult.splice(this.page * this.limit, this.limit)
       }
-      console.log(spliceResult)
-      this.insuranceList = spliceResult
+
     },
     // 分页
     upPage() {
@@ -213,14 +224,16 @@ export default {
         return
       }
       this.page = this.page - 1
-      this.setList(this.aboutInfoSell);
+      let list = this.insuranceList.splice(this.page * this.limit, this.limit)
+      this.showList = list
     },
     downPage() {
-      if (Math.floor(this.aboutInfoSell.length / this.limit) <= this.page) {
+      if (Math.floor(this.insuranceList.length / this.limit) <= this.page) {
         return
       }
       this.page = this.page + 1
-      this.setList(this.aboutInfoSell);
+      let list = this.insuranceList.splice(this.page * this.limit, this.limit)
+      this.showList = list
     },
     // 承保按钮
     handleClickBuy(data) {
@@ -229,16 +242,15 @@ export default {
       }
       const datas = {
         askID: data.id,
-        volume: data.buyNum,
+        volume: data.buyNum * data._strikePrice,
         price: data.price,
-        settleToken: 'WBNB',
-        _strikePrice: data.price,
-        _underlying: 'HELMET',
+        settleToken: 'HELMET',
+        _strikePrice: data._strikePrice,
+        _underlying: data._underlying,
         _expiry: data._expiry,
-        _collateral: 'WBNB',
-
+        _collateral: data._collateral,
       };
-      buyInsurance(datas, (status) => { });
+      buyInsuranceBuy(datas, (status) => { });
     },
     // 计算数量
     setNum() {
