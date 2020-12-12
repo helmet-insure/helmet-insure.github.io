@@ -38,6 +38,7 @@ import StatusDialog from '~/components/common/status-dialog.vue';
 import MyPayaso from '~/components/common/my-payaso.vue';
 import PMask from '~/components/common/p-mask.vue';
 import WallectDownLoad from '~/components/common/wallet-download.vue';
+import { uniswap } from '~/assets/utils/address-pool.js';
 
 export default {
   name: 'default',
@@ -134,6 +135,7 @@ export default {
     this.$bus.$on('REFRESH_ALL_DATA', (data) => {
       this.refreshAllData();
     });
+    this.getIndexPirce()
   },
   methods: {
     getStatusTitle(type) {
@@ -219,6 +221,27 @@ export default {
     refreshAllData() {
       this.$store.dispatch('setAllMap');
     },
+    // 保存指数价格
+    async getIndexPirce() {
+      let list = this.$store.state.coinList
+      let callIndexPirce = {};
+      let putIndexPirce = {};
+      for (let i = 0; i < list.length; i++) {
+        let px = await uniswap('WBNB', list[i]);
+        let key = list[i]
+        callIndexPirce[key] = px
+      }
+      for (let i = 0; i < list.length; i++) {
+        let px = await uniswap(list[i], 'WBNB');
+        const key = list[i]
+        putIndexPirce[key] = px
+      }
+      let arr = []
+      arr.push(callIndexPirce)
+      console.log(arr)
+      arr.push(putIndexPirce)
+      this.$store.commit('SET_ALL_INDEX_PRICE', arr)
+    }
   },
 };
 </script>

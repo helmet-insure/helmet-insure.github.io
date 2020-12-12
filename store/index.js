@@ -110,12 +110,8 @@ export const state = () => ({
     FOR_BNB: false,
     BNB_FOR: false,
   },
-  Options: {
-    indexPrice: 0,
-    _strikePrice: 0,
-    _underlying: "HELMET",
-    _expiry: 0,
-  },
+  dueDate: "2020-12-16 00:00",
+  allIndexPrice: [],
 });
 
 export const mutations = {
@@ -214,24 +210,13 @@ export const mutations = {
     // 24小时Long token 铸造量
     state.longTokenCreatedVolume = data;
   },
+  // 授权列表
   SET_APPROVE_LIST(state, data) {
     state.approveList = data;
   },
-  // 保存指数价格
-  SET_INDEX_PRICE(state, data) {
-    state.Options.indexPrice = data;
-  },
-  // 保存执行价格
-  SET_STRIKE_PRICE(state, data) {
-    state.Options._strikePrice = data;
-  },
-  // 保存标的物
-  SET_COIN_TYPE(state, data) {
-    state.Options._underlying = data;
-  },
-  // 保存到期时间
-  SET_DUR_DATE(state, data) {
-    state.Options._expiry = data;
+  // 保存所有指数价格
+  SET_ALL_INDEX_PRICE(state, data) {
+    state.allIndexPrice = data;
   },
 };
 

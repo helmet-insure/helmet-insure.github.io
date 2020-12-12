@@ -21,7 +21,12 @@
           <td>{{ item.beSold }}</td>
           <td>
             {{ item.unSold }}
-            <span class="cancel">撤销</span>
+            <span
+              class="cancel"
+              @click="handleClickCancel(item)"
+              v-if="item.unSold != 0"
+              >撤销</span
+            >
           </td>
           <td>53737</td>
           <td>{{ item.dueDate }}</td>
@@ -73,6 +78,7 @@ import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
 import { getTokenName } from '~/assets/utils/address-pool.js';
+import { onCancel } from '~/interface/order.js'
 export default {
   data() {
     return {
@@ -146,8 +152,12 @@ export default {
       } else {
         return 0
       }
-      console.log(array)
     },
+    // 撤销
+    handleClickCancel(data) {
+      console.log(data)
+      onCancel(data.id, (status) => { });
+    }
   }
 };
 </script>
@@ -163,6 +173,9 @@ export default {
   font-size: 14px;
   color: #fff;
   cursor: pointer;
+  &:hover {
+    background: #ffa000;
+  }
 }
 @media screen and (min-width: 750px) {
   .o_button {

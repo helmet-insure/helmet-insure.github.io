@@ -32,6 +32,7 @@
     <InsuranceForm
       v-if="type == 'sell'"
       :currentType="TradeType"
+      :currentCoin="curCoin"
     ></InsuranceForm>
   </div>
 </template>

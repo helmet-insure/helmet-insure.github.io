@@ -217,7 +217,7 @@ export const getTokenName = (address) => {
   let tokenAddress = address.toLowerCase();
   switch (tokenAddress) {
     case "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c":
-      return "BNB";
+      return "WBNB";
     case "0xb8c540d00dd0bf76ea12e4b4b95efc90804f924e":
       return "QUSD";
     case "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82":
@@ -232,6 +232,5 @@ export const getTokenName = (address) => {
       return "CTK";
     default:
       return "--";
-      break;
   }
 };

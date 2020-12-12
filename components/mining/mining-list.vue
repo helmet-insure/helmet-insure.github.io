@@ -395,7 +395,6 @@ export default {
         approveList[key] = value;
       }
       this.$store.commit('SET_APPROVE_LIST', approveList);
-      console.log(approveList);
     },
   },
 };

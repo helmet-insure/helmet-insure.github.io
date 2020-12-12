@@ -10,7 +10,7 @@
       <!-- <span class="close"></span> -->
       <!-- <h3 class="title">Supply</h3> -->
       <div class="select-type">
-        <label>{{ $t('Dialog.Type') }}</label>
+        <label>{{ $t("Dialog.Type") }}</label>
         <TypeSelect @change="colChanged"></TypeSelect>
       </div>
 
@@ -18,19 +18,19 @@
 
       <PrivateRadio @change="praChanged"></PrivateRadio>
       <div class="contract-address" v-if="col == 'OTHERS'">
-        <label>{{ $t('Dialog.ContractAdress') }}</label>
+        <label>{{ $t("Dialog.ContractAdress") }}</label>
         <input v-model="address" class="address_input" />
       </div>
       <div class="control-block">
         <div class="control-item">
-          <label>{{ $t('Dialog.DueDate') }}</label>
+          <label>{{ $t("Dialog.DueDate") }}</label>
           <DueDate @change="dueDateChanged"></DueDate>
         </div>
         <div class="control-item">
           <div class="index-price-box">
-            <label>{{ $t('Dialog.ExecutivePrice') }}</label>
+            <label>{{ $t("Dialog.ExecutivePrice") }}</label>
             <p class="index-price">
-              {{ $t('Dialog.UniswapIndex') }}: {{ indexPx }}
+              {{ $t("Dialog.UniswapIndex") }}: {{ indexPx }}
             </p>
           </div>
           <PInput
@@ -49,7 +49,7 @@
       </div>
       <div class="control-block">
         <div class="control-item">
-          <label>{{ $t('Dialog.Quantity') }}</label>
+          <label>{{ $t("Dialog.Quantity") }}</label>
           <PInput
             type="number"
             v-model="qty"
@@ -59,7 +59,7 @@
           ></PInput>
         </div>
         <div class="control-item">
-          <label>{{ $t('Dialog.ExpectedDPR') }}</label>
+          <label>{{ $t("Dialog.ExpectedDPR") }}</label>
           <PInput
             type="number"
             v-model="dpr"
@@ -67,23 +67,23 @@
             maxValue="10000"
             right="%"
           ></PInput>
-          <p class="rent">{{ $t('Dialog.Rent') }} ≈ {{ rent }}</p>
+          <p class="rent">{{ $t("Dialog.Rent") }} ≈ {{ rent }}</p>
         </div>
       </div>
       <!-- 抵押 -->
       <div class="collateral">
-        <label>{{ $t('Dialog.Collateral') }}</label>
+        <label>{{ $t("Dialog.Collateral") }}</label>
         <span>{{ collateral }} {{ und }}</span>
       </div>
       <!-- 余额 -->
       <div class="balance">
-        <label>{{ $t('Dialog.Balance') }}</label>
+        <label>{{ $t("Dialog.Balance") }}</label>
         <span>{{ balance }} {{ und }}</span>
       </div>
       <div class="tips">
         {{
-          $t('Dialog.Time', {
-            time: moment(dueDate).format('YYYY-MMM Do HH:mm'),
+          $t("Dialog.Time", {
+            time: moment(dueDate).format("YYYY-MMM Do HH:mm"),
             collateral: collateral,
             und: und,
             qty: qty,
@@ -104,7 +104,7 @@ import SelectPrice from './select-price.vue';
 import PInput from '~/components/common/p-input.vue';
 import { uniswap } from '~/assets/utils/address-pool.js';
 import precision from '~/assets/js/precision.js';
-import { getBalance, onIssue } from '~/interface/order.js';
+import { getBalance, onIssueSell } from '~/interface/order.js';
 import moment from 'moment';
 import { fixD, fixInput } from '~/assets/js/util.js';
 
@@ -246,14 +246,14 @@ export default {
         address: this.address,
         _yield: 0,
       };
-      onIssue(data, (status) => {
-        // console.log('onIssue####status#####', status);
+      onIssueSell(data, (status) => {
+        // console.log('onIssueSell####status#####', status);
         // if (status === 'pending') {
-        //   console.log('onIssue####pending');
+        //   console.log('onIssueSell####pending');
         // } else if (status === 'approve') {
-        //   console.log('onIssue####approve');
+        //   console.log('onIssueSell####approve');
         // } else if (status === 'success' || status === 'failed') {
-        //   console.log('onIssue####success or failed###', status);
+        //   console.log('onIssueSell####success or failed###', status);
         // }
       });
     },
@@ -261,7 +261,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 .address_input {
   &::-webkit-input-placeholder {
     font-size: inherit;

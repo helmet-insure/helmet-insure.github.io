@@ -14,138 +14,177 @@
     </div>
     <div class="pay">
       <p>
-        折合：<span>{{ precision.times(volume * _strikePrice, 4) }} BNB</span>
+        折合：<span>{{ strikePrice * volume }} {{ unit }}</span>
       </p>
-      <p>预期最大收益：<span>11111 BNB</span></p>
+      <p>
+        预期最大收益：<span>{{ earnings }} BNB</span>
+      </p>
       <!-- <p>
         保费：<span>{{ Rent }} BNB</span>
       </p> -->
       <!-- <p>预期最大收益：<span>11111 BNB</span></p> -->
     </div>
     <span>
-      如果在行权日之前，价格没有达到 <i>XXX</i> ，您将获得无风险收益。
+      如果在行权日之前，价格没有达到
+      <i></i>
+      ，您将获得无风险收益。
     </span>
   </div>
 </template>
 
 <script>
-import { onIssue } from '~/interface/order.js';
+import { onIssueSell, onIssueSellOnETH } from '~/interface/order.js';
 import precision from '~/assets/js/precision.js';
 export default {
-  props: ['currentType'],
+  props: ['currentCoin', 'currentType'],
   data() {
     return {
-      dpr: '', //DPR
+      dpr: 1, //DPR
       volume: '', //数量
       precision,
       Rent: 0,
-      tradeType: 1,
+      CoinType: 'HELMET',
+      TradeType: 1,
+      indexPx: 0.00333333,
+      strikePrice: 0.00666666,
+      unit: 'BNB',
+      currency: 'WBNB',
+      earnings: 0,
     };
   },
   computed: {
-    indexPrice() {
-      return this.$store.state.Options.indexPrice;
+    undAndCol() {
+      if (this.CoinType && this.TradeType) {
+        return {
+          underly: this.CoinType,
+          curType: this.TradeType,
+        };
+      }
     },
+    // 时间
     _expiry() {
-      return this.$store.state.Options._expiry;
+      return this.$store.state.dueDate;
     },
-    _strikePrice() {
-      return this.$store.state.Options._strikePrice;
-    },
-    _underlying() {
-      return this.$store.state.Options._underlying;
-    },
+    // 保费参数
     RentGrounp() {
       return {
         dpr: this.dpr,
-        indexPrice: this.$store.state.Options.indexPrice,
+        indexPx: this.indexPx,
+        strikePrice: this.strikePrice,
+        _expiry: new Date(this._expiry) * 1
       };
     },
+    IndexPxArray() {
+      return this.$store.state.allIndexPrice
+    }
   },
   watch: {
-    currentType(newValue) {
-      this.tradeType = newValue
+    currentCoin(val) {
+      this.CoinType = val;
+    },
+    currentType(val) {
+      console.log(val)
+      this.TradeType = val;
+    },
+    undAndCol: {
+      handler: 'undAndColWatch',
+      immediate: true,
     },
     RentGrounp: {
       handler: {
         handler: 'watchRent',
-        deep: true,
         immediate: true,
       },
     },
   },
   methods: {
     submitSupply() {
-      let Options = this.$store.state.Options;
-      let { indexPrice, _expiry, _strikePrice, _underlying } = Options;
       // 私有化  不要
       // 标的物
       // 执行价格 行权价
       // 到期日
       // 结算token
       // 单价
-      let Rent = this.getRent(indexPrice, _strikePrice, _expiry);
-      const data = {
-        private: false, // 
-        annual: this.dpr,
-        category: _underlying, // 
-        currency: 'WBNB', // 
-        expire: _expiry, // 
-        premium: Rent,
-        price: indexPrice,
-        volume: this.volume, // 
-        _yield: 0,
+      let data;
+      if (this.TradeType == 2) {
+        data = {
+          private: false, // 
+          annual: this.dpr,
+          category: this.CoinType, // 
+          currency: this.currency, // 
+          expire: this._expiry, // 
+          premium: this.Rent,
+          price: this.strikePrice,
+          volume: this.volume, // 
+          settleToken: 'HELMET',
+          _yield: 0,
+        }
+        onIssueSellOnETH(data, (status) => { })
+      } else {
+        data = {
+          private: false, // 
+          annual: this.dpr,
+          category: this.currency, // 
+          currency: this.CoinType, // 
+          expire: this._expiry, // 
+          premium: this.Rent,
+          price: this.strikePrice,
+          volume: this.volume, // 
+          settleToken: 'HELMET',
+          _yield: 0,
+        }
+        onIssueSell(data, (status) => { });
       }
       console.log(data)
 
-      // const data = {
-      // private: this.private,
-      // annual: this.dpr,
-      // category: this.col,
-      // currency: this.und,
-      // expire: this.dueDate,
-      // premium: this.rent,
-      // price: this.price,
-      // volume: this.qty,
-      // address: this.address,
-      // _yield: 0,
-      // };
-      onIssue(data, (status) => {
-        console.log('onIssue####status#####', status);
-        if (status === 'pending') {
-          console.log('onIssue####pending');
-        } else if (status === 'approve') {
-          console.log('onIssue####approve');
-        } else if (status === 'success' || status === 'failed') {
-          console.log('onIssue####success or failed###', status);
-        }
-      });
     },
     watchRent(newValue) {
-    },
-    getRent(indexPrice, _strikePrice, _expiry) {
-      // 指数价格 执行价格 时间
-      if (this.dpr && indexPrice && _strikePrice && _expiry) {
-        let DPR = this.dpr / 100;
+      let { dpr, indexPx, strikePrice, _expiry } = newValue
+      if (newValue.dpr && newValue.indexPx && newValue.strikePrice && newValue._expiry) {
+        let DPR = dpr / 100;
         let time1 = new Date(_expiry).getTime();
         let time2 = new Date().getTime();
         let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
         let premium;
-        if (this.tradeType == 1) {
+        let earnings;
+        if (this.TradeType == 1) {
           premium = precision.minus(
-            precision.times(DPR, _strikePrice, day),
-            precision.minus(indexPrice, _strikePrice)
+            precision.times(DPR, strikePrice, day),
+            precision.minus(indexPx, strikePrice)
           );
+          earnings = - (Math.max(indexPx - strikePrice, 0) - premium)
         } else {
           premium = precision.minus(
-            precision.times(DPR, _strikePrice, day),
-            precision.minus(_strikePrice, indexPrice)
+            precision.times(DPR, strikePrice, day),
+            precision.minus(strikePrice, indexPx)
           );
+          earnings = - (Math.max(strikePrice - indexPx, 0) - premium)
         }
         this.Rent = premium;
-        console.log(precision.times(DPR, _strikePrice, day), Math.abs(precision.minus(indexPrice, _strikePrice)))
+        this.earnings = earnings
         return premium;
       }
+    },
+    undAndColWatch(newValue) {
+      let list = this.IndexPxArray
+      let coin = newValue.underly
+      let type = newValue.curType
+      let px;
+      let exPx;
+      if (!list.length) {
+        return
+      }
+      if (type == 1) {
+        px = list[0][coin]
+        exPx = list[0][coin] * 2
+        this.unit = coin
+      } else {
+        px = list[1][coin]
+        exPx = list[1][coin] * 0.5
+        this.unit = 'BNB'
+      }
+      this.indexPx = px
+      this.strikePrice = exPx
     },
   },
 };

@@ -3,7 +3,7 @@
     <section>
       <div>
         <span>{{ $t("Content.InsurancePrice") }}</span>
-        <p>{{ indexPx || 0 }} {{ unit }}</p>
+        <p>{{ strikePrice }} {{ unit }}</p>
       </div>
       <div>
         <span>{{ $t("Content.ProtectTheCycle") }}</span>
@@ -22,13 +22,13 @@
         <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Helmet"></use></svg
-          >{{ this.HELMET }} HELMET
+          >{{ BalanceArray[underly] }} {{ underly }}
         </p>
-        <p>
+        <!-- <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-BNB"></use></svg
-          >{{ this.BNB }} BNB
-        </p>
+          >{{ BalanceArray["BNB"] }} BNB
+        </p> -->
         <!-- <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Qusd"></use></svg
@@ -52,32 +52,34 @@ export default {
       underly: 'HELMET', //标的物
       curType: 1,
       collateral: 'WBNB', //抵押物
-      dueDate: '2020-12-16 00:00',
+      BalanceArray: {}, //当前结算币种
       QUSD: 0,
       BNB: 0,
       CAKE: 0,
       HELMET: 0,
       CKT: 0,
       FORTUBE: 0,
-      indexPx: 0,
-      unit: 'BNB',
+      indexPx: 300,
+      unit: 'HELMET',
       precision,
+      strikePrice: 600,
     };
   },
   computed: {
-    // 保费
-    // 预期日化收益 = ((指数价格 - 执行价格) + 保费) / (执行价格 * 天数)
-    // 保费 = 预期日化收益 * 执行价格 * 天数 - 指数价格-执行价格);
-
-    CoinType() {
-      if (this.underly && this.collateral && this.curType) {
+    dueDate() {
+      return this.$store.state.dueDate
+    },
+    undAndCol() {
+      if (this.underly && this.curType) {
         return {
           underly: this.underly,
-          collateral: this.collateral,
-          Type: this.curType,
+          curType: this.curType,
         };
       }
     },
+    IndexPxArray() {
+      return this.$store.state.allIndexPrice
+    }
   },
   watch: {
     currentCoin(val) {
@@ -86,8 +88,8 @@ export default {
     currentType(val) {
       this.curType = val;
     },
-    CoinType: {
-      handler: 'CoinTypeWatch',
+    undAndCol: {
+      handler: 'undAndColWatch',
       immediate: true,
     },
   },
@@ -97,49 +99,46 @@ export default {
     });
     setTimeout(() => {
       this.getBalance();
-      this.getIndexPrice();
     }, 1000);
   },
   methods: {
     async getBalance() {
       const helmetAmount = await getBalance('HELMET');
       const cakeAmount = await getBalance('CAKE');
-      const ctkAmount = await getBalance('CKT');
+      const ctkAmount = await getBalance('CTK');
       const fortubeAmount = await getBalance('FORTUBE');
-      const bnbAmount = await getBalance('BNB');
+      const bnbAmount = await getBalance('WBNB');
       const qusdAmount = await getBalance('QUSD');
-      this.BNB = fixD(bnbAmount, 4);
-      this.QUSD = fixD(qusdAmount, 4);
-      this.CAKE = fixD(cakeAmount, 4);
-      this.HELMET = fixD(helmetAmount, 4);
-      this.CKT = fixD(helmetAmount, 4);
-      this.FORTUBE = fixD(helmetAmount, 4);
-    },
-    async CoinTypeWatch(newValue) {
-      this.collateral = 'WBNB';
-      this.underly = this.underly;
-      this.unit = 'BNB';
-      const px = await uniswap(this.underly, this.collateral, window.chainID);
-      this.$store.commit('SET_INDEX_PRICE', fixD(px, 4));
-      if (newValue.Type == 1) {
-        this.indexPx = fixD(px * 2, 4);
-      } else {
-        this.indexPx = fixD(px / 2, 4);
+      let BalanceArray = {
+        BNB: fixD(bnbAmount, 4),
+        QUSD: fixD(qusdAmount, 4),
+        CAKE: fixD(cakeAmount, 4),
+        HELMET: fixD(helmetAmount, 4),
+        CTK: fixD(ctkAmount, 4),
+        FORTUBE: fixD(fortubeAmount, 4),
       }
-      this.$store.commit('SET_STRIKE_PRICE', this.indexPx);
-
+      this.BalanceArray = BalanceArray
     },
-    async getIndexPrice() {
-      const px = await uniswap(this.underly, this.collateral);
-      this.$store.commit('SET_INDEX_PRICE', fixD(px, 4));
-      this.indexPx = fixD(px, 4);
-      if (this.curType == 1) {
-        this.indexPx = fixD(px * 2, 4);
-      } else {
-        this.indexPx = fixD(px / 2, 4);
+    undAndColWatch(newValue) {
+      let list = this.IndexPxArray
+      let coin = newValue.underly
+      let type = newValue.curType
+      let px;
+      let exPx;
+      if (!list.length) {
+        return
       }
-      this.$store.commit('SET_STRIKE_PRICE', this.indexPx);
-      this.$store.commit('SET_DUR_DATE', this.dueDate);
+      if (type == 1) {
+        px = list[0][coin]
+        exPx = list[0][coin] * 2
+        this.unit = coin
+      } else {
+        px = list[1][coin]
+        exPx = list[1][coin] * 0.5
+        this.unit = 'WBNB'
+      }
+      this.indexPx = px
+      this.strikePrice = exPx
     },
   },
 };

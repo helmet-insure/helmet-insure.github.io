@@ -21,38 +21,32 @@ const netObj = {
   4: "rinkeby.",
   56: "BSC",
 };
-
-export const onIssue = async (data_, callBack) => {
+// 翻倍
+export const onIssueSell = async (data_, callBack) => {
   let data = { ...data_ };
-  // 标的物
-  data.category = getAddress(data.category); //111
-  // 抵押物
-  data.currency = getAddress(data.currency); //1111
+  data.category = getAddress(data.category);
+  data.currency = getAddress(data.currency);
+  data.settleToken = getAddress(data.settleToken);
   let cwei = getWei(data.currency);
   let fix = cwei === "lovelace" ? 6 : 18;
   // let fix = 18;
-  // 保护天数
   data.expire = new Date(data.expire).getTime();
   data.expire = parseInt(precision.divide(data.expire, 1000));
-  //total  价格乘以数量  = 保单费用
   data.total = toWei(precision.times(data.price, data.volume), data_.currency);
-  //
-  // let premium = fixD(precision.divide(data.premium, data.price), 18);
-
-  // premium = toWei(premium);
-  // data.premium = premium;
-  // volume  与 total 值一样
+  let premium = fixD(precision.divide(data.premium, data.price), 18);
+  // premium = toWei(premium, data_.currency);
+  premium = toWei(premium);
+  data.premium = premium;
   let volume = fixD(precision.times(data.volume, data.price), fix);
   volume = toWei(volume, data_.currency);
+  // volume = toWei(volume);
   data.volume = volume;
 
-  let onePrice = toWei(data.price, data_.currency);
-  data.onePrice = onePrice;
   let priceFix = getStrikePriceFix(data_.currency, data_.category);
   let priceUnit = getWeiWithFix(priceFix);
-
-  let price = fixD(precision.divide(1, data.price), priceFix);
-
+  // let price = fixD(precision.divide(1, data.price), fix);
+  let price = fixD(data.price, priceFix);
+  // price = toWei(price, data_.currency);
   price = window.WEB3.utils.toWei(String(price), priceUnit);
   // window.WEB3.utils.toWei(String(number), unit);
   data.price = price;
@@ -62,8 +56,106 @@ export const onIssue = async (data_, callBack) => {
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
     conText: `<p>Rent <span>${data_.volume} ${data_.category}</span>, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
   });
-  console.log("data_#######", data);
+  console.log(data, "$$$$$$$$$$$$$$$$$$$$");
+  try {
+    const Contract = await expERC20(data.currency);
+    // 一键判断是否需要授权，给予无限授权
+    await oneKeyArrpove(Contract, "ORDER", data.total, callBack);
 
+    const orderContract = await Order();
+    orderContract.methods
+      .sell(
+        false,
+        data.currency, // 抵押物 DAI
+        data.category, // 保险品类 WETH
+        data.price, // 触发保险金额 抵押物单位   // 1/200
+        data.expire,
+        data.volume, // 200
+        data.settleToken, // 支付货币
+        data.premium // 单价
+      )
+      .send({ from: window.CURRENTADDRESS })
+      .on("transactionHash", function(hash) {
+        bus.$emit("CLOSE_STATUS_DIALOG");
+        bus.$emit("OPEN_STATUS_DIALOG", {
+          type: "submit",
+          conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
+        });
+      })
+      // .on('receipt', function(receipt){
+      //     console.log('methods.sell##receipt###', receipt, '###时间###',new Date());
+      // })
+      .on("confirmation", function(confirmationNumber, receipt) {
+        if (confirmationNumber === 0) {
+          if (window.statusDialog) {
+            bus.$emit("CLOSE_STATUS_DIALOG");
+            bus.$emit("OPEN_STATUS_DIALOG", {
+              type: "success",
+              title: "Successfully rented",
+              conTit:
+                '<div>The rental advertisement is published successfully, you can check it on <a href="/sell" target="blank">my rental advertisement page</a></div>',
+              conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
+            });
+          } else {
+            Message({
+              message: "The rental advertisement is published successfully",
+              type: "success",
+              // duration: 0,
+            });
+          }
+          setTimeout(() => {
+            bus.$emit("REFRESH_ALL_DATA");
+          }, 1000);
+        }
+      })
+      .on("error", function(error, receipt) {
+        bus.$emit("CLOSE_STATUS_DIALOG");
+        if (error && error.message) {
+          Message({
+            message: error && error.message,
+            type: "error",
+          });
+        }
+      });
+  } catch (error) {
+    console.log("onIssueSell", error);
+  }
+};
+// 腰斩
+export const onIssueSellOnETH = async (data_, callBack) => {
+  let data = { ...data_ };
+  data.category = getAddress(data.category);
+  data.currency = getAddress(data.currency);
+  data.settleToken = getAddress(data.settleToken);
+  let cwei = getWei(data.currency);
+  let fix = cwei === "lovelace" ? 6 : 18;
+  // let fix = 18;
+  data.expire = new Date(data.expire).getTime();
+  data.expire = parseInt(precision.divide(data.expire, 1000));
+  data.total = toWei(precision.times(data.price, data.volume), data_.currency);
+  let premium = fixD(precision.divide(data.premium, data.price), 18);
+  // premium = toWei(premium, data_.currency);
+  premium = toWei(premium);
+  data.premium = premium;
+  let volume = fixD(precision.times(data.volume, data.price), fix);
+  volume = toWei(volume, data_.currency);
+  // volume = toWei(volume);
+  data.volume = volume;
+
+  let priceFix = getStrikePriceFix(data_.currency, data_.category);
+  let priceUnit = getWeiWithFix(priceFix);
+  // let price = fixD(precision.divide(1, data.price), fix);
+  let price = fixD(precision.divide(1, data.price), priceFix);
+  // price = toWei(price, data_.currency);
+  price = window.WEB3.utils.toWei(String(price), priceUnit);
+  // window.WEB3.utils.toWei(String(number), unit);
+  data.price = price;
+
+  bus.$emit("OPEN_STATUS_DIALOG", {
+    type: "pending",
+    // 租用 0.5 个WETH 帽子，执行价格为300 USDT
+    conText: `<p>Rent <span>${data_.volume} ${data_.category}</span>, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
+  });
   try {
     const Contract = await expERC20(data.currency);
     // 一键判断是否需要授权，给予无限授权
@@ -75,12 +167,11 @@ export const onIssue = async (data_, callBack) => {
         false,
         // data.currency, // 抵押物 DAI
         data.category, // 保险品类 WETH
-        data.price, // 单价
-        // data.price, // 触发保险金额 抵押物单位   // 1/200
+        data.price, // 触发保险金额 抵押物单位   // 1/200
         data.expire,
         // data.volume, // 200
         data.currency, // 支付货币
-        data.onePrice // 单价
+        data.premium // 单价
       )
       .send({ from: window.CURRENTADDRESS, value: data.volume })
       .on("transactionHash", function(hash) {
@@ -125,29 +216,10 @@ export const onIssue = async (data_, callBack) => {
           });
         }
       });
-    // .on('transactionHash', (hash) => {
-    //   console.log('onIssue###transactionHash####', hash);
-    //   // callBack('pending');
-    //   //onChangeHash(hash);
-    // })
-    // .on('receipt', (receipt) => {
-    //     console.log('receipt#####', receipt); // 钱包弹框弹出完成的时候
-    // })
-    // .on('confirmation', (_, receipt) => {
-    //   console.log('onIssue###confirmation####', receipt);
-    //   // callBack('success');
-    //   //onReceiptChange(receipt);
-    // })
-    // .on('error', (err, receipt) => {
-    //   console.log('onIssue####error####', err);
-    //   // callBack('failed');
-    //   //onReceiptChange(receipt);
-    // });
   } catch (error) {
-    console.log("onIssue", error);
+    console.log("onIssueSellOnETH", error);
   }
 };
-
 export const buyInsurance = async (_data, callBack) => {
   // 是的，不过价格是两个资产的比值，它的精度应该是两个token的精度的差
   // 两个精度的差，可能是负数，因此，再加个18位精度
@@ -458,14 +530,15 @@ export const getMySellLog = async (callback) => {};
 export const getBalance = async (type, currcy) => {
   // const WEB3 = await web3();
   // const charID = await getID();
+
   const charID = window.chainID;
   let adress = type;
   if (type.indexOf("0x") === -1) {
-    adress = getAddress(type, charID);
+    adress = getAddress(type, 56);
   }
-  if (!adress || !window.CURRENTADDRESS) {
-    return 0;
-  }
+  // if (!adress || !window.CURRENTADDRESS) {
+  //   return 0;
+  // }
   const contract = await expERC20(adress);
   return contract.methods
     .balanceOf(window.CURRENTADDRESS)
