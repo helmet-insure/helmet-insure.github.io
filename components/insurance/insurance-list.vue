@@ -211,10 +211,12 @@ export default {
       if (this.InsureType == 1) {
         // call
         this.insuranceList = buyResult
-        this.showList = buyResult.splice(this.page * this.limit, this.limit)
+        this.showList = buyResult
+        // this.showList = buyResult.splice(this.page * this.limit, this.limit)
       } else {
         this.insuranceList = sellResult
-        this.showList = sellResult.splice(this.page * this.limit, this.limit)
+        this.showList = sellResult
+        // this.showList = sellResult.splice(this.page * this.limit, this.limit)
       }
 
     },
@@ -224,16 +226,22 @@ export default {
         return
       }
       this.page = this.page - 1
-      let list = this.insuranceList.splice(this.page * this.limit, this.limit)
-      this.showList = list
+      let list = this.insuranceList
+      list = list.slice(this.page * this.limit, this.limit)
+      this.showList = this.insuranceList
     },
     downPage() {
-      if (Math.floor(this.insuranceList.length / this.limit) <= this.page) {
+      if (Math.floor(this.insuranceList.length / this.limit) < this.page) {
         return
       }
+
       this.page = this.page + 1
-      let list = this.insuranceList.splice(this.page * this.limit, this.limit)
-      this.showList = list
+      console.log(this.page, this.limit, this.page * this.limit,)
+      console.log(this.insuranceList, '############')
+      let list = this.insuranceList
+      // list = list.slice(this.page * this.limit, this.page + 1 * this.limit)
+      console.log(list, '############')
+      this.showList = this.insuranceList
     },
     // 承保按钮
     handleClickBuy(data) {
