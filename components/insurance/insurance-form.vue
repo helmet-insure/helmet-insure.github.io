@@ -84,7 +84,6 @@ export default {
       this.CoinType = val;
     },
     currentType(val) {
-      console.log(val)
       this.TradeType = val;
     },
     undAndCol: {
@@ -148,9 +147,11 @@ export default {
         let earnings;
         if (this.TradeType == 1) {
           premium = precision.minus(
-            precision.times(DPR, (strikePrice * num), day),
+            precision.times(DPR, num, day),
             Math.min(precision.minus(strikePrice, indexPx), 0)
           );
+          console.log(precision.times(DPR, num, day),
+            Math.min(precision.minus(strikePrice, indexPx), 0))
           earnings = - (Math.max(indexPx - strikePrice, 0) - premium)
         } else {
           premium = precision.minus(
@@ -174,8 +175,8 @@ export default {
         return
       }
       if (type == 1) {
-        px = list[0][coin]
-        exPx = list[0][coin] * 2
+        px = list[1][coin]
+        exPx = list[1][coin] * 2
         this.unit = coin
       } else {
         px = list[1][coin]

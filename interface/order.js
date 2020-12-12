@@ -38,8 +38,9 @@ export const onIssueSell = async (data_, callBack) => {
   // premium = toWei(premium, data_.currency);
   premium = toWei(premium);
   data.premium = premium;
-  let volume = fixD(precision.times(data.volume, data.price), fix);
-  volume = toWei(volume, data_.currency);
+  // let volume = fixD(precision.times(data.volume, data.price), fix);
+
+  let volume = toWei(data_.volume, data_.currency);
   // volume = toWei(volume);
   data.volume = volume;
 
@@ -57,6 +58,7 @@ export const onIssueSell = async (data_, callBack) => {
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
     conText: `<p>Rent <span>${data_.volume} ${data_.category}</span>, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
   });
+  console.log(data, "$$$$$$$$$$$$$");
   try {
     const Contract = await expERC20(data.currency);
     // 一键判断是否需要授权，给予无限授权
@@ -248,12 +250,11 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   //   (data.volume / data._strikePrice) * data.price + "",
   //   getWei(data.settleToken)
   // );
-  let volume = fixD(precision.divide(data.volume, data._strikePrice), fix);
-  volume = toWei(volume, data.settleToken);
+  // let volume = fixD(precision.divide(data.volume, data._strikePrice), fix);
+  let volume = toWei(_data.volume, data.settleToken);
   // volume = toWei(volume);
   data.volume = volume;
-  let pay = precision.times(_data.price, _data.volume);
-  console.log(pay);
+  let pay = precision.times(_data._strikePrice, _data.volume);
 
   data.pay = toWei(pay, _data.settleToken);
   // data.volume = window.WEB3.utils.toWei(
@@ -262,6 +263,7 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   // );
   // console.log('data.volume####', data.volume);
   // return;
+  console.log(data);
   const Contract = await expERC20(data.settleToken);
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
@@ -273,7 +275,7 @@ export const buyInsuranceBuy = async (_data, callBack) => {
     await oneKeyArrpove(Contract, "ORDER", data.payPrice, callBack);
     const orderContract = await Order();
     orderContract.methods
-      .buy(data.askID, data.pay)
+      .buy(data.askID, data.volume)
       .send({ from: window.CURRENTADDRESS })
       .on("transactionHash", function(hash) {
         bus.$emit("CLOSE_STATUS_DIALOG");

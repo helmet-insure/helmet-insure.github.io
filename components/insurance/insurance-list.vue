@@ -168,18 +168,19 @@ export default {
       let spliceResult = []
       let item, volume, price, id, seller;
       let resultItem;
-      console.log(sell)
+      // console.log(sell)
 
       for (let i = 0; i < sell.length; i++) {
         item = sell[i]
         let token = getTokenName(item.longInfo._underlying)
         if (token == 'WBNB') {
           // call
+          // console.log(item)
           resultItem = {
             seller: item.seller,
             id: item.askID,
-            volume: precision.divide(item.volume, item.longInfo._strikePrice),
-            price: precision.divide(item.price, item.volume),
+            volume: fromWei(item.volume, item._underlying),
+            price: fromWei(item.price, item._underlying),
             settleToken: item.settleToken,
             _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._underlying),
             _underlying: item.longInfo._underlying,
@@ -188,6 +189,8 @@ export default {
             buyNum: ''
           }
           buyResult.push(resultItem)
+          console.log(buyResult)
+
         } else {
           let amount = fromWei(item.volume, item.longInfo._underlying)
           let exPirce = fromWei(item.longInfo._strikePrice, item.longInfo._underlying)
@@ -211,37 +214,34 @@ export default {
       if (this.InsureType == 1) {
         // call
         this.insuranceList = buyResult
-        this.showList = buyResult
-        // this.showList = buyResult.splice(this.page * this.limit, this.limit)
+        // this.showList = buyResult
+        this.showList = buyResult.slice(this.page * this.limit, this.limit)
       } else {
         this.insuranceList = sellResult
-        this.showList = sellResult
-        // this.showList = sellResult.splice(this.page * this.limit, this.limit)
+        // this.showList = sellResult
+        this.showList = sellResult.slice(this.page * this.limit, this.limit)
       }
 
     },
     // 分页
     upPage() {
-      if (this.page <= 0) {
+      if (this.page <= 1) {
         return
       }
       this.page = this.page - 1
-      let list = this.insuranceList
-      list = list.slice(this.page * this.limit, this.limit)
-      this.showList = this.insuranceList
+      let list = this.insuranceList.slice(((this.page) * 10), (this.page + 1) * 10)
+      console.log(((this.page - 1) * 10), (this.page) * 10)
+      this.showList = list
     },
     downPage() {
       if (Math.floor(this.insuranceList.length / this.limit) < this.page) {
         return
       }
-
+      let list = this.insuranceList.slice(((this.page) * 10), (this.page + 1) * 10)
       this.page = this.page + 1
-      console.log(this.page, this.limit, this.page * this.limit,)
-      console.log(this.insuranceList, '############')
-      let list = this.insuranceList
-      // list = list.slice(this.page * this.limit, this.page + 1 * this.limit)
-      console.log(list, '############')
-      this.showList = this.insuranceList
+      console.log(((this.page) * 10), (this.page + 1) * 10)
+      this.showList = list;
+
     },
     // 承保按钮
     handleClickBuy(data) {
@@ -250,7 +250,7 @@ export default {
       }
       const datas = {
         askID: data.id,
-        volume: data.buyNum * data._strikePrice,
+        volume: data.buyNum,
         price: data.price,
         settleToken: 'HELMET',
         _strikePrice: data._strikePrice,

@@ -149,7 +149,7 @@ export default {
           long: item.sellInfo.long
         }
         result.push(resultItem)
-        console.log(list)
+        // console.log(list)
       }
       this.buyList = result
     },
