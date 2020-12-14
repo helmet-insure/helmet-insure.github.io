@@ -13,9 +13,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in buyList" :key="index">
+        <tr
+          v-for="(item, index) in showList"
+          :key="index"
+          :class="
+            getTokenName(item._underlying) == 'WBNB'
+              ? 'call_style'
+              : 'put_style'
+          "
+        >
           <td>{{ item.id }}</td>
-          <td>{{ getTokenName(item._underlying) }}</td>
+          <td>
+            {{
+              getTokenName(item._underlying) == "WBNB"
+                ? getTokenName(item._collateral)
+                : getTokenName(item._underlying)
+            }}
+          </td>
           <td>{{ item.price }}</td>
           <td>{{ item.Rent }}</td>
           <td>{{ item.volume }}</td>
@@ -100,8 +114,11 @@ export default {
       addCommom: addCommom,
       autoRounding: autoRounding,
       toRounding: toRounding,
-      buyList: [],
-      getTokenName
+      showList: [],
+      guaranteeList: [],
+      getTokenName,
+      page: 0,
+      limit: 5,
     }
   },
   computed: {
@@ -121,6 +138,7 @@ export default {
         this.setSettlementList(newValue);
       }
     },
+    // 格式化数据
     setSettlementList(list) {
       const result = [];
       let item, resultItem, amount, InsurancePrice, Rent, _collateral, _underlying, settleToken, downTime;
@@ -148,16 +166,18 @@ export default {
           _underlying: item.sellInfo.longInfo._underlying,
           long: item.sellInfo.long
         }
+
         result.push(resultItem)
         // console.log(list)
       }
-      this.buyList = result
+      this.guaranteeList = result
+      this.showList = result.slice(this.page * this.limit, this.limit)
     },
+    // 倒计时
     getDownTime(time) {
       let now = new Date() * 1
       let dueDate = time * 1000
       dueDate = new Date(dueDate)
-      console.log(dueDate)
       let DonwTime = dueDate - now
       let day = Math.floor(DonwTime / (24 * 3600000))
       let hour = Math.floor((DonwTime - (day * 24 * 3600000)) / 3600000)
@@ -166,6 +186,7 @@ export default {
       let template = `${day}天${hour}时${minute}分${second}秒`
       return template
     },
+    // 行权
     toActive(item) {
       let data = {
         token: getTokenName(item._underlying),
@@ -178,7 +199,28 @@ export default {
         settleToken: item.settleToken,
       }
       onExercise(data)
-    }
+    },
+    // 分页
+    upPage() {
+      if (this.page <= 0) {
+        return
+      }
+      let page = this.page
+      this.page = page - 1
+      let list = this.insuranceList.slice((this.page * 10), (page * 10))
+      this.showList = list
+    },
+    downPage() {
+      if (Math.floor(this.insuranceList.length / this.limit) <= this.page) {
+        return
+      }
+      let page = this.page + 1
+      this.page = page
+      let list = this.insuranceList.slice((this.page * 10), ((page + 1) * 10))
+      this.searchList()
+      this.showList = list;
+
+    },
   }
 };
 </script>
@@ -186,6 +228,41 @@ export default {
 <style lang='scss' scoped>
 @import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
+  .call_style {
+    background: rgba(0, 185, 0, 0.04);
+    &:hover {
+      td {
+        &:first-child:before {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 0px;
+          border-left: 2px solid#00b900;
+        }
+      }
+    }
+  }
+  .put_style {
+    background: #fff9f5;
+    &:hover {
+      td {
+        &:first-child:before {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 0px;
+          border-left: 2px solid#ff9600;
+        }
+      }
+    }
+  }
+
   .my_guarantee {
     > div {
       display: none;
@@ -227,8 +304,10 @@ export default {
       tbody {
         width: 100%;
         tr {
+          position: relative;
           width: 100%;
-          box-shadow: 0px 1px 0px 0px #ededf0;
+          box-sizing: border-box;
+          border-bottom: 1px solid #ededf0;
           td {
             white-space: nowrap;
             width: 100px;

@@ -24,11 +24,11 @@
             <use xlink:href="#icon-Helmet"></use></svg
           >{{ BalanceArray[underly] }} {{ underly }}
         </p>
-        <!-- <p>
+        <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-BNB"></use></svg
           >{{ BalanceArray["BNB"] }} BNB
-        </p> -->
+        </p>
         <!-- <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Qusd"></use></svg
@@ -117,6 +117,7 @@ export default {
         CTK: fixD(ctkAmount, 4),
         FORTUBE: fixD(fortubeAmount, 4),
       }
+      console.log(BalanceArray)
       this.BalanceArray = BalanceArray
     },
     undAndColWatch(newValue) {
@@ -129,9 +130,9 @@ export default {
         return
       }
       if (type == 1) {
-        px = list[0][coin]
-        exPx = list[0][coin] * 2
-        this.unit = coin
+        px = list[1][coin]
+        exPx = list[1][coin] * 2
+        this.unit = 'WBNB'
       } else {
         px = list[1][coin]
         exPx = list[1][coin] * 0.5

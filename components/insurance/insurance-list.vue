@@ -131,7 +131,6 @@ export default {
         this.setList(this.$store.state.aboutInfoSell)
       }
     },
-
     aboutInfoSell: {
       handler: 'aboutInfoSellWatch',
       immediate: true,
@@ -149,14 +148,20 @@ export default {
     aboutInfoBuy() {
       let list = this.$store.state.aboutInfoBuy
       return list
+    },
+    indexArray() {
+      let list = this.$store.state.allIndexPrice
+      return list
     }
   },
   methods: {
+    // 卖单数据
     aboutInfoSellWatch(newValue) {
       if (newValue) {
         this.setList(newValue, this.aboutInfoBuy);
       }
     },
+    // 买单数据
     aboutInfoBuyWatch(newValue) {
       if (newValue) {
         this.setList(this.aboutInfoSell, newValue);
@@ -189,17 +194,19 @@ export default {
             buyNum: ''
           }
           buyResult.push(resultItem)
-          console.log(buyResult)
+          // console.log(buyResult)
 
         } else {
           let amount = fromWei(item.volume, item.longInfo._underlying)
           let exPirce = fromWei(item.longInfo._strikePrice, item.longInfo._underlying)
           exPirce = precision.divide(1, exPirce)
+          let volume = fromWei(item.volume, item._underlying) * this.indexArray[0]['HELMET'] / 2
+          let price = fromWei(item.price, item.longInfo._underlying) * fromWei(item.volume, item._underlying) * this.indexArray[0]['HELMET'] / 2
           resultItem = {
             seller: item.seller,
             id: item.askID,
-            volume: Math.ceil(precision.divide(amount, exPirce)),
-            price: fromWei(item.price, item.longInfo._underlying),
+            volume: volume,
+            price: price,
             settleToken: item.settleToken,
             _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._underlying),
             _underlying: item.longInfo._underlying,
@@ -214,32 +221,34 @@ export default {
       if (this.InsureType == 1) {
         // call
         this.insuranceList = buyResult
-        // this.showList = buyResult
         this.showList = buyResult.slice(this.page * this.limit, this.limit)
       } else {
         this.insuranceList = sellResult
-        // this.showList = sellResult
         this.showList = sellResult.slice(this.page * this.limit, this.limit)
       }
 
     },
+    searchList() {
+
+    },
     // 分页
     upPage() {
-      if (this.page <= 1) {
+      if (this.page <= 0) {
         return
       }
-      this.page = this.page - 1
-      let list = this.insuranceList.slice(((this.page) * 10), (this.page + 1) * 10)
-      console.log(((this.page - 1) * 10), (this.page) * 10)
+      let page = this.page
+      this.page = page - 1
+      let list = this.insuranceList.slice((this.page * 10), (page * 10))
       this.showList = list
     },
     downPage() {
-      if (Math.floor(this.insuranceList.length / this.limit) < this.page) {
+      if (Math.floor(this.insuranceList.length / this.limit) <= this.page) {
         return
       }
-      let list = this.insuranceList.slice(((this.page) * 10), (this.page + 1) * 10)
-      this.page = this.page + 1
-      console.log(((this.page) * 10), (this.page + 1) * 10)
+      let page = this.page + 1
+      this.page = page
+      let list = this.insuranceList.slice((this.page * 10), ((page + 1) * 10))
+      this.searchList()
       this.showList = list;
 
     },
@@ -250,7 +259,7 @@ export default {
       }
       const datas = {
         askID: data.id,
-        volume: data.buyNum,
+        volume: fixD(data.buyNum / this.indexArray[0]['HELMET'] / 2, 8),
         price: data.price,
         settleToken: 'HELMET',
         _strikePrice: data._strikePrice,
@@ -258,6 +267,7 @@ export default {
         _expiry: data._expiry,
         _collateral: data._collateral,
       };
+      console.log(datas)
       buyInsuranceBuy(datas, (status) => { });
     },
     // 计算数量

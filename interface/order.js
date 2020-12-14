@@ -126,6 +126,7 @@ export const onIssueSell = async (data_, callBack) => {
 // 腰斩
 export const onIssueSellOnETH = async (data_, callBack) => {
   let data = { ...data_ };
+  console.log(data_);
   data.category = getAddress(data.category);
   data.currency = getAddress(data.currency);
   data.settleToken = getAddress(data.settleToken);
@@ -140,8 +141,8 @@ export const onIssueSellOnETH = async (data_, callBack) => {
   // premium = toWei(premium, data_.currency);
   premium = toWei(premium);
   data.premium = premium;
-  let volume = fixD(precision.times(data.volume, data.price), fix);
-  volume = toWei(volume, data_.currency);
+  // let volume = fixD(precision.times(data.volume, data.price), fix);
+  let volume = toWei(data_.volume, data_.currency);
   // volume = toWei(volume);
   data.volume = volume;
 
@@ -231,6 +232,8 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   // 比如 WETH/DAI，两者精度都是18，那么价格的精度就是18-18+18=18
   // USDT/USDT，精度=6-6+18=18  在抵押物和结算物相同时，总是18
   let data = { ..._data };
+  console.log(_data);
+
   // const WEB3 = new web3();
   const charID = window.chainID;
   data.settleToken = getAddress(data.settleToken, charID);
@@ -251,7 +254,8 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   //   getWei(data.settleToken)
   // );
   // let volume = fixD(precision.divide(data.volume, data._strikePrice), fix);
-  let volume = toWei(_data.volume, data.settleToken);
+  let volume = toWei(_data.volume, _data.settleToken);
+  console.log(volume, "#############");
   // volume = toWei(volume);
   data.volume = volume;
   let pay = precision.times(_data._strikePrice, _data.volume);

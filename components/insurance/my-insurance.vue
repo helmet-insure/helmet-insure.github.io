@@ -14,9 +14,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in sellList" :key="index">
+        <tr
+          v-for="(item, index) in showList"
+          :key="index"
+          :class="
+            getTokenName(item._underlying) == 'WBNB'
+              ? 'call_style'
+              : 'put_style'
+          "
+        >
           <td>{{ item.id }}</td>
-          <td>{{ item._underlying }}</td>
+          <td>
+            {{
+              getTokenName(item._underlying) == "WBNB"
+                ? getTokenName(item._collateral)
+                : getTokenName(item._underlying)
+            }}
+          </td>
           <td>{{ item.price }}</td>
           <td>{{ item.beSold }}</td>
           <td>
@@ -86,8 +100,11 @@ export default {
       addCommom: addCommom,
       autoRounding: autoRounding,
       toRounding: toRounding,
-      sellList: [],
-      getTokenName
+      showList: [],
+      guaranteeList: [],
+      getTokenName,
+      page: 0,
+      limit: 5,
     }
   },
   computed: {
@@ -110,6 +127,7 @@ export default {
         this.setSettlementList(newValue);
       }
     },
+    // 格式化数据
     setSettlementList(list) {
       let result = []
       let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold;
@@ -119,8 +137,6 @@ export default {
         amount = precision.divide(item.volume, item.price)
         // 保单价格
         InsurancePrice = fromWei(item.volume, item.settleToken)
-        // 标的物
-        _underlying = getTokenName(item.longInfo._underlying)
         //倒计时
         downTime = new Date(item.longInfo._expiry * 1000).toLocaleDateString();
         //已出售
@@ -133,11 +149,13 @@ export default {
           unSold: unSold,
           price: InsurancePrice,
           dueDate: downTime,
-          _underlying: _underlying,
+          _collateral: item.longInfo._collateral,
+          _underlying: item.longInfo._underlying,
         }
         result.push(resultItem)
       }
-      this.sellList = result
+      this.guaranteeList = result
+      this.showList = result.slice(this.page * this.limit, this.limit)
     },
     //获取已出售
     getBeSold(id) {
@@ -153,7 +171,28 @@ export default {
     // 撤销
     handleClickCancel(data) {
       onCancel(data.id, (status) => { });
-    }
+    },
+    // 分页
+    upPage() {
+      if (this.page <= 0) {
+        return
+      }
+      let page = this.page
+      this.page = page - 1
+      let list = this.insuranceList.slice((this.page * 10), (page * 10))
+      this.showList = list
+    },
+    downPage() {
+      if (Math.floor(this.insuranceList.length / this.limit) <= this.page) {
+        return
+      }
+      let page = this.page + 1
+      this.page = page
+      let list = this.insuranceList.slice((this.page * 10), ((page + 1) * 10))
+      this.searchList()
+      this.showList = list;
+
+    },
   }
 };
 </script>
@@ -174,6 +213,40 @@ export default {
   }
 }
 @media screen and (min-width: 750px) {
+  .call_style {
+    background: rgba(0, 185, 0, 0.04);
+    &:hover {
+      td {
+        &:first-child:before {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 0px;
+          border-left: 2px solid#00b900;
+        }
+      }
+    }
+  }
+  .put_style {
+    background: #fff9f5;
+    &:hover {
+      td {
+        &:first-child:before {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 0px;
+          border-left: 2px solid#ff9600;
+        }
+      }
+    }
+  }
   .o_button {
     margin-right: 12px;
   }
@@ -221,7 +294,9 @@ export default {
         width: 100%;
         tr {
           width: 100%;
-          box-shadow: 0px 1px 0px 0px #ededf0;
+          border-bottom: 1px solid #ededf0;
+          box-sizing: border-box;
+          position: relative;
           td {
             white-space: nowrap;
             width: 100px;

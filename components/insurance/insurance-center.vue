@@ -21,7 +21,7 @@
     <Echart></Echart>
     <InsuranceType
       @changeType="handleClickTradeType"
-      :currentType="type"
+      :currentType="TradeType"
     ></InsuranceType>
     <Balance :currentCoin="curCoin" :currentType="TradeType"></Balance>
     <InsuranceList
@@ -31,8 +31,8 @@
     ></InsuranceList>
     <InsuranceForm
       v-if="type == 'sell'"
-      :currentType="TradeType"
       :currentCoin="curCoin"
+      :currentType="TradeType"
     ></InsuranceForm>
   </div>
 </template>

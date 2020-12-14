@@ -288,7 +288,6 @@ export const actions = {
       data.forEach((item, index) => {
         sell_map[item.returnValues.long + index] = item.returnValues;
       });
-      // console.log(data, "####################");
       commit("SET_SELL_MAP", sell_map);
     });
     // 创建Buy 映射对象
@@ -297,7 +296,6 @@ export const actions = {
         return;
       }
       let buy_map = {};
-      console.log(data, "%%%%%%%%%%%%%%%%%%%%%%");
       data.forEach((item, index) => {
         buy_map[item.returnValues.askID + index] = item.returnValues;
       });
