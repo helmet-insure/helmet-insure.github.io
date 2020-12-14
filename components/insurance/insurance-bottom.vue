@@ -7,20 +7,26 @@
       <button @click="handleClickType(2)" :class="type == 2 ? 'active' : ''">
         {{ $t("Type.IssueInsurance") }}
       </button>
+      <button @click="handleClickType(3)" :class="type == 3 ? 'active' : ''">
+        我的结算
+      </button>
     </div>
     <MyGuarantee v-if="type == 1"></MyGuarantee>
     <MyInsurance v-if="type == 2"></MyInsurance>
+    <MyClaim v-if="type == 3"></MyClaim>
   </div>
 </template>
 
 <script>
 import MyInsurance from './my-insurance.vue';
 import MyGuarantee from './my-guarantee.vue';
+import MyClaim from './my-claim.vue';
 
 export default {
   components: {
     MyInsurance,
     MyGuarantee,
+    MyClaim
   },
   data() {
     return {

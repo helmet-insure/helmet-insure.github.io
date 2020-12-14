@@ -182,7 +182,7 @@ export default {
       let item, volume, price, id, seller;
       let resultItem;
       // console.log(sell)
-
+      console.log(sell)
       for (let i = 0; i < sell.length; i++) {
         item = sell[i]
         let token = getTokenName(item.longInfo._underlying)
@@ -209,7 +209,7 @@ export default {
           let exPirce = fromWei(item.longInfo._strikePrice, item.longInfo._underlying)
           exPirce = precision.divide(1, exPirce)
           let volume = fromWei(item.volume, item._underlying) * this.indexArray[0]['HELMET'] / 2
-          let price = fromWei(item.price, item.longInfo._underlying) * fromWei(item.volume, item._underlying) * this.indexArray[0]['HELMET'] / 2
+          let price = fromWei(item.price, item.longInfo._underlying);
           resultItem = {
             seller: item.seller,
             id: item.askID,
@@ -280,7 +280,7 @@ export default {
       } else {
         datas = {
           askID: data.id,
-          volume: fixD(data.buyNum / this.indexArray[0]['HELMET'] * 2, 8),
+          volume: data.buyNum * 2 / this.indexArray[0]['HELMET'],
           price: data.price,
           settleToken: 'HELMET',
           _strikePrice: data._strikePrice,

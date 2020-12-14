@@ -204,9 +204,14 @@ export const uniswap = async (token1, token2) => {
       new TokenAmount(TOKEN1, balances[0]),
       new TokenAmount(TOKEN2, balances[1])
     );
-    // let path = new Token("56", address2, getWei_2(token2), token2, token2);
+    // let path = new Token(
+    //   "56",
+    //   "0x4E76DfeA6Fb3726e9A77628AAa23839E3298BC37",
+    //   18,
+    //   "HELMET",
+    //   "HELMET"
+    // );
     const route = new Route([pair], TOKEN1);
-    console.log(TOKEN2, "##################");
     // if (token1 == "CTK") {
     //   return route.midPrice.toSignificant(6);
     // }

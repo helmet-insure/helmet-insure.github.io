@@ -200,7 +200,7 @@ export default {
       }
       let page = this.page
       this.page = page - 1
-      let list = this.insuranceList.slice((this.page * this.this.limit), (page * this.this.limit))
+      let list = this.insuranceList.slice((this.page * this.limit), (page * this.limit))
       this.showList = list
     },
     downPage() {
@@ -209,7 +209,7 @@ export default {
       }
       let page = this.page + 1
       this.page = page
-      let list = this.insuranceList.slice((this.page * this.this.limit), ((page + 1) * this.this.limit))
+      let list = this.insuranceList.slice((this.page * this.limit), ((page + 1) * this.limit))
       this.showList = list;
 
     },

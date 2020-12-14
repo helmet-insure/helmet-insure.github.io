@@ -150,12 +150,10 @@ export default {
             precision.times(DPR, num, day),
             Math.min(precision.minus(strikePrice, indexPx), 0)
           );
-          console.log(precision.times(DPR, num, day),
-            Math.min(precision.minus(strikePrice, indexPx), 0))
           earnings = - (Math.max(indexPx - strikePrice, 0) - premium)
         } else {
           premium = precision.minus(
-            precision.times(DPR, num, day),
+            precision.times(DPR, (this.IndexPxArray[0]['HELMET'] * num), day),
             Math.min(precision.minus(indexPx, strikePrice), 0)
           );
           earnings = - (Math.max(strikePrice - indexPx, 0) - premium)
