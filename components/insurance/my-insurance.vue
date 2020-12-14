@@ -164,8 +164,8 @@ export default {
         //倒计时
         downTime = new Date(item.longInfo._expiry * 1000).toLocaleDateString();
         //已出售
-        beSold = this.getBeSold(item.askID)
-        unSold = precision.minus(amount, beSold)
+        beSold = fromWei(this.getBeSold(item.askID), item.settleToken) || 0
+        unSold = precision.minus(amount, beSold) || 0
         shortBalance = await getBalance(item.longInfo.short, item._collateral);
         resultItem = {
           id: item.askID,
@@ -186,9 +186,16 @@ export default {
     //获取已出售
     getBeSold(id) {
       let list = this.myAboutInfoBuy
-      let array = list.filter(item => item.askID == id)[0]
-      if (array) {
-        let num = precision.divide(array.sellInfo.volume, array.sellInfo.price)
+      let array = list.filter(item => item.askID == id)
+      let num;
+      if (array.length) {
+        console.log(array)
+        for (let i = 0; i < array.length; i++) {
+          if (array[i]) {
+            num += Number(array[i].vol)
+          }
+        }
+        console.log(num)
         return num
       } else {
         return 0

@@ -263,7 +263,6 @@ export default {
       this.showList = list
     },
     downPage() {
-      console.log(this.claimList.length / this.limit, this.page)
       if (Math.floor(this.claimList.length / this.limit) <= (this.page + 1)) {
         return
       }

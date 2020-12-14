@@ -190,7 +190,6 @@ export default {
         }
 
         result.push(resultItem)
-        // console.log(list)
       }
       this.guaranteeList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
