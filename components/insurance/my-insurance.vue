@@ -153,7 +153,6 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-      console.log(list)
       let result = []
       let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
       const currentTime = new Date().getTime();
@@ -182,7 +181,7 @@ export default {
           _underlying: item.longInfo._underlying,
         }
         askRes = await asks(resultItem.askID, 'sync', resultItem._collateral);
-        if (askRes === '0') {
+        if (askRes == '0') {
           resultItem['status'] = 'Beborrowed';
           resultItem['sort'] = 1;
         } else {
@@ -195,7 +194,6 @@ export default {
         }
         resultItem['remain'] = askRes;
         result.push(resultItem)
-        console.log(result)
       }
       this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
@@ -234,7 +232,7 @@ export default {
       this.showList = list
     },
     downPage() {
-      if (Math.floor(this.insuranceList.length / this.limit) <= (this.page + 1)) {
+      if (Math.ceil(this.insuranceList.length / this.limit) <= (this.page + 1)) {
         return
       }
       let page = this.page + 1

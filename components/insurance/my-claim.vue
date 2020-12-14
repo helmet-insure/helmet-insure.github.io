@@ -156,7 +156,6 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-      console.log(list)
       const result = [];
       let item,
         longBalance,
@@ -173,8 +172,6 @@ export default {
         longBalance = await getBalance(item.longInfo.long, _collateral);
         _underlying = getTokenName(item.longInfo._underlying, window.chainID);
         shortBalance = await getBalance(item.longInfo.short, _collateral);
-        // console.log(i + '####item###', item);
-        // console.log(i + '####longBalance###',longBalance, '###shortBalance###', shortBalance );
         if (Number(shortBalance) > 0 && Number(longBalance) > 0) {
           result.push({
             creator: item.seller,
@@ -263,13 +260,12 @@ export default {
       this.showList = list
     },
     downPage() {
-      if (Math.floor(this.claimList.length / this.limit) <= (this.page + 1)) {
+      if (Math.ceil(this.claimList.length / this.limit) <= (this.page + 1)) {
         return
       }
       let page = this.page + 1
       this.page = page
       let list = this.claimList.slice((this.page * this.limit), ((page + 1) * this.limit))
-      console.log(list)
       this.showList = list;
     },
   }

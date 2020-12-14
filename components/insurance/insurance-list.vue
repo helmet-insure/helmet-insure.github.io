@@ -182,7 +182,6 @@ export default {
       let item, volume, price, id, seller;
       let resultItem;
       // console.log(sell)
-      console.log(sell)
       for (let i = 0; i < sell.length; i++) {
         item = sell[i]
         let token = getTokenName(item.longInfo._underlying)
@@ -250,7 +249,7 @@ export default {
       this.showList = list
     },
     downPage() {
-      if (Math.floor(this.insuranceList.length / this.limit) <= (this.page + 1)) {
+      if (Math.ceil(this.insuranceList.length / this.limit) <= (this.page + 1)) {
         return
       }
       let page = this.page + 1

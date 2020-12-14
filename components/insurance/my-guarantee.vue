@@ -143,12 +143,12 @@ export default {
     }
   },
   computed: {
-    myAboutInfoBuy() {
-      return this.$store.state.myAboutInfoBuy;
+    aboutInfoBuySeller() {
+      return this.$store.state.aboutInfoBuySeller;
     },
   },
   watch: {
-    myAboutInfoBuy: {
+    aboutInfoBuySeller: {
       handler: 'myAboutInfoBuyWatch',
       immediate: true,
     },
@@ -161,7 +161,6 @@ export default {
     },
     // 格式化数据
     setSettlementList(list) {
-      console.log(list)
       const result = [];
       let item, resultItem, amount, InsurancePrice, Rent, _collateral, _underlying, settleToken, downTime;
       for (let i = 0; i < list.length; i++) {
@@ -232,7 +231,7 @@ export default {
       this.showList = list
     },
     downPage() {
-      if (Math.floor(this.guaranteeList.length / this.limit) <= (this.page + 1)) {
+      if (Math.ceil(this.guaranteeList.length / this.limit) <= (this.page + 1)) {
         return
       }
       let page = this.page + 1
