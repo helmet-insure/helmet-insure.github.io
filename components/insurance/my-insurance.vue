@@ -51,6 +51,21 @@
         </tr>
       </tbody>
     </table>
+    <section class="pages">
+      <div>
+        <p @click="upPage">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-chevronleft1"></use>
+          </svg>
+        </p>
+        <i></i>
+        <p @click="downPage">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-chevronright1"></use>
+          </svg>
+        </p>
+      </div>
+    </section>
     <div>
       <p>
         <span>{{ $t("Table.ID") }}</span
@@ -179,7 +194,7 @@ export default {
       }
       let page = this.page
       this.page = page - 1
-      let list = this.insuranceList.slice((this.page * 10), (page * 10))
+      let list = this.insuranceList.slice((this.page * this.this.limit), (page * this.this.limit))
       this.showList = list
     },
     downPage() {
@@ -188,7 +203,7 @@ export default {
       }
       let page = this.page + 1
       this.page = page
-      let list = this.insuranceList.slice((this.page * 10), ((page + 1) * 10))
+      let list = this.insuranceList.slice((this.page * this.this.limit), ((page + 1) * this.this.limit))
       this.searchList()
       this.showList = list;
 
@@ -251,6 +266,7 @@ export default {
     margin-right: 12px;
   }
   .my_insurance {
+    position: relative;
     > div {
       display: none;
     }

@@ -330,37 +330,41 @@ $td-gap: 16px;
   color: rgba(255, 255, 255, 0.4) !important;
 }
 .pages {
-  position: absolute;
-  width: 65px;
-  height: 32px;
-  border: 1px solid #cfcfd2;
-  border-radius: 3px;
+  height: 50px;
   display: flex;
-  box-sizing: border-box;
-  margin-top: 20px;
-  right: 0;
-  p {
-    cursor: pointer;
-    flex: 1;
+  justify-content: flex-end;
+  align-items: flex-end;
+  div {
+    width: 65px;
+    height: 32px;
+    border: 1px solid #cfcfd2;
+    border-radius: 3px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    .icon {
-      width: 20px;
-      height: 20px;
-      transform: rotate(90deg);
-      fill: #cfcfd2;
-      &:hover {
-        fill: #919aa6;
+    box-sizing: border-box;
+    right: 0;
+    p {
+      cursor: pointer;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .icon {
+        width: 20px;
+        height: 20px;
+        transform: rotate(90deg);
+        fill: #cfcfd2;
+        &:hover {
+          fill: #919aa6;
+        }
       }
     }
-  }
 
-  i {
-    display: block;
-    width: 1px;
-    height: 100%;
-    background: #cfcfd2;
+    i {
+      display: block;
+      width: 1px;
+      height: 100%;
+      background: #cfcfd2;
+    }
   }
 }
 @media screen and (max-width: 750px) {

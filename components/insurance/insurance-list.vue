@@ -38,17 +38,19 @@
       </tbody>
     </table>
     <section class="pages">
-      <p @click="upPage">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-chevronleft1"></use>
-        </svg>
-      </p>
-      <i></i>
-      <p @click="downPage">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-chevronright1"></use>
-        </svg>
-      </p>
+      <div>
+        <p @click="upPage">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-chevronleft1"></use>
+          </svg>
+        </p>
+        <i></i>
+        <p @click="downPage">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-chevronright1"></use>
+          </svg>
+        </p>
+      </div>
     </section>
     <div>
       <p><span>ID</span><span>01239012</span></p>
