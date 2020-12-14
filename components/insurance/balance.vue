@@ -63,6 +63,7 @@ export default {
       unit: 'HELMET',
       precision,
       strikePrice: 600,
+      coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB']
     };
   },
   computed: {
@@ -103,21 +104,12 @@ export default {
   },
   methods: {
     async getBalance() {
-      const helmetAmount = await getBalance('HELMET');
-      const cakeAmount = await getBalance('CAKE');
-      const ctkAmount = await getBalance('CTK');
-      const fortubeAmount = await getBalance('FORTUBE');
-      const bnbAmount = await getBalance('WBNB');
-      const qusdAmount = await getBalance('QUSD');
-      let BalanceArray = {
-        BNB: fixD(bnbAmount, 4),
-        QUSD: fixD(qusdAmount, 4),
-        CAKE: fixD(cakeAmount, 4),
-        HELMET: fixD(helmetAmount, 4),
-        CTK: fixD(ctkAmount, 4),
-        FORTUBE: fixD(fortubeAmount, 4),
+      let BalanceArray = {}
+      for (let i = 0; i < this.coinList.length; i++) {
+        let balance = await getBalance(this.coinList[i]);
+        let key = this.coinList[i]
+        BalanceArray[key] = toRounding(balance, 4)
       }
-      console.log(BalanceArray)
       this.BalanceArray = BalanceArray
     },
     undAndColWatch(newValue) {

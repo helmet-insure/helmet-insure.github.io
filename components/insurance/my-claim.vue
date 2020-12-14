@@ -192,7 +192,6 @@ export default {
           try {
             volume = toWei(number, _collateral);
             const settle = await settleable(item.longInfo.short, volume);
-
             if (settle.col !== '0' || settle.und !== '0') {
               if (_collateral === 'USDT' || _collateral === 'USDC') {
                 und = fromWei(settle.und, _collateral);
@@ -221,6 +220,7 @@ export default {
       }
       this.claimList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
+      console.log(this.showList)
     },
     // 倒计时
     getDownTime(time) {

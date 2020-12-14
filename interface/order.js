@@ -536,21 +536,20 @@ export const getMySellLog = async (callback) => {};
 export const getBalance = async (type, currcy) => {
   // const WEB3 = await web3();
   // const charID = await getID();
-
   const charID = window.chainID;
   let adress = type;
   if (type.indexOf("0x") === -1) {
-    adress = getAddress(type, 56);
+    adress = getAddress(type, charID);
   }
-  // if (!adress || !window.CURRENTADDRESS) {
-  //   return 0;
-  // }
+  if (!adress || !window.CURRENTADDRESS) {
+    return 0;
+  }
   const contract = await expERC20(adress);
   return contract.methods
     .balanceOf(window.CURRENTADDRESS)
     .call()
     .then((res) => {
-      let tocurrcy = currcy || type;
+      let tocurrcy = type;
       return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
     });
 };
