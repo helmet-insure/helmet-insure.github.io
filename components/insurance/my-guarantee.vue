@@ -161,12 +161,13 @@ export default {
     },
     // 格式化数据
     setSettlementList(list) {
+      console.log(list)
       const result = [];
       let item, resultItem, amount, InsurancePrice, Rent, _collateral, _underlying, settleToken, downTime;
       for (let i = 0; i < list.length; i++) {
         item = list[i]
         // 数量
-        amount = precision.divide(item.sellInfo.volume, item.sellInfo.price)
+        amount = fromWei(item.vol, item.sellInfo.settleToken)
         // 保单价格
         InsurancePrice = fromWei(item.sellInfo.price, item.sellInfo.settleToken)
         // 保费
@@ -175,7 +176,7 @@ export default {
         downTime = this.getDownTime(item.sellInfo.longInfo._expiry)
 
         resultItem = {
-          id: item.sellInfo.askID,
+          id: item.bidID,
           bidID: item.bidID,
           price: InsurancePrice,
           volume: amount,

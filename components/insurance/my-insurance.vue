@@ -32,9 +32,11 @@
             }}
           </td>
           <td>{{ item.price }}</td>
-          <td>{{ item.beSold }}</td>
           <td>
-            {{ item.unSold }}
+            {{ toRounding(item.beSold, 4) }}
+          </td>
+          <td>
+            {{ toRounding(item.unSold, 4) }}
             <span
               class="cancel"
               @click="handleClickCancel(item)"
@@ -42,7 +44,7 @@
               >撤销</span
             >
           </td>
-          <td>53737</td>
+          <td>{{ toRounding(item.shortBalance, 4) }}</td>
           <td>{{ item.dueDate }}</td>
           <td class="option">
             <!-- <button class="o_button">{{ $t("Table.outSure") }}</button> -->
@@ -113,7 +115,7 @@ import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
 import { getTokenName } from '~/assets/utils/address-pool.js';
-import { onCancel } from '~/interface/order.js'
+import { onCancel, getBalance } from '~/interface/order.js'
 export default {
   data() {
     return {
@@ -149,26 +151,29 @@ export default {
       }
     },
     // 格式化数据
-    setSettlementList(list) {
+    async setSettlementList(list) {
+      console.log(list)
       let result = []
-      let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold;
+      let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance;
       for (let i = 0; i < list.length; i++) {
         item = list[i]
         // 数量
         amount = precision.divide(item.volume, item.price)
         // 保单价格
-        InsurancePrice = fromWei(item.volume, item.settleToken)
+        InsurancePrice = fromWei(item.price, item.settleToken)
         //倒计时
         downTime = new Date(item.longInfo._expiry * 1000).toLocaleDateString();
         //已出售
         beSold = this.getBeSold(item.askID)
         unSold = precision.minus(amount, beSold)
+        shortBalance = await getBalance(item.longInfo.short, item._collateral);
         resultItem = {
           id: item.askID,
           volume: amount,
           beSold: beSold,
           unSold: unSold,
           price: InsurancePrice,
+          shortBalance: shortBalance,
           dueDate: downTime,
           _collateral: item.longInfo._collateral,
           _underlying: item.longInfo._underlying,
