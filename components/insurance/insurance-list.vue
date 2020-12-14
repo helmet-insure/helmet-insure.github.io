@@ -250,7 +250,7 @@ export default {
       this.showList = list
     },
     downPage() {
-      if (Math.floor(this.insuranceList.length / this.limit) <= this.page) {
+      if (Math.floor(this.insuranceList.length / this.limit) <= (this.page + 1)) {
         return
       }
       let page = this.page + 1

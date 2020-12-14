@@ -31,12 +31,12 @@
                 : getTokenName(item._underlying)
             }}
           </td>
-          <td>{{ item.price }}</td>
+          <td>{{ fixD(toRounding(item.price, 4), 4) }}</td>
           <td>
-            {{ toRounding(item.beSold, 4) }}
+            {{ fixD(toRounding(item.beSold, 4), 4) }}
           </td>
           <td>
-            {{ toRounding(item.unSold, 4) }}
+            {{ fixD(toRounding(item.unSold, 4), 4) }}
             <span
               class="cancel"
               @click="handleClickCancel(item)"
@@ -126,6 +126,7 @@ export default {
       showList: [],
       insuranceList: [],
       getTokenName,
+      fixD,
       page: 0,
       limit: 5,
     }
@@ -158,14 +159,14 @@ export default {
       for (let i = 0; i < list.length; i++) {
         item = list[i]
         // 数量
-        amount = precision.divide(item.volume, item.price)
+        amount = fromWei(item.volume, item.settleToken)
         // 保单价格
         InsurancePrice = fromWei(item.price, item.settleToken)
         //倒计时
         downTime = new Date(item.longInfo._expiry * 1000).toLocaleDateString();
         //已出售
-        beSold = fromWei(this.getBeSold(item.askID), item.settleToken) || 0
-        unSold = precision.minus(amount, beSold) || 0
+        beSold = fromWei(this.getBeSold(item.askID), item.settleToken)
+        unSold = precision.minus(amount, beSold)
         shortBalance = await getBalance(item.longInfo.short, item._collateral);
         resultItem = {
           id: item.askID,
@@ -186,16 +187,17 @@ export default {
     //获取已出售
     getBeSold(id) {
       let list = this.myAboutInfoBuy
-      let array = list.filter(item => item.askID == id)
-      let num;
-      if (array.length) {
-        console.log(array)
-        for (let i = 0; i < array.length; i++) {
-          if (array[i]) {
-            num += Number(array[i].vol)
+      let array = list.filter(item => item.askID === id)
+      let num = 0;
+      let number = 0
+      let arrayList = JSON.parse(JSON.stringify(array))
+      if (arrayList.length) {
+        arrayList.forEach(item => {
+          if (!isNaN(item.vol)) {
+            number = Number(item.vol)
+            num = num + number
           }
-        }
-        console.log(num)
+        })
         return num
       } else {
         return 0
@@ -216,7 +218,7 @@ export default {
       this.showList = list
     },
     downPage() {
-      if (Math.floor(this.insuranceList.length / this.limit) <= this.page) {
+      if (Math.floor(this.insuranceList.length / this.limit) <= (this.page + 1)) {
         return
       }
       let page = this.page + 1
@@ -236,7 +238,6 @@ export default {
   padding: 3px 10px;
   background: #ff9600;
   line-height: 20px;
-  margin-left: 10px;
   font-size: 14px;
   color: #fff;
   cursor: pointer;
@@ -318,6 +319,9 @@ export default {
             line-height: 40px;
             font-size: 14px;
           }
+          td:nth-of-type(5) {
+            width: 150px;
+          }
           td:nth-of-type(6) {
             width: 150px;
           }
@@ -338,6 +342,12 @@ export default {
             font-size: 14px;
             font-weight: bold;
             color: #121212;
+          }
+          td:nth-of-type(5) {
+            width: 150px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
           }
           td:nth-of-type(6) {
             width: 150px;

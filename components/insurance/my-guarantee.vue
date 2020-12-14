@@ -30,9 +30,9 @@
                 : getTokenName(item._underlying)
             }}
           </td>
-          <td>{{ item.price }}</td>
-          <td>{{ item.Rent }}</td>
-          <td>{{ item.volume }}</td>
+          <td>{{ fixD(toRounding(item.price, 4), 4) }}</td>
+          <td>{{ fixD(toRounding(item.Rent, 4), 4) }}</td>
+          <td>{{ fixD(toRounding(item.volume, 4), 4) }}</td>
           <td>{{ item.dueDate }}</td>
           <td>
             <button class="b_b_button" @click="toActive(item)">
@@ -137,7 +137,7 @@ export default {
       toRounding: toRounding,
       showList: [],
       guaranteeList: [],
-      getTokenName,
+      getTokenName, fixD,
       page: 0,
       limit: 5,
     }
@@ -232,7 +232,7 @@ export default {
       this.showList = list
     },
     downPage() {
-      if (Math.floor(this.guaranteeList.length / this.limit) <= this.page) {
+      if (Math.floor(this.guaranteeList.length / this.limit) <= (this.page + 1)) {
         return
       }
       let page = this.page + 1
