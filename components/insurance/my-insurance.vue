@@ -115,7 +115,7 @@ import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
 import { getTokenName } from '~/assets/utils/address-pool.js';
-import { onCancel, getBalance } from '~/interface/order.js'
+import { onCancel, getBalance, asks } from '~/interface/order.js'
 export default {
   data() {
     return {
@@ -155,7 +155,8 @@ export default {
     async setSettlementList(list) {
       console.log(list)
       let result = []
-      let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance;
+      let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
+      const currentTime = new Date().getTime();
       for (let i = 0; i < list.length; i++) {
         item = list[i]
         // 数量
@@ -176,10 +177,25 @@ export default {
           price: InsurancePrice,
           shortBalance: shortBalance,
           dueDate: downTime,
+          _expiry: item.longInfo._expiry * 1000,
           _collateral: item.longInfo._collateral,
           _underlying: item.longInfo._underlying,
         }
+        askRes = await asks(resultItem.askID, 'sync', resultItem._collateral);
+        if (askRes === '0') {
+          resultItem['status'] = 'Beborrowed';
+          resultItem['sort'] = 1;
+        } else {
+          resultItem['status'] = 'Unborrowed';
+          resultItem['sort'] = 2;
+        }
+        if (parseInt(resultItem._expiry) < currentTime) {
+          resultItem['status'] = 'Dated';
+          resultItem['sort'] = 0;
+        }
+        resultItem['remain'] = askRes;
         result.push(resultItem)
+        console.log(result)
       }
       this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
