@@ -51,7 +51,13 @@
         </tr>
       </tbody>
     </table>
-    <section class="pages">
+    <section class="noData" v-if="!showList.length">
+      <div>
+        <img src="~/assets/img/helmet/nodata.png" alt="" />
+        <p>暂无保险</p>
+      </div>
+    </section>
+    <section class="pages" v-if="showList.length">
       <div>
         <p @click="upPage">
           <svg class="icon" aria-hidden="true">
@@ -116,7 +122,7 @@ export default {
       autoRounding: autoRounding,
       toRounding: toRounding,
       showList: [],
-      guaranteeList: [],
+      insuranceList: [],
       getTokenName,
       page: 0,
       limit: 5,
@@ -169,7 +175,7 @@ export default {
         }
         result.push(resultItem)
       }
-      this.guaranteeList = result
+      this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
     //获取已出售
@@ -204,7 +210,6 @@ export default {
       let page = this.page + 1
       this.page = page
       let list = this.insuranceList.slice((this.page * this.this.limit), ((page + 1) * this.this.limit))
-      this.searchList()
       this.showList = list;
 
     },
@@ -246,7 +251,7 @@ export default {
     }
   }
   .put_style {
-    background: #fff9f5;
+    background: rgba(255, 100, 0, 0.04);
     &:hover {
       td {
         &:first-child:before {

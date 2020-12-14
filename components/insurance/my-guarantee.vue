@@ -42,7 +42,13 @@
         </tr>
       </tbody>
     </table>
-    <section class="pages">
+    <section class="noData" v-if="!showList.length">
+      <div>
+        <img src="~/assets/img/helmet/nodata.png" alt="" />
+        <p>暂无保险</p>
+      </div>
+    </section>
+    <section class="pages" v-if="showList.length">
       <div>
         <p @click="upPage">
           <svg class="icon" aria-hidden="true">
@@ -232,7 +238,6 @@ export default {
       let page = this.page + 1
       this.page = page
       let list = this.guaranteeList.slice((this.page * this.limit), ((page + 1) * this.limit))
-      this.searchList()
       this.showList = list;
     },
   }
@@ -260,7 +265,7 @@ export default {
     }
   }
   .put_style {
-    background: #fff9f5;
+    background: rgba(255, 100, 0, 0.04);
     &:hover {
       td {
         &:first-child:before {

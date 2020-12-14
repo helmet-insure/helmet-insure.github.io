@@ -37,7 +37,13 @@
         </tr>
       </tbody>
     </table>
-    <section class="pages">
+    <section class="noData" v-if="!showList.length">
+      <div>
+        <img src="~/assets/img/helmet/nodata.png" alt="" />
+        <p>暂无保险</p>
+      </div>
+    </section>
+    <section class="pages" v-if="showList.length">
       <div>
         <p @click="upPage">
           <svg class="icon" aria-hidden="true">
@@ -261,7 +267,7 @@ export default {
       }
       const datas = {
         askID: data.id,
-        volume: fixD(data.buyNum / this.indexArray[0]['HELMET'] / 2, 8),
+        volume: fixD(data.buyNum / this.indexArray[0]['HELMET'] * 2, 8),
         price: data.price,
         settleToken: 'HELMET',
         _strikePrice: data._strikePrice,
@@ -269,7 +275,6 @@ export default {
         _expiry: data._expiry,
         _collateral: data._collateral,
       };
-      console.log(datas)
       buyInsuranceBuy(datas, (status) => { });
     },
     // 计算数量
@@ -285,7 +290,6 @@ export default {
 @import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
   .insurance_list {
-    padding-bottom: 40px;
     position: relative;
     > div {
       display: none;

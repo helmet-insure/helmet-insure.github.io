@@ -175,7 +175,7 @@ export const onIssueSellOnETH = async (data_, callBack) => {
         data.price, // 触发保险金额 抵押物单位   // 1/200
         data.expire,
         // data.volume, // 200
-        data.currency, // 支付货币
+        data.settleToken, // 支付货币
         data.premium // 单价
       )
       .send({ from: window.CURRENTADDRESS, value: data.volume })
