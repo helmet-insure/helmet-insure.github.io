@@ -220,7 +220,6 @@ export default {
       }
       this.claimList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
-      console.log(this.showList)
     },
     // 倒计时
     getDownTime(time) {
@@ -266,6 +265,7 @@ export default {
       let page = this.page + 1
       this.page = page
       let list = this.claimList.slice((this.page * this.limit), ((page + 1) * this.limit))
+      console.log(list)
       this.showList = list;
     },
   }

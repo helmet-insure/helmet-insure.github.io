@@ -542,6 +542,7 @@ export const getBalance = async (type, currcy) => {
     adress = getAddress(type, charID);
   }
   if (!adress || !window.CURRENTADDRESS) {
+    // bus.$emit("REFRESH_BALANCE");
     return 0;
   }
   const contract = await expERC20(adress);
@@ -645,7 +646,6 @@ export const onExercise = async (data, callBack) => {
   // const WEB3 = await web3();
   const charID = window.chainID;
   let adress = getAddress(data.token, charID);
-  console.log(adress);
 
   const Contract = await expERC20(adress);
   const long = await expERC20(data.long);

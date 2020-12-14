@@ -23,7 +23,11 @@
       @changeType="handleClickTradeType"
       :currentType="TradeType"
     ></InsuranceType>
-    <Balance :currentCoin="curCoin" :currentType="TradeType"></Balance>
+    <Balance
+      :currentCoin="curCoin"
+      :currentType="TradeType"
+      :TradeType="type"
+    ></Balance>
     <InsuranceList
       v-if="type == 'buy'"
       :currentCoin="curCoin"
@@ -56,7 +60,7 @@ export default {
   data() {
     return {
       type: 'buy',
-      curCoin: 'BNB',
+      curCoin: 'HELMET',
       TradeType: 1,
     };
   },

@@ -224,8 +224,10 @@ export default {
     // 保存指数价格
     async getIndexPirce() {
       let list = this.$store.state.coinList
+      // bnb
       let callIndexPirce = {};
       let putIndexPirce = {};
+      // helmet
       for (let i = 0; i < list.length; i++) {
         let px = await uniswap('WBNB', list[i]);
         let key = list[i]
@@ -237,9 +239,33 @@ export default {
         putIndexPirce[key] = px
       }
       let arr = []
+      let arr1 = []
+      let bnbHelmet = callIndexPirce['HELMET']
+      let cakeHelmet = callIndexPirce['CAKE'] / callIndexPirce['HELMET']
+      let ctkHelmet = callIndexPirce['CTK'] / callIndexPirce['HELMET']
+      let forHelmet = callIndexPirce['FORTUBE'] / callIndexPirce['HELMET']
+      let HelmetPirce = {
+        HELMET: bnbHelmet,
+        CAKE: cakeHelmet,
+        CTK: ctkHelmet,
+        FORTUBE: forHelmet
+      }
+      let Helmetbnb = putIndexPirce['HELMET']
+      let Helmetcake = putIndexPirce['CAKE'] / putIndexPirce['HELMET']
+      let Helmetctk = putIndexPirce['CTK'] / putIndexPirce['HELMET']
+      let Helmetfor = putIndexPirce['FORTUBE'] / putIndexPirce['HELMET']
+      let CoinPirce = {
+        HELMET: Helmetbnb,
+        CAKE: Helmetcake,
+        CTK: Helmetctk,
+        FORTUBE: Helmetfor
+      };
+      arr1.push(HelmetPirce)
+      arr1.push(CoinPirce)
+      this.$store.commit('SET_ALL_HELMET_PRICE', arr1)
       arr.push(callIndexPirce)
-      console.log(arr)
       arr.push(putIndexPirce)
+      console.log(arr)
       this.$store.commit('SET_ALL_INDEX_PRICE', arr)
     }
   },

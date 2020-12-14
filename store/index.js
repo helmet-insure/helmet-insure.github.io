@@ -112,6 +112,7 @@ export const state = () => ({
   },
   dueDate: "2020-12-16 00:00",
   allIndexPrice: [],
+  allHelmetPrice: [],
 });
 
 export const mutations = {
@@ -217,6 +218,9 @@ export const mutations = {
   // 保存所有指数价格
   SET_ALL_INDEX_PRICE(state, data) {
     state.allIndexPrice = data;
+  },
+  SET_ALL_HELMET_PRICE(state, data) {
+    state.allHelmetPrice = data;
   },
 };
 

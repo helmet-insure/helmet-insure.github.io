@@ -162,6 +162,7 @@ export default {
     // 格式化数据
     setSettlementList(list) {
       const result = [];
+      console.log(list)
       let item, resultItem, amount, InsurancePrice, Rent, _collateral, _underlying, settleToken, downTime;
       for (let i = 0; i < list.length; i++) {
         item = list[i]

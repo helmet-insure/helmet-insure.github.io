@@ -43,8 +43,6 @@ export default {
       volume: '', //数量
       precision,
       Rent: 0,
-      CoinType: 'HELMET',
-      TradeType: 1,
       indexPx: 0.00333333,
       strikePrice: 0.00666666,
       unit: 'BNB',
@@ -54,10 +52,10 @@ export default {
   },
   computed: {
     undAndCol() {
-      if (this.CoinType && this.TradeType) {
+      if (this.currentCoin && this.currentType) {
         return {
-          underly: this.CoinType,
-          curType: this.TradeType,
+          underly: this.currentCoin,
+          curType: this.currentType,
         };
       }
     },
@@ -77,14 +75,17 @@ export default {
     },
     IndexPxArray() {
       return this.$store.state.allIndexPrice
+    },
+    HelmetPrice() {
+      return this.$store.state.allHelmetPrice
     }
   },
   watch: {
     currentCoin(val) {
-      this.CoinType = val;
+      this.currentCoin = val;
     },
     currentType(val) {
-      this.TradeType = val;
+      this.currentType = val;
     },
     undAndCol: {
       handler: 'undAndColWatch',
@@ -106,11 +107,11 @@ export default {
       // 结算token
       // 单价
       let data;
-      if (this.TradeType == 2) {
+      if (this.currentType == 2) {
         data = {
           private: false, // 
           annual: this.dpr,
-          category: this.CoinType, // 
+          category: this.currentCoin, // 
           currency: this.currency, // 
           expire: this._expiry, // 
           premium: this.Rent,
@@ -125,7 +126,7 @@ export default {
           private: false, // 
           annual: this.dpr,
           category: this.currency, // 
-          currency: this.CoinType, // 
+          currency: this.currentCoin, // 
           expire: this._expiry, // 
           premium: this.Rent,
           price: this.strikePrice,
@@ -145,15 +146,22 @@ export default {
         let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
         let premium;
         let earnings;
-        if (this.TradeType == 1) {
+        let number;
+        if (this.currentType == 1) {
+          if (this.currentCoin == 'HELMET') {
+            number = precision.times(DPR, num, day)
+          } else {
+            number = precision.times(DPR, (this.HelmetPrice[1][this.currentCoin] * num), day)
+          }
           premium = precision.minus(
-            precision.times(DPR, num, day),
+            number,
             Math.min(precision.minus(strikePrice, indexPx), 0)
           );
           earnings = - (Math.max(indexPx - strikePrice, 0) - premium)
         } else {
+          number = precision.times(DPR, (this.IndexPxArray[0][this.currentCoin] * num), day);
           premium = precision.minus(
-            precision.times(DPR, (this.IndexPxArray[0]['HELMET'] * num), day),
+            number,
             Math.min(precision.minus(indexPx, strikePrice), 0)
           );
           earnings = - (Math.max(strikePrice - indexPx, 0) - premium)

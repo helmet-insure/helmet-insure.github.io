@@ -24,10 +24,10 @@
             <use xlink:href="#icon-Helmet"></use></svg
           >{{ BalanceArray[underly] }} {{ underly }}
         </p>
-        <p>
+        <p v-if="TradeType != 'buy'">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-BNB"></use></svg
-          >{{ BalanceArray["BNB"] }} BNB
+          >{{ BalanceArray["WBNB"] }} WBNB
         </p>
         <!-- <p>
           <svg class="icon" aria-hidden="true">
@@ -46,7 +46,7 @@ import { uniswap } from '~/assets/utils/address-pool.js';
 import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 export default {
-  props: ['currentCoin', 'currentType'],
+  props: ['currentCoin', 'currentType', 'TradeType'],
   data() {
     return {
       underly: 'HELMET', //标的物
@@ -59,10 +59,10 @@ export default {
       HELMET: 0,
       CKT: 0,
       FORTUBE: 0,
-      indexPx: 300,
+      indexPx: 0.00333333,
       unit: 'HELMET',
       precision,
-      strikePrice: 600,
+      strikePrice: 0.00666666,
       coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB']
     };
   },
@@ -73,8 +73,8 @@ export default {
     undAndCol() {
       if (this.underly && this.curType) {
         return {
-          underly: this.underly,
-          curType: this.curType,
+          underly: this.currentCoin,
+          curType: this.currentType,
         };
       }
     },
@@ -85,9 +85,14 @@ export default {
   watch: {
     currentCoin(val) {
       this.underly = val;
+      this.currentCoin = val
     },
     currentType(val) {
       this.curType = val;
+      this.currentType = val
+    },
+    TradeType(val) {
+      this.TradeType = val
     },
     undAndCol: {
       handler: 'undAndColWatch',

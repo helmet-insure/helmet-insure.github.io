@@ -109,34 +109,34 @@ export default {
   data() {
     return {
       price: '',
-      CoinType: 'HELMET',
-      InsureType: 1,
       precision,
       addCommom: addCommom,
       autoRounding: autoRounding,
       toRounding: toRounding,
-      insuranceList: [],
       page: 0,
       limit: 10,
+      insuranceList: [],
       showList: [],
+      sellList: [],
+      buyList: []
     };
   },
   watch: {
     currentCoin(newValue) {
       if (newValue) {
-        this.CoinType = newValue
+        this.currentCoin = newValue
         this.page = 0;
         this.limit = 10;
-        this.setList(this.$store.state.aboutInfoSell)
+        this.checkList(newValue, this.currentType)
       }
     },
     currentType(newValue) {
       if (newValue) {
-        this.InsureType = newValue
+        this.currentType = newValue
         this.ListType = newValue
         this.page = 0;
         this.limit = 10;
-        this.setList(this.$store.state.aboutInfoSell)
+        this.checkList(this.currentCoin, newValue)
       }
     },
     aboutInfoSell: {
@@ -175,19 +175,17 @@ export default {
         this.setList(this.aboutInfoSell, newValue);
       }
     },
+    // 格式化数据
     setList(sell) {
       const sellResult = []
       const buyResult = []
       let spliceResult = []
       let item, volume, price, id, seller;
       let resultItem;
-      // console.log(sell)
       for (let i = 0; i < sell.length; i++) {
         item = sell[i]
         let token = getTokenName(item.longInfo._underlying)
         if (token == 'WBNB') {
-          // call
-          // console.log(item)
           resultItem = {
             seller: item.seller,
             id: item.askID,
@@ -201,13 +199,11 @@ export default {
             buyNum: ''
           }
           buyResult.push(resultItem)
-          // console.log(buyResult)
-
         } else {
           let amount = fromWei(item.volume, item.longInfo._underlying)
           let exPirce = fromWei(item.longInfo._strikePrice, item.longInfo._underlying)
           exPirce = precision.divide(1, exPirce)
-          let volume = fromWei(item.volume, item._underlying) * this.indexArray[0]['HELMET'] / 2
+          let volume = fromWei(item.volume, item._underlying) * this.indexArray[0][this.currentCoin] / 2
           let price = fromWei(item.price, item.longInfo._underlying);
           resultItem = {
             seller: item.seller,
@@ -222,24 +218,28 @@ export default {
             buyNum: ''
           }
           sellResult.push(resultItem)
-
         }
       }
-      if (this.InsureType == 1) {
-        // call
-        this.insuranceList = buyResult
-        this.showList = buyResult.slice(this.page * this.limit, this.limit)
+      this.buyList = buyResult
+      this.sellList = sellResult
+      this.showList = buyResult.slice(this.page * this.limit, this.limit)
+      this.showList = sellResult.slice(this.page * this.limit, this.limit)
+    },
+    checkList(coin, type) {
+      if (type == 1) {
+        this.insuranceList = this.buyList
+        this.showList = this.buyList.slice(this.page * this.limit, this.limit)
       } else {
-        this.insuranceList = sellResult
-        this.showList = sellResult.slice(this.page * this.limit, this.limit)
+        this.insuranceList = this.sellList
+        this.showList = this.sellList.slice(this.page * this.limit, this.limit)
       }
-
     },
     searchList() {
 
     },
     // 分页
     upPage() {
+      console.log(this.insuranceList)
       if (this.page <= 0) {
         return
       }
@@ -265,7 +265,7 @@ export default {
         return
       }
       let datas;
-      if (this.InsureType == 1) {
+      if (this.currentType == 1) {
         datas = {
           askID: data.id,
           volume: data.buyNum,
@@ -279,7 +279,7 @@ export default {
       } else {
         datas = {
           askID: data.id,
-          volume: data.buyNum * 2 / this.indexArray[0]['HELMET'],
+          volume: data.buyNum * 2 / this.indexArray[0][this.currentCoin],
           price: data.price,
           settleToken: 'HELMET',
           _strikePrice: data._strikePrice,
