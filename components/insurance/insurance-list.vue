@@ -265,16 +265,31 @@ export default {
       if (!data.buyNum) {
         return
       }
-      const datas = {
-        askID: data.id,
-        volume: fixD(data.buyNum / this.indexArray[0]['HELMET'] * 2, 8),
-        price: data.price,
-        settleToken: 'HELMET',
-        _strikePrice: data._strikePrice,
-        _underlying: data._underlying,
-        _expiry: data._expiry,
-        _collateral: data._collateral,
-      };
+      let datas;
+      if (this.InsureType == 1) {
+        datas = {
+          askID: data.id,
+          volume: data.buyNum,
+          price: data.price,
+          settleToken: 'HELMET',
+          _strikePrice: data._strikePrice,
+          _underlying: data._underlying,
+          _expiry: data._expiry,
+          _collateral: data._collateral,
+        };
+      } else {
+        datas = {
+          askID: data.id,
+          volume: fixD(data.buyNum / this.indexArray[0]['HELMET'] * 2, 8),
+          price: data.price,
+          settleToken: 'HELMET',
+          _strikePrice: data._strikePrice,
+          _underlying: data._underlying,
+          _expiry: data._expiry,
+          _collateral: data._collateral,
+        };
+      }
+
       buyInsuranceBuy(datas, (status) => { });
     },
     // 计算数量
