@@ -227,15 +227,14 @@ export default {
     },
     checkList(coin, type) {
       if (type == 1) {
-        this.insuranceList = this.buyList
-        this.showList = this.buyList.slice(this.page * this.limit, this.limit)
+        let result = this.buyList.filter(item => getTokenName(item._collateral) == this.currentCoin)
+        this.insuranceList = result
+        this.showList = result.slice(this.page * this.limit, this.limit)
       } else {
-        this.insuranceList = this.sellList
-        this.showList = this.sellList.slice(this.page * this.limit, this.limit)
+        let result = this.sellList.filter(item => getTokenName(item._underlying) == this.currentCoin)
+        this.insuranceList = result
+        this.showList = result.slice(this.page * this.limit, this.limit)
       }
-    },
-    searchList() {
-
     },
     // 分页
     upPage() {
@@ -255,7 +254,6 @@ export default {
       let page = this.page + 1
       this.page = page
       let list = this.insuranceList.slice((this.page * 10), ((page + 1) * 10))
-      this.searchList()
       this.showList = list;
 
     },
