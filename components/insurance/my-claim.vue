@@ -179,6 +179,7 @@ export default {
         longBalance = await getBalance(item.longInfo.long, _collateral);
         _underlying = getTokenName(item.longInfo._underlying, window.chainID);
         shortBalance = await getBalance(item.longInfo.short, _collateral);
+        console.log(longBalance, shortBalance, 'balance balance balance balance balance')
         let resultItem = {}
         if (Number(shortBalance) > 0 && Number(longBalance) > 0) {
           resultItem['askID'] = item.askID;
@@ -192,9 +193,11 @@ export default {
           resultItem['shortBalance'] = shortBalance
           number = precision.minus(shortBalance, longBalance);
           if (Number(number) > 0) {
+            alert(1)
             try {
               volume = toWei(number, _collateral);
               const settle = await settleable(item.longInfo.short, volume);
+              console.log(settle)
               if (settle.col != '0' || settle.und != '0') {
                 if (_collateral == 'CTK') {
                   und = fromWei(settle.und, 'CTK');
