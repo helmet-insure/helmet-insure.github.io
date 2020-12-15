@@ -20,13 +20,96 @@
     <div class="text">
       <p v-for="(item, index) in textList" :key="index">
         <span>{{ item.text }}</span>
-        <span>{{ item.data }}</span>
+        <span :style="`color:${item.color}`"
+          >{{ item.num
+          }}<i v-if="item.unit" style="color: #919aa6">{{ item.unit }}</i>
+        </span>
       </p>
+    </div>
+    <div class="pool">
+      <div class="deposit">
+        <div class="title">
+          <span>Deposit</span>
+          <p>{{ balance.Deposite }} LPT Available</p>
+        </div>
+        <div class="content">
+          <label for="deposit">Amount to deposit</label>
+          <div class="input">
+            <input name="deposit" type="text" v-model="DepositeNum" />
+            <span @click="DepositeNum = balance.Deposite">Max</span>
+          </div>
+        </div>
+        <div class="button">
+          <button
+            @click="toDeposite"
+            :class="stakeLoading ? 'disable b_button' : 'b_button'"
+          >
+            <i :class="stakeLoading ? 'loading_pic' : ''"></i>Confirm Deposit
+          </button>
+          <p>
+            <span>My Deposit/Total Deposited：</span>
+            <span>
+              {{ balance.Deposite }} LPT/{{ balance.DepositePool }} LPT</span
+            >
+          </p>
+          <p>
+            <span>My Pool Share：</span>
+            <span> 0 %</span>
+          </p>
+        </div>
+      </div>
+      <div class="withdraw">
+        <div class="title">
+          <span>Withdraw</span>
+          <p>{{ balance.Withdraw }} LPT Available</p>
+        </div>
+        <div class="content">
+          <label for="withdraw">Amount to withdraw</label>
+          <div class="input">
+            <input name="withdraw" type="text" v-model="WithdrawNum" />
+            <span @click="WithdrawNum = balance.Withdraw">Max</span>
+          </div>
+        </div>
+        <div class="button">
+          <button
+            @click="toExit"
+            :class="exitLoading ? 'disable b_button' : 'b_button'"
+          >
+            <i :class="exitLoading ? 'loading_pic' : ''"></i>Confirm Withdraw &
+            Claim Rewards
+          </button>
+          <p>
+            <span>HELMET Rewards：</span>
+            <span> {{ balance.Helmet }} HELMET</span>
+          </p>
+          <button
+            @click="toClaim"
+            :class="claimLoading ? 'disable o_button' : 'o_button'"
+          >
+            <i :class="claimLoading ? 'loading_pic' : ''"></i>Claim all Rewards
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  totalSupply,
+  balanceOf,
+  getLPTOKEN,
+  CangetPAYA,
+  getPAYA,
+  exitStake,
+  getLastTime,
+  approveStatus,
+  getBalance,
+  toDeposite,
+  getMined,
+  WithdrawAvailable,
+} from '~/interface/deposite';
+import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 export default {
   data() {
     return {
@@ -35,21 +118,115 @@ export default {
       },
       textList: [{
         text: 'Rewards Distribution',
-        data: '0'
+        num: 0,
+        color: '#00B900',
+        unit: '（weekly）'
       }, {
         text: 'Pool APY',
-        data: '0'
+        num: 0,
+        color: '#00B900',
+        unit: ''
       }, {
         text: 'Total Deposited ',
-        data: '0'
+        num: 0,
+        color: '#121212',
+        unit: ''
       }, {
         text: 'My Deposits',
-        data: '0'
+        num: 0,
+        color: '#121212',
+        unit: ''
       }, {
         text: 'My Rewards',
-        data: '0'
-      }]
+        num: 0,
+        color: '#00B900',
+        unit: ''
+      }],
+      balance: {
+        Deposite: 0,
+        DepositePool: 0,
+        Withdraw: 0,
+        Helmet: 0
+      },
+      DepositeNum: '',
+      WithdrawNum: '',
+      stakeLoading: false,
+      claimLoading: false,
+      exitLoading: false,
     }
+  },
+  mounted() {
+    this.$bus.$on('DEPOSITE_LOADING', (data) => {
+      this.depositeLoading = data.status;
+    });
+    this.$bus.$on('CLAIM_LOADING', (data) => {
+      this.claimLoading = false;
+    });
+    this.$bus.$on('EXIT_LOADING', (data) => {
+      this.exitLoading = false;
+    });
+    this.$bus.$on('REFRESH_MINING', (data) => {
+      this.getBalance();
+    });
+    setTimeout(() => {
+      this.getBalance()
+    }, 1000)
+
+  },
+  watch: {
+
+  },
+  computed: {
+
+  },
+  methods: {
+    async getBalance() {
+      let lpttype = 'HELMETBNB_LPT'
+      let type = 'HELMETBNB'
+      // 可抵押数量
+      let Deposite = await getBalance(lpttype)
+      // 可赎回数量
+      let Withdraw = await getLPTOKEN(type);
+      // 可领取
+      let Helmet = await CangetPAYA(type);
+
+      this.balance.Deposite = addCommom(Deposite, 4)
+      this.balance.Withdraw = addCommom(Withdraw, 4)
+      this.balance.Helmet = addCommom(Helmet, 4)
+      this.textList[3].num = addCommom(Deposite, 4)
+      this.textList[4].num = addCommom(Helmet, 4)
+      // this.balance.DepositePool = DepositePool
+    },
+    // 抵押
+    toDeposite() {
+      if (!this.DepositeNum) {
+        return
+      }
+      if (this.stakeLoading) {
+        return
+      }
+      this.stakeLoading = true
+      let type = 'HELMETBNB'
+      toDeposite(type, { amount: this.DepositeNum }, true, (status) => { });
+    },
+    // 结算Paya
+    async toClaim() {
+      if (this.claimLoading) {
+        return
+      }
+      this.claimLoading = true
+      let type = 'HELMETBNB';
+      let res = await getPAYA(type);
+    },
+    // 退出
+    async toExit() {
+      if (this.exitLoading) {
+        return
+      }
+      this.exitLoading = true
+      let type = 'HELMETBNB';
+      let res = await exitStake(type);
+    },
   }
 }
 </script>
@@ -61,6 +238,32 @@ export default {
   vertical-align: -0.15em;
   fill: #787878;
   overflow: hidden;
+}
+.b_button {
+  width: 100%;
+  margin-top: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.o_button {
+  width: 100%;
+  margin-top: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading_pic {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-image: url("../../assets/img/helmet/loading.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: loading 2s 0s linear infinite;
+}
+.disable {
+  pointer-events: none;
 }
 @media screen and (min-width: 750px) {
   .helmet_pool {
@@ -105,6 +308,90 @@ export default {
           }
           &:nth-of-type(2) {
             margin-top: 12px;
+          }
+        }
+      }
+    }
+    .pool {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      > div {
+        width: 540px;
+        height: 293px;
+        padding: 30px 40px;
+        .title {
+          display: flex;
+          justify-content: space-between;
+          font-weight: 500;
+          line-height: 16px;
+          p {
+            color: #919aa6;
+            font-size: 14px;
+            line-height: 16px;
+          }
+        }
+        .content {
+          margin-top: 20px;
+          label {
+            font-size: 14px;
+            color: #919aa6;
+            line-height: 20px;
+          }
+          input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #cfcfd2;
+            background: transparent;
+            padding: 0 100px 0 12px;
+            color: #121212;
+          }
+          .input {
+            margin-top: 4px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            span {
+              position: absolute;
+              right: 15px;
+              font-size: 14px;
+              color: #121212;
+              cursor: pointer;
+            }
+          }
+        }
+        .button {
+          p {
+            margin-top: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            span {
+              font-size: 14px;
+              color: #121212;
+              &:first-of-type {
+                font-size: 14px;
+                color: #919aa6;
+              }
+            }
+          }
+        }
+      }
+      .deposit {
+        border-top: 2px solid #00b900;
+        background: rgba(0, 185, 0, 0.04);
+        .title {
+          > span {
+            color: #00b900;
+          }
+        }
+      }
+      .withdraw {
+        border-top: 2px solid #ff6400;
+        background: rgba(255, 100, 0, 0.04);
+        .title {
+          > span {
+            color: #ff6400;
           }
         }
       }

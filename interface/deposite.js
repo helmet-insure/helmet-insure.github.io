@@ -494,7 +494,6 @@ export const getBalance = async (type, currcy) => {
     .balanceOf(window.CURRENTADDRESS)
     .call()
     .then((res) => {
-      console.log(res);
       let tocurrcy = currcy || type;
       return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
     });

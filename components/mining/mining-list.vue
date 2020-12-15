@@ -266,7 +266,7 @@ export default {
       this.depositeLoading = data.status;
     });
     this.$bus.$on('CLAIM_LOADING', (data) => {
-      this.claimLoading = false; s
+      this.claimLoading = false;
     });
     this.$bus.$on('EXIT_LOADING', (data) => {
       this.exitLoading = false;
