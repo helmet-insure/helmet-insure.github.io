@@ -201,18 +201,19 @@ export default {
           }
           buyResult.push(resultItem)
         } else {
-          let amount = fromWei(item.volume, item.longInfo._underlying)
-          let exPirce = fromWei(item.longInfo._strikePrice, item.longInfo._underlying)
+          console.log(item)
+          let amount = fromWei(item.volume, getTokenName(item.longInfo._collateral))
+          let exPirce = fromWei(item.longInfo._strikePrice, getTokenName(item.longInfo._collateral))
           exPirce = precision.divide(1, exPirce)
-          let volume = fromWei(item.volume, item._underlying) * this.indexArray[0][this.currentCoin] / 2
-          let price = fromWei(item.price, item.longInfo._underlying);
+          let volume = fromWei(item.volume, getTokenName(item.longInfo._collateral)) * this.indexArray[0][this.currentCoin] / 2
+          let price = fromWei(item.price, getTokenName(item.longInfo._collateral));
           resultItem = {
             seller: item.seller,
             id: item.askID,
             volume: volume,
             price: price,
             settleToken: item.settleToken,
-            _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._underlying),
+            _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._collateral),
             _underlying: item.longInfo._underlying,
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
