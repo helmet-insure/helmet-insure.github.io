@@ -48,9 +48,7 @@
           </button>
           <p>
             <span>My Deposit/Total Deposited：</span>
-            <span>
-              {{ balance.Deposite }} LPT/{{ balance.DepositePool }} LPT</span
-            >
+            <span> {{ balance.Deposite }} LPT/{{ balance.totalLPT }} LPT</span>
           </p>
           <p>
             <span>My Pool Share：</span>
@@ -144,9 +142,9 @@ export default {
       }],
       balance: {
         Deposite: 0,
-        DepositePool: 0,
         Withdraw: 0,
-        Helmet: 0
+        Helmet: 0,
+        totalLPT: 0,
       },
       DepositeNum: '',
       WithdrawNum: '',
@@ -189,13 +187,16 @@ export default {
       let Withdraw = await getLPTOKEN(type);
       // 可领取
       let Helmet = await CangetPAYA(type);
+      // 总抵押
+      let totalLPT = await totalSupply(type)
 
       this.balance.Deposite = addCommom(Deposite, 4)
       this.balance.Withdraw = addCommom(Withdraw, 4)
       this.balance.Helmet = addCommom(Helmet, 4)
+      this.balance.totalLPT = addCommom(totalLPT, 4)
+      this.textList[2].num = addCommom(totalLPT, 4)
       this.textList[3].num = addCommom(Deposite, 4)
       this.textList[4].num = addCommom(Helmet, 4)
-      // this.balance.DepositePool = DepositePool
     },
     // 抵押
     toDeposite() {

@@ -8,12 +8,14 @@
         <nuxt-link
           to="/product"
           :class="routeObj.name === 'product-id' ? 'active' : ''"
-          >{{ $t('Header.Trade') }}</nuxt-link
+          >{{ $t("Header.Trade") }}</nuxt-link
         >
         <!-- <nuxt-link to="/buy">{{ $t('Header.MySafetyHelmet') }}</nuxt-link> -->
-        <nuxt-link to="/mining">{{ $t('Header.Mining') }}</nuxt-link>
-        <nuxt-link to="/sell">{{ $t('Header.Govern') }}</nuxt-link>
-        <a href="https://helmet-insure.gitbook.io/helmet/" target="_blank">{{$t('Header.GuideBook')}}</a>
+        <nuxt-link to="/mining">{{ $t("Header.Mining") }}</nuxt-link>
+        <!-- <nuxt-link to="/sell">{{ $t('Header.Govern') }}</nuxt-link> -->
+        <!-- <a href="https://helmet-insure.gitbook.io/helmet/" target="_blank">{{
+          $t("Header.GuideBook")
+        }}</a> -->
       </div>
       <!-- <Assets v-if="userInfo.data.isLogin"></Assets> -->
       <!-- 分割线 -->
@@ -127,7 +129,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 .header-container {
   width: 100%;
   height: 80px;
@@ -149,7 +151,7 @@ export default {
         font-weight: bold;
         &::after {
           display: none;
-          content: '';
+          content: "";
           position: absolute;
           left: 0px;
           bottom: 0px;
@@ -287,7 +289,7 @@ export default {
       .more {
         width: 24px;
         height: 24px;
-        background-image: url('../../assets/img/helmet/caidan@2x.png');
+        background-image: url("../../assets/img/helmet/caidan@2x.png");
         background-repeat: no-repeat;
         background-size: cover;
       }
