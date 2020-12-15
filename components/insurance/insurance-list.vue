@@ -43,7 +43,7 @@
         <p>暂无保险</p>
       </div>
     </section>
-    <section class="pages" v-if="showList.length">
+    <section class="pages" v-if="insuranceList.length > 10">
       <div>
         <p @click="upPage">
           <svg class="icon" aria-hidden="true">
@@ -177,6 +177,7 @@ export default {
     },
     // 格式化数据
     setList(sell) {
+      console.log(sell)
       const sellResult = []
       const buyResult = []
       let spliceResult = []
@@ -189,10 +190,10 @@ export default {
           resultItem = {
             seller: item.seller,
             id: item.askID,
-            volume: fromWei(item.volume, item._underlying),
-            price: fromWei(item.price, item._underlying),
+            volume: fromWei(item.volume, getTokenName(item.longInfo._collateral)),
+            price: fromWei(item.price, getTokenName(item.longInfo._underlying)),
             settleToken: item.settleToken,
-            _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._underlying),
+            _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._collateral),
             _underlying: item.longInfo._underlying,
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
@@ -222,8 +223,9 @@ export default {
       }
       this.buyList = buyResult
       this.sellList = sellResult
-      this.showList = buyResult.slice(this.page * this.limit, this.limit)
-      this.showList = sellResult.slice(this.page * this.limit, this.limit)
+      let result = this.buyList.filter(item => getTokenName(item._collateral) == this.currentCoin)
+      this.insuranceList = result
+      this.showList = result.slice(this.page * this.limit, this.limit)
     },
     checkList(coin, type) {
       if (type == 1) {
@@ -235,10 +237,10 @@ export default {
         this.insuranceList = result
         this.showList = result.slice(this.page * this.limit, this.limit)
       }
+      console.log(this.showList)
     },
     // 分页
     upPage() {
-      console.log(this.insuranceList)
       if (this.page <= 0) {
         return
       }

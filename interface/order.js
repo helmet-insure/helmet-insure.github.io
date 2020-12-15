@@ -23,6 +23,7 @@ const netObj = {
 };
 // 翻倍
 export const onIssueSell = async (data_, callBack) => {
+  console.log(data_);
   let data = { ...data_ };
   data.category = getAddress(data.category);
   data.currency = getAddress(data.currency);
@@ -32,7 +33,7 @@ export const onIssueSell = async (data_, callBack) => {
   // let fix = 18;
   data.expire = new Date(data.expire).getTime();
   data.expire = parseInt(precision.divide(data.expire, 1000));
-  data.total = toWei(precision.times(data.price, data.volume), data_.currency);
+
   // let premium = fixD(precision.divide(data.premium, data.price), 18);
   let premium = fixD(precision.divide(data.premium, data.volume), 18);
   // premium = toWei(premium, data_.currency);
@@ -48,17 +49,18 @@ export const onIssueSell = async (data_, callBack) => {
   let priceUnit = getWeiWithFix(priceFix);
   // let price = fixD(precision.divide(1, data.price), fix);
   let price = fixD(data.price, priceFix);
+  data.total = toWei(precision.times(data_.price, data_.volume), priceFix);
   // price = toWei(price, data_.currency);
   price = window.WEB3.utils.toWei(String(price), priceUnit);
   // window.WEB3.utils.toWei(String(number), unit);
   data.price = price;
+  console.log(data, "$$$$$$$$$$$$$$$$$$$$$");
 
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
     conText: `<p>Rent <span>${data_.volume} ${data_.category}</span>, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
   });
-  console.log(data, "$$$$$$$$$$$$$");
   try {
     const Contract = await expERC20(data.currency);
     // 一键判断是否需要授权，给予无限授权
@@ -70,7 +72,8 @@ export const onIssueSell = async (data_, callBack) => {
         false,
         data.currency, // 抵押物 DAI
         data.category, // 保险品类 WETH
-        data.price, // 触发保险金额 抵押物单位   // 1/200
+        // data.price, // 触发保险金额 抵押物单位   // 1/200
+        toWei("0.00651728", 6),
         data.expire,
         data.volume, // 200
         data.settleToken, // 支付货币

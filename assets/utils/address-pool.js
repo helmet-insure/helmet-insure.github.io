@@ -109,6 +109,7 @@ export const getStrikePriceFix = (und, col) => {
   // 币种，抵押物, 结算物
   let colFix = getWei_2(col);
   let undFix = getWei_2(und);
+  console.log(colFix, undFix, 18 + colFix - undFix);
   if (colFix === undFix) {
     return 18;
   } else {

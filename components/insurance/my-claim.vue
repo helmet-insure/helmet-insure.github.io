@@ -42,7 +42,7 @@
         <p>暂无保险</p>
       </div>
     </section>
-    <section class="pages" v-if="showList.length">
+    <section class="pages" v-if="claimList.length > 5">
       <div>
         <p @click="upPage">
           <svg class="icon" aria-hidden="true">
@@ -131,7 +131,7 @@ export default {
       autoRounding: autoRounding,
       toRounding: toRounding,
       showList: [],
-      guaranteeList: [],
+      claimList: [],
       getTokenName,
       page: 0,
       limit: 5,

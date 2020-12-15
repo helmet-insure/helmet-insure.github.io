@@ -36,7 +36,11 @@
             {{ fixD(toRounding(item.beSold, 4), 4) }}
           </td>
           <td>
-            {{ fixD(toRounding(item.unSold, 4), 4) }}
+            {{
+              item.remain == "0"
+                ? fixD(toRounding(0, 4), 4)
+                : fixD(toRounding(item.unSold, 4), 4)
+            }}
             <span
               class="cancel"
               @click="handleClickCancel(item)"
@@ -59,7 +63,7 @@
         <p>暂无保险</p>
       </div>
     </section>
-    <section class="pages" v-if="showList.length">
+    <section class="pages" v-if="insuranceList.length > 5">
       <div>
         <p @click="upPage">
           <svg class="icon" aria-hidden="true">
@@ -153,6 +157,7 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
+      console.log(list)
       let result = []
       let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
       const currentTime = new Date().getTime();
@@ -180,7 +185,7 @@ export default {
           _collateral: item.longInfo._collateral,
           _underlying: item.longInfo._underlying,
         }
-        askRes = await asks(resultItem.askID, 'sync', resultItem._collateral);
+        askRes = await asks(resultItem.id, 'sync', resultItem._collateral);
         if (askRes == '0') {
           resultItem['status'] = 'Beborrowed';
           resultItem['sort'] = 1;
@@ -193,8 +198,11 @@ export default {
           resultItem['sort'] = 0;
         }
         resultItem['remain'] = askRes;
-        result.push(resultItem)
+        if (resultItem.beSold !== 0 || resultItem.remain !== 0) {
+          result.push(resultItem)
+        }
       }
+      console.log(result)
       this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },

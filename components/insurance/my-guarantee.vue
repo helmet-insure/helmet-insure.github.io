@@ -48,7 +48,7 @@
         <p>暂无保险</p>
       </div>
     </section>
-    <section class="pages" v-if="showList.length">
+    <section class="pages" v-if="guaranteeList.length > 5">
       <div>
         <p @click="upPage">
           <svg class="icon" aria-hidden="true">
@@ -162,7 +162,6 @@ export default {
     // 格式化数据
     setSettlementList(list) {
       const result = [];
-      console.log(list)
       let item, resultItem, amount, InsurancePrice, Rent, _collateral, _underlying, settleToken, downTime;
       for (let i = 0; i < list.length; i++) {
         item = list[i]
