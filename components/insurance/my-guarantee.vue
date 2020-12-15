@@ -183,9 +183,14 @@ export default {
           settleToken: item.sellInfo.settleToken,
           dueDate: downTime,
           _collateral: item.sellInfo.longInfo._collateral,
-          _strikePrice: item.sellInfo.longInfo._strikePrice,
+          _strikePrice: fromWei(
+            item.sellInfo.longInfo._strikePrice,
+            _collateral
+          ),
           _underlying: item.sellInfo.longInfo._underlying,
-          long: item.sellInfo.long
+          long: item.sellInfo.long,
+          short: item.sellInfo.longInfo.short,
+          count: item.sellInfo.longInfo.count,
         }
 
         result.push(resultItem)
