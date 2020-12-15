@@ -192,8 +192,8 @@ export default {
           resultItem['Balance'] = Math.min(Number(shortBalance), Number(longBalance))
           resultItem['shortBalance'] = shortBalance
           number = precision.minus(shortBalance, longBalance);
+          console.log(number, 'number number number number')
           if (Number(number) > 0) {
-            alert(1)
             try {
               volume = toWei(number, _collateral);
               const settle = await settleable(item.longInfo.short, volume);
