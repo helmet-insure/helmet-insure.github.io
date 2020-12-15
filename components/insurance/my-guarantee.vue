@@ -127,7 +127,7 @@ import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
 import { getTokenName } from '~/assets/utils/address-pool.js';
-import { onExercise } from '~/interface/order.js'
+import { onExercise, getExercise } from '~/interface/order.js'
 export default {
   data() {
     return {
@@ -160,9 +160,12 @@ export default {
       }
     },
     // 格式化数据
-    setSettlementList(list) {
+    async setSettlementList(list) {
       const result = [];
-      let item, resultItem, amount, InsurancePrice, Rent, _collateral, _underlying, settleToken, downTime;
+      let item, resultItem, amount, InsurancePrice, Rent, downTime;
+      let currentTime = new Date().getTime();
+      let exerciseRes;
+      let bidIDArr;
       for (let i = 0; i < list.length; i++) {
         item = list[i]
         // 数量
@@ -177,6 +180,8 @@ export default {
         resultItem = {
           id: item.bidID,
           bidID: item.bidID,
+          buyer: item.buyer,
+          amt: fromWei(item.amt),
           price: InsurancePrice,
           volume: amount,
           Rent: Rent,
@@ -185,17 +190,36 @@ export default {
           _collateral: item.sellInfo.longInfo._collateral,
           _strikePrice: fromWei(
             item.sellInfo.longInfo._strikePrice,
-            _collateral
+            item.sellInfo.longInfo._collateral
           ),
           _underlying: item.sellInfo.longInfo._underlying,
+          _expiry: parseInt(item.sellInfo.longInfo._expiry) * 1000,
           long: item.sellInfo.long,
           short: item.sellInfo.longInfo.short,
           count: item.sellInfo.longInfo.count,
         }
-
-        result.push(resultItem)
+        if (resultItem._expiry < currentTime) {
+          resultItem['status'] = 'Dated';
+          resultItem['sort'] = 0;
+        } else {
+          resultItem['status'] = 'Unactivated';
+          resultItem['sort'] = 2;
+        }
+        exerciseRes = await getExercise(resultItem.buyer);
+        bidIDArr = exerciseRes.map((eItem) => {
+          return eItem.returnValues.bidID;
+        });
+        if (bidIDArr.includes(resultItem.bidID)) {
+          resultItem['status'] = 'Activated';
+          resultItem['sort'] = 1;
+        }
+        if (resultItem.sort == 2) {
+          result.push(resultItem)
+        }
       }
+      // console.log(result)
       this.guaranteeList = result
+      console.log(result)
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
     // 倒计时

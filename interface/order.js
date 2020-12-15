@@ -30,34 +30,25 @@ export const onIssueSell = async (data_, callBack) => {
   data.settleToken = getAddress(data.settleToken);
   let cwei = getWei(data.currency);
   let fix = cwei === "lovelace" ? 6 : 18;
-  // let fix = 18;
   data.expire = new Date(data.expire).getTime();
   data.expire = parseInt(precision.divide(data.expire, 1000));
 
-  // let premium = fixD(precision.divide(data.premium, data.price), 18);
-  let premium = fixD(precision.divide(data.premium, data.volume), 18);
-  // premium = toWei(premium, data_.currency);
-  premium = toWei(premium);
-  data.premium = premium;
-  // let volume = fixD(precision.times(data.volume, data.price), fix);
-
   let volume = toWei(data_.volume, data_.currency);
-  // volume = toWei(volume);
   data.volume = volume;
 
   let priceFix = getStrikePriceFix(data_.currency, data_.category);
   let priceUnit = getWeiWithFix(priceFix);
-  // let price = fixD(precision.divide(1, data.price), fix);
   let price = fixD(data.price, priceFix);
   data.total = toWei(precision.times(data_.price, data_.volume), priceFix);
-  // price = toWei(price, data_.currency);
   price = window.WEB3.utils.toWei(String(price), priceUnit);
-  // window.WEB3.utils.toWei(String(number), unit);
-  console.log(price, priceUnit);
-
   data.price = price;
-  console.log(data, "$$$$$$$$$$$$$$$$$$$$$");
 
+  let premiumFix = getStrikePriceFix(data_.currency, data_.category);
+  let premiumUnit = getWeiWithFix(premiumFix);
+  let premium = fixD(precision.divide(data_.premium, data_.volume), premiumFix);
+  premium = window.WEB3.utils.toWei(String(premium), premiumUnit);
+  data.premium = premium;
+  console.log(data, "$$$$$$$$$$$$$$");
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
@@ -141,6 +132,7 @@ export const onIssueSellOnETH = async (data_, callBack) => {
   data.expire = new Date(data.expire).getTime();
   data.expire = parseInt(precision.divide(data.expire, 1000));
   data.total = toWei(precision.times(data.price, data.volume), data_.currency);
+  console.log(data.total);
   // let premium = fixD(precision.divide(data.premium, data.price), 18);
   let premium = fixD(precision.divide(data.premium, data.volume), 18);
   // premium = toWei(premium, data_.currency);
@@ -391,7 +383,6 @@ export const getBuyLog = async (callback) => {
 
 export const getExercise = async (buyer) => {
   const contract = await Order();
-  console.log(buyer, "getExercise");
   if (!buyer) {
     return [];
   }

@@ -177,7 +177,6 @@ export default {
     },
     // 格式化数据
     setList(sell) {
-      console.log(sell)
       const sellResult = []
       const buyResult = []
       let spliceResult = []
@@ -187,12 +186,13 @@ export default {
         item = sell[i]
         let token = getTokenName(item.longInfo._underlying)
         let coToken = getTokenName(item.longInfo._collateral)
+        let price = coToken == 'CTK' ? fromWei(item.price, 30) : fromWei(item.price, token);
         if (token == 'WBNB') {
           resultItem = {
             seller: item.seller,
             id: item.askID,
             volume: fromWei(item.volume, coToken),
-            price: fromWei(item.price, token),
+            price: price,
             settleToken: item.settleToken,
             _strikePrice: fromWei(item.longInfo._strikePrice, coToken),
             _underlying: item.longInfo._underlying,

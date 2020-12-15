@@ -35,11 +35,12 @@
 <script>
 import { onIssueSell, onIssueSellOnETH } from '~/interface/order.js';
 import precision from '~/assets/js/precision.js';
+import { fixD, addCommom, autoRounding, toRounding, fixInput } from '~/assets/js/util.js';
 export default {
   props: ['currentCoin', 'currentType'],
   data() {
     return {
-      dpr: 1, //DPR
+      dpr: '', //DPR
       volume: '', //数量
       precision,
       Rent: 0,
@@ -51,6 +52,7 @@ export default {
     };
   },
   computed: {
+
     undAndCol() {
       if (this.currentCoin && this.currentType) {
         return {
@@ -81,6 +83,12 @@ export default {
     }
   },
   watch: {
+    dpr(newValue, val) {
+      this.dpr = fixInput(newValue, 0);
+    },
+    volume(newValue, val) {
+      this.volume = fixInput(newValue, 4);
+    },
     currentCoin(val) {
       this.currentCoin = val;
     },
@@ -157,19 +165,20 @@ export default {
             number,
             Math.min(precision.minus(strikePrice, indexPx), 0)
           );
+
           earnings = - (Math.max(indexPx - strikePrice, 0) - premium)
         } else {
           number = precision.times(DPR, (this.IndexPxArray[0]['HELMET'] * num), day);
-          console.log(this.IndexPxArray[0][this.currentCoin])
           premium = precision.minus(
             number,
             Math.min(precision.minus(indexPx, strikePrice), 0)
           );
+
           earnings = - (Math.max(strikePrice - indexPx, 0) - premium)
         }
-        this.Rent = premium;
-        this.earnings = earnings
-        return premium;
+        this.Rent = toRounding(premium, 8);
+        this.earnings = toRounding(earnings, 8)
+        return toRounding(premium, 8);
       }
     },
     undAndColWatch(newValue) {

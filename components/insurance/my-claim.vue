@@ -120,7 +120,7 @@
 <script>
 import '~/assets/svg/iconfont.js';
 import precision from '~/assets/js/precision.js';
-import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
+import { fixD, addCommom, autoRounding, toRounding, fixInput } from '~/assets/js/util.js';
 import { getBalance } from '~/interface/order.js';
 import { newGetSymbol, getWei, getTokenName } from '~/assets/utils/address-pool.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
@@ -224,9 +224,10 @@ export default {
           }
         }
       }
-      console.log(result)
 
       this.claimList = result
+      console.log(result)
+
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
     // 倒计时

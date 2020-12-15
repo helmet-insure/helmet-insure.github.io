@@ -92,6 +92,8 @@ export const getWei = (token) => {
       return "lovelace"; // 6
     case "CTK":
       return "lovelace"; // 6
+    case 30:
+      return "tether";
     default:
       return "ether"; // 18
   }
