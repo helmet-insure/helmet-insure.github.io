@@ -257,8 +257,8 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   //   getWei(data.settleToken)
   // );
   // let volume = fixD(precision.divide(data.volume, data._strikePrice), fix);
-  let volume = toWei(_data.volume, _data.settleToken);
-  console.log(volume, "#############");
+  let volume = toWei(_data.volume, _data._collateral);
+  console.log(_data.volume, _data._underlying, "#############");
   // volume = toWei(volume);
   data.volume = volume;
   let pay = precision.times(_data._strikePrice, _data.volume);
@@ -282,7 +282,7 @@ export const buyInsuranceBuy = async (_data, callBack) => {
     await oneKeyArrpove(Contract, "ORDER", data.payPrice, callBack);
     const orderContract = await Order();
     orderContract.methods
-      .buy(data.askID, data.volume)
+      .buy(data.askID, "0006582")
       .send({ from: window.CURRENTADDRESS })
       .on("transactionHash", function(hash) {
         bus.$emit("CLOSE_STATUS_DIALOG");

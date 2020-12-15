@@ -133,7 +133,6 @@ export default {
     currentType(newValue) {
       if (newValue) {
         this.currentType = newValue
-        this.ListType = newValue
         this.page = 0;
         this.limit = 10;
         this.checkList(this.currentCoin, newValue)
@@ -177,7 +176,6 @@ export default {
     },
     // 格式化数据
     setList(sell) {
-      console.log(sell)
       const sellResult = []
       const buyResult = []
       let spliceResult = []
@@ -186,14 +184,15 @@ export default {
       for (let i = 0; i < sell.length; i++) {
         item = sell[i]
         let token = getTokenName(item.longInfo._underlying)
+        let coToken = getTokenName(item.longInfo._collateral)
         if (token == 'WBNB') {
           resultItem = {
             seller: item.seller,
             id: item.askID,
-            volume: fromWei(item.volume, getTokenName(item.longInfo._collateral)),
-            price: fromWei(item.price, getTokenName(item.longInfo._underlying)),
+            volume: fromWei(item.volume, coToken),
+            price: fromWei(item.price, token),
             settleToken: item.settleToken,
-            _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._collateral),
+            _strikePrice: fromWei(item.longInfo._strikePrice, coToken),
             _underlying: item.longInfo._underlying,
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
@@ -201,19 +200,19 @@ export default {
           }
           buyResult.push(resultItem)
         } else {
-          console.log(item)
-          let amount = fromWei(item.volume, getTokenName(item.longInfo._collateral))
-          let exPirce = fromWei(item.longInfo._strikePrice, getTokenName(item.longInfo._collateral))
+          let Token = getTokenName(item.longInfo._collateral)
+          let unToken = getTokenName(item.longInfo._underlying)
+          let exPirce = fromWei(item.longInfo._strikePrice, Token)
           exPirce = precision.divide(1, exPirce)
-          let volume = fromWei(item.volume, getTokenName(item.longInfo._collateral)) * this.indexArray[0][this.currentCoin] / 2
-          let price = fromWei(item.price, getTokenName(item.longInfo._collateral));
+          let volume = fromWei(item.volume, Token) * this.indexArray[0][unToken] / 2
+          let price = fromWei(item.price, Token);
           resultItem = {
             seller: item.seller,
             id: item.askID,
             volume: volume,
             price: price,
             settleToken: item.settleToken,
-            _strikePrice: fromWei(item.longInfo._strikePrice, item.longInfo._collateral),
+            _strikePrice: fromWei(item.longInfo._strikePrice, unToken),
             _underlying: item.longInfo._underlying,
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
@@ -238,7 +237,6 @@ export default {
         this.insuranceList = result
         this.showList = result.slice(this.page * this.limit, this.limit)
       }
-      console.log(this.showList)
     },
     // 分页
     upPage() {
@@ -278,15 +276,16 @@ export default {
           _collateral: data._collateral,
         };
       } else {
+        let Token = getTokenName(data._underlying)
         datas = {
           askID: data.id,
-          volume: data.buyNum * 2 / this.indexArray[0][this.currentCoin],
+          volume: fixD(data.buyNum * 2 / this.indexArray[0][Token], 8),
           price: data.price,
           settleToken: 'HELMET',
           _strikePrice: data._strikePrice,
-          _underlying: data._underlying,
+          _underlying: getTokenName(data._underlying),
           _expiry: data._expiry,
-          _collateral: data._collateral,
+          _collateral: getTokenName(data._collateral),
         };
       }
 

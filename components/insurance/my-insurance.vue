@@ -203,7 +203,6 @@ export default {
           result.push(resultItem)
         }
       }
-      console.log(result)
       this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
