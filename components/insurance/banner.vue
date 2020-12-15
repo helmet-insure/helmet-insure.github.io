@@ -5,7 +5,7 @@
         <!-- 已经成交的保险品种的种类 -->
         <p>
           <label>{{ $t("Banner.ClosedPolicy") }}</label>
-          <span>{{ addCommom(frequency, 2) }}</span>
+          <span>{{ addCommom(174, 2) }}</span>
         </p>
         <img src="~/assets/img/helmet/ba1@2x.png" alt="" />
       </li>
