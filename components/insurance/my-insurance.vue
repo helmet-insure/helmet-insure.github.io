@@ -44,7 +44,7 @@
             <span
               class="cancel"
               @click="handleClickCancel(item)"
-              v-if="item.unSold != 0"
+              v-if="item.remain != 0"
               >撤销</span
             >
           </td>
@@ -157,20 +157,20 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-      console.log(list)
       let result = []
       let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
       const currentTime = new Date().getTime();
       for (let i = 0; i < list.length; i++) {
         item = list[i]
         // 数量
-        amount = fromWei(item.volume, item.settleToken)
+        let Token = getTokenName(item.longInfo._collateral)
+        amount = fromWei(item.volume, Token)
         // 保单价格
-        InsurancePrice = fromWei(item.price, item.settleToken)
+        InsurancePrice = fromWei(item.price, Token)
         //倒计时
         downTime = new Date(item.longInfo._expiry * 1000).toLocaleDateString();
         //已出售
-        beSold = fromWei(this.getBeSold(item.askID), item.settleToken)
+        beSold = fromWei(this.getBeSold(item.askID), Token)
         unSold = precision.minus(amount, beSold)
         shortBalance = await getBalance(item.longInfo.short, item._collateral);
         resultItem = {
@@ -198,7 +198,8 @@ export default {
           resultItem['sort'] = 0;
         }
         resultItem['remain'] = askRes;
-        if (resultItem.beSold !== 0 || resultItem.remain !== 0) {
+
+        if (resultItem.beSold != 0 || resultItem.remain != 0) {
           result.push(resultItem)
         }
       }
