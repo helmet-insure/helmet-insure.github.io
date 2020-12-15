@@ -19,7 +19,7 @@
               : 'put_style'
           "
         >
-          <td>
+          <td :class="item._underlying == 'WBNB' ? 'green' : 'orange'">
             {{
               item._underlying == "WBNB" ? item._collateral : item._underlying
             }}
@@ -27,11 +27,13 @@
               :class="item._underlying == 'WBNB' ? 'call_icon' : 'put_icon'"
             ></i>
           </td>
-          <td>{{ item.dueDate }}</td>
           <td>
-            <button class="b_b_button" @click="toActive(item)">
-              {{ $t("Table.outSure") }}
-            </button>
+            {{ addCommom(precision.plus(item.col, item.longBalance), 4) }}
+            {{ item._collateral }}
+          </td>
+          <td>{{ addCommom(item.und, 4) }} {{ item._underlying }}</td>
+          <td>
+            <button class="b_b_button" @click="toActive(item)">取回</button>
           </td>
         </tr>
       </tbody>
@@ -156,6 +158,7 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
+
       const result = [];
       let item,
         longBalance,
@@ -174,6 +177,7 @@ export default {
         shortBalance = await getBalance(item.longInfo.short, _collateral);
         if (Number(shortBalance) > 0 && Number(longBalance) > 0) {
           result.push({
+            askID: item.askID,
             creator: item.seller,
             _collateral,
             _underlying,
@@ -183,7 +187,8 @@ export default {
             long: item.longInfo.long,
             short: item.longInfo.short,
             longBalance: longBalance,
-            longBalance: Math.min(Number(shortBalance), Number(longBalance)),
+            Balance: Math.min(Number(shortBalance), Number(longBalance)),
+            shortBalance: shortBalance,
           });
         }
         number = precision.minus(shortBalance, longBalance);
@@ -201,6 +206,7 @@ export default {
               }
 
               result.push({
+                askID: item.askID,
                 creator: item.seller,
                 _collateral,
                 _underlying,
@@ -275,6 +281,12 @@ export default {
 
 <style lang='scss' scoped>
 @import "~/assets/css/base.scss";
+.green {
+  color: #00b900 !important;
+}
+.orange {
+  color: #ff6400 !important;
+}
 @media screen and (min-width: 750px) {
   .call_style {
     background: rgba(0, 185, 0, 0.04);
@@ -373,6 +385,7 @@ export default {
               height: 16px;
               background-repeat: no-repeat;
               background-size: cover;
+              margin-left: 4px;
             }
             .call_icon {
               background-image: url("../../assets/img/helmet/tablecall.png");

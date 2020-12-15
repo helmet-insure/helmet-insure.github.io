@@ -53,6 +53,8 @@ export const onIssueSell = async (data_, callBack) => {
   // price = toWei(price, data_.currency);
   price = window.WEB3.utils.toWei(String(price), priceUnit);
   // window.WEB3.utils.toWei(String(number), unit);
+  console.log(price, priceUnit);
+
   data.price = price;
   console.log(data, "$$$$$$$$$$$$$$$$$$$$$");
 
@@ -72,8 +74,8 @@ export const onIssueSell = async (data_, callBack) => {
         false,
         data.currency, // 抵押物 DAI
         data.category, // 保险品类 WETH
-        // data.price, // 触发保险金额 抵押物单位   // 1/200
-        toWei("0.00651728", 6),
+        data.price, // 触发保险金额 抵押物单位   // 1/200
+        // toWei("0.00651728", 6),
         data.expire,
         data.volume, // 200
         data.settleToken, // 支付货币
@@ -149,12 +151,14 @@ export const onIssueSellOnETH = async (data_, callBack) => {
   // volume = toWei(volume);
   data.volume = volume;
 
-  let priceFix = getStrikePriceFix(data_.currency, data_.category);
+  let priceFix = getStrikePriceFix(data_.category, data_.currency);
   let priceUnit = getWeiWithFix(priceFix);
   // let price = fixD(precision.divide(1, data.price), fix);
   let price = fixD(precision.divide(1, data.price), priceFix);
   // price = toWei(price, data_.currency);
+  console.log(priceUnit);
   price = window.WEB3.utils.toWei(String(price), priceUnit);
+  console.log(data_.currency, data_.category, price, priceUnit);
   // window.WEB3.utils.toWei(String(number), unit);
   data.price = price;
 
@@ -258,7 +262,6 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   // );
   // let volume = fixD(precision.divide(data.volume, data._strikePrice), fix);
   let volume = toWei(_data.volume, _data._collateral);
-  console.log(_data.volume, _data._underlying, "#############");
   // volume = toWei(volume);
   data.volume = volume;
   let pay = precision.times(_data._strikePrice, _data.volume);
@@ -282,7 +285,7 @@ export const buyInsuranceBuy = async (_data, callBack) => {
     await oneKeyArrpove(Contract, "ORDER", data.payPrice, callBack);
     const orderContract = await Order();
     orderContract.methods
-      .buy(data.askID, "0006582")
+      .buy(data.askID, data.volume)
       .send({ from: window.CURRENTADDRESS })
       .on("transactionHash", function(hash) {
         bus.$emit("CLOSE_STATUS_DIALOG");
@@ -553,7 +556,7 @@ export const getBalance = async (type, currcy) => {
     .balanceOf(window.CURRENTADDRESS)
     .call()
     .then((res) => {
-      let tocurrcy = type;
+      let tocurrcy = currcy || type;
       return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
     });
 };

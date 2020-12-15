@@ -13,14 +13,15 @@
       <tbody>
         <tr v-for="(item, index) in showList" :key="index">
           <td>
-            {{
+            <!-- {{
               (
                 item.seller.substr(0, 2) +
                 item.seller.substr(2, 4) +
                 "..." +
                 item.seller.substr(-5)
               ).toUpperCase()
-            }}
+            }} -->
+            {{ item.id }}
           </td>
           <td>{{ item.price }}</td>
           <td>{{ item.volume }}</td>
@@ -190,7 +191,7 @@ export default {
             seller: item.seller,
             id: item.askID,
             volume: fromWei(item.volume, coToken),
-            price: fromWei(item.price, token),
+            price: fromWei(item.price, coToken),
             settleToken: item.settleToken,
             _strikePrice: fromWei(item.longInfo._strikePrice, coToken),
             _underlying: item.longInfo._underlying,
@@ -271,9 +272,9 @@ export default {
           price: data.price,
           settleToken: 'HELMET',
           _strikePrice: data._strikePrice,
-          _underlying: data._underlying,
+          _underlying: getTokenName(data._underlying),
           _expiry: data._expiry,
-          _collateral: data._collateral,
+          _collateral: getTokenName(data._collateral),
         };
       } else {
         let Token = getTokenName(data._underlying)

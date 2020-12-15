@@ -159,7 +159,8 @@ export default {
           );
           earnings = - (Math.max(indexPx - strikePrice, 0) - premium)
         } else {
-          number = precision.times(DPR, (this.IndexPxArray[0][this.currentCoin] * num), day);
+          number = precision.times(DPR, (this.IndexPxArray[0]['HELMET'] * num), day);
+          console.log(this.IndexPxArray[0][this.currentCoin])
           premium = precision.minus(
             number,
             Math.min(precision.minus(indexPx, strikePrice), 0)
