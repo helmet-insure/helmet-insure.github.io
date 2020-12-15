@@ -28,12 +28,15 @@
             ></i>
           </td>
           <td>
-            {{ addCommom(precision.plus(item.col, item.longBalance), 4) }}
+            <!-- {{ addCommom(precision.plus(item.col, item.longBalance), 4) }} -->
+            {{ fixD(addCommom(item.longBalance, 4), 4) }}
             {{ item._collateral }}
           </td>
-          <td>{{ addCommom(item.und, 4) }} {{ item._underlying }}</td>
           <td>
-            <button class="b_b_button" @click="toActive(item)">取回</button>
+            {{ fixD(addCommom(item.und || 0, 4), 4) }} {{ item._underlying }}
+          </td>
+          <td>
+            <button class="b_b_button" @click="toClaim(item)">取回</button>
           </td>
         </tr>
       </tbody>
@@ -120,7 +123,7 @@
 <script>
 import '~/assets/svg/iconfont.js';
 import precision from '~/assets/js/precision.js';
-import { fixD, addCommom, autoRounding, toRounding, fixInput } from '~/assets/js/util.js';
+import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { getBalance } from '~/interface/order.js';
 import { newGetSymbol, getWei, getTokenName } from '~/assets/utils/address-pool.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
@@ -135,6 +138,7 @@ export default {
       showList: [],
       claimList: [],
       getTokenName,
+      fixD,
       page: 0,
       limit: 5,
     }
@@ -158,7 +162,6 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-
       const result = [];
       let item,
         longBalance,
@@ -175,59 +178,41 @@ export default {
         longBalance = await getBalance(item.longInfo.long, _collateral);
         _underlying = getTokenName(item.longInfo._underlying, window.chainID);
         shortBalance = await getBalance(item.longInfo.short, _collateral);
+        let resultItem = {}
         if (Number(shortBalance) > 0 && Number(longBalance) > 0) {
-          result.push({
-            askID: item.askID,
-            creator: item.seller,
-            _collateral,
-            _underlying,
-            col: 0,
-            fee: 0,
-            und: 0,
-            long: item.longInfo.long,
-            short: item.longInfo.short,
-            longBalance: longBalance,
-            Balance: Math.min(Number(shortBalance), Number(longBalance)),
-            shortBalance: shortBalance,
-          });
-        }
-        number = precision.minus(shortBalance, longBalance);
-
-        if (Number(number) > 0) {
-          try {
-            volume = toWei(number, _collateral);
-            const settle = await settleable(item.longInfo.short, volume);
-            if (settle.col !== '0' || settle.und !== '0') {
-              if (_collateral === 'USDT' || _collateral === 'USDC') {
-                und = fromWei(settle.und, _collateral);
-                und = precision.divide(und, 1000000000000);
-              } else {
-                und = fromWei(settle.und, _collateral);
+          resultItem['askID'] = item.askID;
+          resultItem['creator'] = item.seller;
+          resultItem['_collateral'] = _collateral
+          resultItem['_underlying'] = _underlying
+          resultItem['long'] = item.longInfo.long
+          resultItem['short'] = item.longInfo.short
+          resultItem['longBalance'] = longBalance
+          resultItem['Balance'] = Math.min(Number(shortBalance), Number(longBalance))
+          resultItem['shortBalance'] = shortBalance
+          number = precision.minus(shortBalance, longBalance);
+          if (Number(number) > 0) {
+            try {
+              volume = toWei(number, _collateral);
+              const settle = await settleable(item.longInfo.short, volume);
+              if (settle.col != '0' || settle.und != '0') {
+                if (_collateral == 'CTK') {
+                  und = fromWei(settle.und, 'CTK');
+                } else {
+                  und = fromWei(settle.und, _collateral);
+                }
+                resultItem['und'] = und;
+                resultItem['col'] = fromWei(settle.col, _collateral);
+                resultItem['fee'] = fromWei(settle.fee, _collateral);
               }
-
-              result.push({
-                askID: item.askID,
-                creator: item.seller,
-                _collateral,
-                _underlying,
-                col: fromWei(settle.col, _collateral),
-                fee: fromWei(settle.fee, _collateral),
-                // und: fromWei(settle.und, _collateral),
-                und,
-                long: item.longInfo.long,
-                short: item.longInfo.short,
-                // longBalance: Number(longBalance) > 0 ? String(number) : 0,
-                longBalance: 0,
-              });
+            } catch (err) {
+              // console.log(err)
             }
-          } catch (err) {
           }
+          result.push(resultItem)
         }
       }
-
-      this.claimList = result
       console.log(result)
-
+      this.claimList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
     // 倒计时
@@ -244,18 +229,17 @@ export default {
       return template
     },
     // 行权
-    toActive(item) {
-      let data = {
-        token: getTokenName(item._underlying),
-        _underlying_vol: item.volume * item._strikePrice,
-        vol: toRounding(item.volume, 2),
-        bidID: item.bidID,
-        long: item.long,
-        exPrice: autoRounding(precision.divide(1, item._strikePrice)),
-        _underlying: item._underlying,
-        settleToken: item.settleToken,
+    toClaim(item) {
+      if (item.longBalance != 0) {
+        burn(
+          item.short,
+          item.longBalance,
+          { _collateral: item._collateral },
+          item
+        );
+      } else {
+        settle(item.short, item);
       }
-      onExercise(data)
     },
     // 分页
     upPage() {

@@ -219,7 +219,6 @@ export default {
       }
       // console.log(result)
       this.guaranteeList = result
-      console.log(result)
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
     // 倒计时
