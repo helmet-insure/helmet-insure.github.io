@@ -162,6 +162,7 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
+      console.log(list, 'claim claim claim claim claim')
       const result = [];
       let item,
         longBalance,

@@ -52,7 +52,7 @@
           <td>{{ item.dueDate }}</td>
           <td class="option">
             <!-- <button class="o_button">{{ $t("Table.outSure") }}</button> -->
-            <button class="b_button">{{ $t("Table.Stake") }}</button>
+            <button class="b_button">{{ $t("Table.Stakeing") }}</button>
           </td>
         </tr>
       </tbody>
@@ -157,6 +157,7 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
+      console.log(list, 'sell sell sell sell sell')
       let result = []
       let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
       const currentTime = new Date().getTime();
@@ -323,7 +324,7 @@ export default {
         box-sizing: border-box;
         align-items: center;
         td {
-          width: 100px;
+          width: 111px;
           white-space: nowrap;
         }
       }
