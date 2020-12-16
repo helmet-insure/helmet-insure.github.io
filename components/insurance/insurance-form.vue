@@ -19,7 +19,17 @@
         折合：<span>{{ strikePrice * volume }} {{ unit }}</span>
       </p> -->
       <p>
-        {{ $t("Content.Earning") }}：<span>{{ earnings }} BNB</span>
+        {{ $t("Content.Earning") }}：<span>
+          {{
+            fixD(
+              toRounding(
+                precision.times(earnings, HelmetPrice[0]["HELMET"]),
+                2
+              ),
+              2
+            )
+          }}HELMET
+        </span>
       </p>
       <!-- <p>
         保费：<span>{{ Rent }} BNB</span>
@@ -50,7 +60,7 @@ export default {
       strikePrice: 0.00666666,
       unit: 'BNB',
       currency: 'WBNB',
-      earnings: 0,
+      earnings: 0, fixD, addCommom, autoRounding, toRounding,
     };
   },
   computed: {

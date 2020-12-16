@@ -3,7 +3,19 @@
     <section>
       <div>
         <span>{{ $t("Content.InsurancePrice") }}</span>
-        <p>{{ strikePrice }} {{ unit }}</p>
+        <p>
+          {{ toRounding(strikePrice, 4) }}
+          {{ unit }} ≈
+          {{
+            fixD(
+              toRounding(
+                precision.times(strikePrice, allHelmetPrice[0]["HELMET"]),
+                2
+              ),
+              2
+            )
+          }}HELMET
+        </p>
       </div>
       <div>
         <span>{{ $t("Content.ProtectTheCycle") }}</span>
@@ -22,7 +34,8 @@
         <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Helmet"></use></svg
-          >{{ BalanceArray[underly] }} {{ underly }}
+          >{{ BalanceArray[underly] }}
+          {{ underly == "FORTUBE" ? "FOR" : underly }}
         </p>
         <p v-if="TradeType != 'buy'">
           <svg class="icon" aria-hidden="true">
@@ -61,7 +74,7 @@ export default {
       FORTUBE: 0,
       indexPx: 0.00333333,
       unit: 'HELMET',
-      precision,
+      precision, toRounding, autoRounding, fixD, addCommom,
       strikePrice: 0.00666666,
       coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB']
     };
@@ -80,11 +93,15 @@ export default {
     },
     IndexPxArray() {
       return this.$store.state.allIndexPrice
+    },
+    allHelmetPrice() {
+      return this.$store.state.allHelmetPrice
     }
   },
   watch: {
     currentCoin(val) {
       this.underly = val;
+      console.log(val)
       this.currentCoin = val
     },
     currentType(val) {
@@ -150,7 +167,11 @@ export default {
     section {
       display: flex;
       > div {
+        &:nth-of-type(1) {
+          width: 250px;
+        }
         width: 200px;
+
         span {
           font-size: 14px;
           color: #919aa6;

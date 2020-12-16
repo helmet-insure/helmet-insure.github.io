@@ -14,7 +14,7 @@
           <p>{{ $t("Content.DoubleInsurance") }}<span>100%</span><i></i></p>
           <div>
             <div>
-              <span>Minted</span>
+              <span>{{ $t("Table.Minted") }}</span>
               <p>HELMET</p>
               <strong>{{ item.callMined }}</strong>
               <button
@@ -37,7 +37,7 @@
             </div>
             <section class="cut_line"></section>
             <div>
-              <span>Currently Staked</span>
+              <span>{{ $t("Table.CurrentlyStaked") }}</span>
               <p>{{ item.call }} Short Token</p>
               <strong>{{ item.callSpToken }}</strong>
               <button
@@ -85,7 +85,7 @@
           <p>{{ $t("Content.HalfInsurance") }}<span>-50%</span><i></i></p>
           <div>
             <div>
-              <span>Minted</span>
+              <span>{{ $t("Table.Minted") }}</span>
               <p>HELMET</p>
               <strong>{{ item.putMined }}</strong>
               <button
@@ -109,7 +109,7 @@
             </div>
             <section class="cut_line"></section>
             <div>
-              <span>Currently Staked</span>
+              <span>{{ $t("Table.CurrentlyStaked") }}</span>
               <p>{{ item.put }} Short Token</p>
               <strong>{{ item.putSpToken }}</strong>
               <button

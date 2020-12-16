@@ -6,7 +6,7 @@
     <div class="helmet_content">
       <div class="right_text">
         <h3><span>HELMET</span>.INSURE</h3>
-        <p>HELMET will be with you any corner</p>
+        <p>Crypto-assets insruance trading platform on BSC</p>
         <div>
           <button>
             <img src="~/assets/img/helmet/home_github.png" alt="" />
@@ -21,7 +21,7 @@
         <img src="~/assets/img/helmet/home_banner.png" alt="" />
       </div>
     </div>
-    <Footer />
+    <Footer :padding="0" />
   </div>
 </template>
 <script>
@@ -45,7 +45,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 
 @media screen and (min-width: 1280px) {
   .helmet_container {
@@ -63,7 +63,7 @@ export default {
         display: block;
         width: 255px;
         height: 48px;
-        background-image: url('../../assets/img/helmet/home_logo.png');
+        background-image: url("../../assets/img/helmet/home_logo.png");
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -160,7 +160,7 @@ export default {
         display: block;
         width: 210px;
         height: 40px;
-        background-image: url('../../assets/img/helmet/home_logo.png');
+        background-image: url("../../assets/img/helmet/home_logo.png");
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -294,7 +294,7 @@ export default {
         display: block;
         width: 138px;
         height: 26px;
-        background-image: url('../../assets/img/helmet/home_logo.png');
+        background-image: url("../../assets/img/helmet/home_logo.png");
         background-repeat: no-repeat;
         background-size: cover;
       }

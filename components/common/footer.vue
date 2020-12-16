@@ -26,7 +26,7 @@
         <span>Medium</span>
       </a>
     </div>
-    <div class="footer_bottom">
+    <div class="footer_bottom" :style="`padding:0 ${padding}px`">
       <p>Powered by HELMET Core team</p>
       <Langauage class="langauage" />
     </div>
@@ -36,6 +36,7 @@
 import Langauage from '~/components/common/langauage.vue';
 import '~/assets/svg/iconfont.js';
 export default {
+  props: ['padding'],
   name: 'p-footer',
   components: { Langauage },
 };
@@ -79,7 +80,6 @@ export default {
       align-items: center;
       justify-content: space-between;
       display: flex;
-      padding: 0 200px;
       p {
         font-size: 14px;
         font-weight: 400;
@@ -88,6 +88,12 @@ export default {
     }
   }
 }
+@media screen and (min-width: 750px) and (max-width: 1280px) {
+  .footer_bottom {
+    padding: 0 50px !important;
+  }
+}
+
 @media screen and (max-width: 750px) {
   .footer-container {
     width: 100%;

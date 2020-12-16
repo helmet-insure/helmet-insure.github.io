@@ -77,6 +77,11 @@
     "Claim": "结算",
     "DenAssets": "计价资产",
     "BaseAssets": "基础资产",
-    "NoData": "暂无保险"
+    "NoData": "暂无保险",
+    "GetBack": "取回",
+    "ConvertInto": "折合",
+    "Minted": "待领取奖励",
+    "CurrentlyStaked": "已抵押",
+    "text1": " 如果在行权日之前，价格没有达到{num}，您将获得无风险收益。"
   }
 }

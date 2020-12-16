@@ -4,8 +4,8 @@
       <thead>
         <tr>
           <td>{{ $t("Table.Type") }}</td>
-          <td>计价资产</td>
-          <td>基础资产</td>
+          <td>{{ $t("Table.DenAssets") }}</td>
+          <td>{{ $t("Table.BaseAssets") }}</td>
           <td></td>
         </tr>
       </thead>

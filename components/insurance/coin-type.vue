@@ -6,7 +6,7 @@
       @click="handleClickCoin(coin)"
       :class="curCoin == coin ? 'active' : ''"
     >
-      {{ coin }}
+      {{ coin == "FORTUBE" ? "FOR" : coin }}
     </button>
   </div>
 </template>

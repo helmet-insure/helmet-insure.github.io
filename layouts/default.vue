@@ -4,7 +4,7 @@
     <div class="main-container">
       <nuxt />
     </div>
-    <PFooter></PFooter>
+    <PFooter :padding="200"></PFooter>
     <MyPayaso></MyPayaso>
     <PMask></PMask>
     <RiskWarning
