@@ -64,7 +64,7 @@ export default {
       CKT: 0,
       FORTUBE: 0,
       indexPx: 0.00333333,
-      unit: 'HELMET',
+      unit: 'WBNB',
       precision, toRounding, autoRounding, fixD, addCommom,
       strikePrice: 0.00666666,
       coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB'],
