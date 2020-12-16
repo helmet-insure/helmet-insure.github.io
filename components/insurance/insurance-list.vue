@@ -12,15 +12,15 @@
       <tbody>
         <tr v-for="(item, index) in showList" :key="index">
           <td>
-            <!-- {{
+            {{
               (
                 item.seller.substr(0, 2) +
                 item.seller.substr(2, 4) +
                 "..." +
                 item.seller.substr(-5)
               ).toUpperCase()
-            }} -->
-            {{ item.id }}
+            }}
+            <!-- {{ item.id }} -->
           </td>
           <td>{{ item.price }}</td>
           <td>{{ item.volume }}</td>

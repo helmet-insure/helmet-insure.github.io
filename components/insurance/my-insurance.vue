@@ -23,37 +23,39 @@
               : 'put_style'
           "
         >
-          <td>{{ item.id }}</td>
-          <td>
-            {{
-              getTokenName(item._underlying) == "WBNB"
-                ? getTokenName(item._collateral)
-                : getTokenName(item._underlying)
-            }}
-          </td>
-          <td>{{ fixD(toRounding(item.price, 4), 4) }}</td>
-          <td>
-            {{ fixD(toRounding(item.beSold, 4), 4) }}
-          </td>
-          <td>
-            {{
-              item.remain == "0"
-                ? fixD(toRounding(0, 4), 4)
-                : fixD(toRounding(item.unSold, 4), 4)
-            }}
-            <span
-              class="cancel"
-              @click="handleClickCancel(item)"
-              v-if="item.remain != 0"
-              >撤销</span
-            >
-          </td>
-          <td>{{ toRounding(item.shortBalance, 4) }}</td>
-          <td>{{ item.dueDate }}</td>
-          <td class="option">
-            <!-- <button class="o_button">{{ $t("Table.outSure") }}</button> -->
-            <button class="b_button">{{ $t("Table.Stakeing") }}</button>
-          </td>
+          <template v-if="Number(item.unsold) != 0">
+            <td>{{ item.id }}</td>
+            <td>
+              {{
+                getTokenName(item._underlying) == "WBNB"
+                  ? getTokenName(item._collateral)
+                  : getTokenName(item._underlying)
+              }}
+            </td>
+            <td>{{ fixD(toRounding(item.price, 4), 4) }}</td>
+            <td>
+              {{ fixD(toRounding(item.beSold, 4), 4) }}
+            </td>
+            <td>
+              {{
+                item.remain == "0"
+                  ? fixD(toRounding(0, 4), 4)
+                  : fixD(toRounding(item.unSold, 4), 4)
+              }}
+              <span
+                class="cancel"
+                @click="handleClickCancel(item)"
+                v-if="item.remain != 0"
+                >撤销</span
+              >
+            </td>
+            <td>{{ toRounding(item.shortBalance, 4) }}</td>
+            <td>{{ item.dueDate }}</td>
+            <td class="option">
+              <!-- <button class="o_button">{{ $t("Table.outSure") }}</button> -->
+              <button class="b_button">{{ $t("Table.Stakeing") }}</button>
+            </td>
+          </template>
         </tr>
       </tbody>
     </table>
@@ -197,10 +199,8 @@ export default {
           resultItem['status'] = 'Dated';
           resultItem['sort'] = 0;
         }
-        console.log(askRes, '###############')
         resultItem['remain'] = askRes;
-
-        if (resultItem.beSold != 0 && askRes != 0) {
+        if (resultItem.remain != 0) {
           result.push(resultItem)
         }
       }
@@ -216,7 +216,6 @@ export default {
       let arrayList = JSON.parse(JSON.stringify(array))
       if (arrayList.length) {
         arrayList.forEach(item => {
-          console.log(item)
           if (!isNaN(item.vol)) {
             number = Number(item.vol)
             num = num + number
