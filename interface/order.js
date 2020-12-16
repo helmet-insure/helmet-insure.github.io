@@ -148,7 +148,6 @@ export const onIssueSellOnETH = async (data_, callBack) => {
   // let price = fixD(precision.divide(1, data.price), fix);
   let price = fixD(precision.divide(1, data.price), priceFix);
   // price = toWei(price, data_.currency);
-  console.log(priceUnit);
   price = window.WEB3.utils.toWei(String(price), priceUnit);
   console.log(data_.currency, data_.category, price, priceUnit);
   // window.WEB3.utils.toWei(String(number), unit);

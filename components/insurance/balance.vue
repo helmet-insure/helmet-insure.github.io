@@ -5,16 +5,7 @@
         <span>{{ $t("Content.InsurancePrice") }}</span>
         <p>
           {{ toRounding(strikePrice, 4) }}
-          {{ unit }} ≈
-          {{
-            fixD(
-              toRounding(
-                precision.times(strikePrice, allHelmetPrice[0]["HELMET"]),
-                2
-              ),
-              2
-            )
-          }}HELMET
+          {{ unit }} ≈ {{ HelmetPrice }}HELMET
         </p>
       </div>
       <div>
@@ -76,7 +67,8 @@ export default {
       unit: 'HELMET',
       precision, toRounding, autoRounding, fixD, addCommom,
       strikePrice: 0.00666666,
-      coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB']
+      coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB'],
+      HelmetPrice: 0,
     };
   },
   computed: {
@@ -115,6 +107,16 @@ export default {
       handler: 'undAndColWatch',
       immediate: true,
     },
+    strikePrice(newValue, val) {
+      if (newValue) {
+        this.HelmetPrice = toRounding(precision.times(newValue, this.allHelmetPrice[0]['HELMET']), 2)
+      }
+    },
+    allHelmetPrice(newValue, val) {
+      if (newValue) {
+        this.HelmetPrice = toRounding(precision.times(this.strikePrice, newValue[0]['HELMET']), 2)
+      }
+    }
   },
   mounted() {
     this.$bus.$on('REFRESH_BALANCE', () => {
