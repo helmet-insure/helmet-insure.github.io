@@ -60,7 +60,7 @@
     <section class="noData" v-if="!showList.length">
       <div>
         <img src="~/assets/img/helmet/nodata.png" alt="" />
-        <p>暂无保险</p>
+        <p>{{ $t("Table.NoData") }}</p>
       </div>
     </section>
     <section class="pages" v-if="insuranceList.length > 5">

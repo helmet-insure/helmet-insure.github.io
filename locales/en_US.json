@@ -78,7 +78,7 @@
     "Claim": "Claim",
     "DenAssets": "Denominated Asset",
     "BaseAssets": "Underlying Asset",
-    "NoData": "暂无保险",
+    "NoData": "NoData",
     "GetBack": "Withdraw",
     "Earn": "Expected maximum returns",
     "Minted": "Minted",
