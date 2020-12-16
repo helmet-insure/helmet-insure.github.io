@@ -140,7 +140,7 @@ export default {
       getTokenName,
       fixD,
       page: 0,
-      limit: 5,
+      limit: 8,
     }
   },
   computed: {

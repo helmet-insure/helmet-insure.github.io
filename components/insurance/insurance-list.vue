@@ -23,7 +23,7 @@
             <!-- {{ item.id }} -->
           </td>
           <td>{{ item.price }}</td>
-          <td>{{ item.volume }}</td>
+          <td>{{ item.remain }}</td>
           <td class="option">
             <PInput
               type="number"
@@ -99,7 +99,7 @@ import '~/assets/svg/iconfont.js'
 import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
-import { buyInsuranceBuy } from '~/interface/order.js'
+import { buyInsuranceBuy, asks } from '~/interface/order.js'
 import { getTokenName } from '~/assets/utils/address-pool.js';
 export default {
   props: ['currentCoin', 'currentType',],
@@ -166,6 +166,9 @@ export default {
     aboutInfoSellWatch(newValue) {
       if (newValue) {
         this.setList(newValue, this.aboutInfoBuy);
+        this.currentType = 1
+        this.currentCoin = 'HELMET'
+        this.checkList(this.currentCoin, this.currentCoin)
       }
     },
     // 买单数据
@@ -175,7 +178,7 @@ export default {
       }
     },
     // 格式化数据
-    setList(sell) {
+    async setList(sell) {
       const sellResult = []
       const buyResult = []
       let spliceResult = []
@@ -186,6 +189,7 @@ export default {
         let token = getTokenName(item.longInfo._underlying)
         let coToken = getTokenName(item.longInfo._collateral)
         let price = coToken == 'CTK' ? fromWei(item.price, 30) : fromWei(item.price, token);
+        let res = await asks(item.askID, "sync", coToken);
         if (token == 'WBNB') {
           resultItem = {
             seller: item.seller,
@@ -197,13 +201,17 @@ export default {
             _underlying: item.longInfo._underlying,
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
+            remain: res,
             buyNum: ''
           }
-          buyResult.push(resultItem)
+          if (resultItem.remain != 0) {
+            buyResult.push(resultItem)
+          }
         } else {
           let Token = getTokenName(item.longInfo._collateral)
           let unToken = getTokenName(item.longInfo._underlying)
           let exPirce = fromWei(item.longInfo._strikePrice, Token)
+          let res = await asks(item.askID, "sync", Token);
           exPirce = precision.divide(1, exPirce)
           let volume = fromWei(item.volume, Token) * this.indexArray[0][unToken] / 2
           let price = fromWei(item.price, Token);
@@ -217,11 +225,15 @@ export default {
             _underlying: item.longInfo._underlying,
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
+            remain: res,
             buyNum: ''
           }
-          sellResult.push(resultItem)
+          if (resultItem.remain != 0) {
+            sellResult.push(resultItem)
+          }
         }
       }
+      console.log(buyResult)
       this.buyList = buyResult
       this.sellList = sellResult
       let result = this.buyList.filter(item => getTokenName(item._collateral) == this.currentCoin)

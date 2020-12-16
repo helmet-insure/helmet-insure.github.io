@@ -213,9 +213,8 @@ export default {
           resultItem['status'] = 'Activated';
           resultItem['sort'] = 1;
         }
-        if (resultItem.sort == 2) {
-          result.push(resultItem)
-        }
+        console.log()
+        result.push(resultItem)
       }
       // console.log(result)
       this.guaranteeList = result
@@ -367,6 +366,9 @@ export default {
 
           td:last-child {
             transform: translateX(20px);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
           }
           .option {
             display: flex;
