@@ -50,8 +50,8 @@ export default {
       volume: '', //数量
       precision,
       Rent: 0,
-      indexPx: 0.00333333,
-      strikePrice: 0.00666666,
+      indexPx: 0.0033,
+      strikePrice: 0.0067,
       unit: 'BNB',
       currency: 'WBNB',
       earnings: 0, fixD, addCommom, autoRounding, toRounding,

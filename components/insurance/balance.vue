@@ -76,6 +76,7 @@ export default {
       return this.$store.state.dueDate
     },
     undAndCol() {
+      console.log(this.currentCoin, this.currentType)
       if (this.currentCoin && this.currentType) {
         return {
           underly: this.currentCoin,
@@ -85,9 +86,6 @@ export default {
     },
     IndexPxArray() {
       return this.$store.state.allIndexPrice
-    },
-    allHelmetPrice() {
-      return this.$store.state.allHelmetPrice
     },
   },
   watch: {
@@ -110,10 +108,20 @@ export default {
     },
     undAndCol: {
       handler: 'undAndColWatch',
+      deep: true,
       immediate: true,
     },
-
-
+    strikePrice(newValue, value) {
+      if (newValue) {
+        this.strikePrice = newValue
+      }
+    },
+    IndexPxArray(newValue, value) {
+      if (newValue) {
+        this.IndexPxArray = newValue
+        this.strikePrice = 0.0067
+      }
+    }
   },
   mounted() {
     this.$bus.$on('REFRESH_BALANCE', () => {
@@ -139,6 +147,7 @@ export default {
       let type = newValue.curType
       let px;
       let exPx;
+
       if (!list.length) {
         return
       }
