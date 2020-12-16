@@ -19,16 +19,10 @@
         折合：<span>{{ strikePrice * volume }} {{ unit }}</span>
       </p> -->
       <p>
-        {{ $t("Content.Earning") }}：<span>
-          {{
-            fixD(
-              toRounding(
-                precision.times(earnings, HelmetPrice[0]["HELMET"]),
-                2
-              ),
-              2
-            )
-          }}HELMET
+        {{ $t("Content.Earning") }}：
+        <span>
+          {{ Rent }}
+          HELMET
         </span>
       </p>
       <!-- <p>
@@ -158,6 +152,10 @@ export default {
       }
     },
     watchRent(newValue) {
+      if (!newValue.dpr || !newValue.num) {
+        this.Rent = 0
+        return
+      }
       let { dpr, indexPx, num, strikePrice, _expiry } = newValue
       if (newValue.dpr && newValue.num && newValue.indexPx && newValue.strikePrice && newValue._expiry) {
         let DPR = dpr / 100;
@@ -191,6 +189,8 @@ export default {
         this.Rent = toRounding(premium, 8);
         this.earnings = toRounding(earnings, 8)
         return toRounding(premium, 8);
+      } else {
+        return 0
       }
     },
     undAndColWatch(newValue) {

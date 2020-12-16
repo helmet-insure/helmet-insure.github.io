@@ -111,8 +111,34 @@ export const state = () => ({
     BNB_FOR: false,
   },
   dueDate: "2020-12-16 00:00",
-  allIndexPrice: [],
-  allHelmetPrice: [],
+  allIndexPrice: [
+    {
+      HELMET: 0,
+      BNB: 0,
+      CAKE: 0,
+      FORTUBE: 0,
+    },
+    {
+      HELMET: 0,
+      BNB: 0,
+      CAKE: 0,
+      FORTUBE: 0,
+    },
+  ],
+  allHelmetPrice: [
+    {
+      HELMET: 0,
+      BNB: 0,
+      CAKE: 0,
+      FORTUBE: 0,
+    },
+    {
+      HELMET: 0,
+      BNB: 0,
+      CAKE: 0,
+      FORTUBE: 0,
+    },
+  ],
 });
 
 export const mutations = {

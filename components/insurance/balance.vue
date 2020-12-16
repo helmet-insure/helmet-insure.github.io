@@ -4,8 +4,9 @@
       <div>
         <span>{{ $t("Content.InsurancePrice") }}</span>
         <p>
-          {{ toRounding(strikePrice, 4) }}
-          {{ unit }} ≈ {{ HelmetPrice }}HELMET
+          1 {{ currentCoin == "FORTUBE" ? "FOR" : currentCoin }} :
+          {{ strikePrice }} BNB
+          <!-- {{ unit }} ≈ {{ HelmetPrice }}HELMET -->
         </p>
       </div>
       <div>
@@ -63,12 +64,11 @@ export default {
       HELMET: 0,
       CKT: 0,
       FORTUBE: 0,
-      indexPx: 0.00333333,
+      indexPx: 0.0033,
       unit: 'WBNB',
       precision, toRounding, autoRounding, fixD, addCommom,
-      strikePrice: 0.00666666,
+      strikePrice: 0.0067,
       coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB'],
-      HelmetPrice: 0,
     };
   },
   computed: {
@@ -76,7 +76,7 @@ export default {
       return this.$store.state.dueDate
     },
     undAndCol() {
-      if (this.underly && this.curType) {
+      if (this.currentCoin && this.currentType) {
         return {
           underly: this.currentCoin,
           curType: this.currentType,
@@ -88,35 +88,32 @@ export default {
     },
     allHelmetPrice() {
       return this.$store.state.allHelmetPrice
-    }
+    },
   },
   watch: {
-    currentCoin(val) {
-      this.underly = val;
-      console.log(val)
-      this.currentCoin = val
+    currentCoin(val, oldVal) {
+      if (val) {
+        this.underly = val;
+        this.currentCoin = val
+      }
     },
-    currentType(val) {
-      this.curType = val;
-      this.currentType = val
+    currentType(val, oldVal) {
+      if (val) {
+        this.curType = val;
+        this.currentType = val
+      }
     },
     TradeType(val) {
-      this.TradeType = val
+      if (val) {
+        this.TradeType = val
+      }
     },
     undAndCol: {
       handler: 'undAndColWatch',
       immediate: true,
     },
-    strikePrice(newValue, val) {
-      if (newValue) {
-        this.HelmetPrice = toRounding(precision.times(newValue, this.allHelmetPrice[0]['HELMET']), 2)
-      }
-    },
-    allHelmetPrice(newValue, val) {
-      if (newValue) {
-        this.HelmetPrice = toRounding(precision.times(this.strikePrice, newValue[0]['HELMET']), 2)
-      }
-    }
+
+
   },
   mounted() {
     this.$bus.$on('REFRESH_BALANCE', () => {
@@ -154,8 +151,8 @@ export default {
         exPx = list[1][coin] * 0.5
         this.unit = 'WBNB'
       }
-      this.indexPx = px
-      this.strikePrice = exPx
+      this.indexPx = fixD(toRounding(px, 4), 4)
+      this.strikePrice = fixD(toRounding(exPx, 4), 4)
     },
   },
 };

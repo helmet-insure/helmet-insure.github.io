@@ -23,7 +23,6 @@ const netObj = {
 };
 // 翻倍
 export const onIssueSell = async (data_, callBack) => {
-  console.log(data_);
   let data = { ...data_ };
   data.category = getAddress(data.category);
   data.currency = getAddress(data.currency);
@@ -48,7 +47,6 @@ export const onIssueSell = async (data_, callBack) => {
   let premium = fixD(precision.divide(data_.premium, data_.volume), premiumFix);
   premium = window.WEB3.utils.toWei(String(premium), premiumUnit);
   data.premium = premium;
-  console.log(data, "$$$$$$$$$$$$$$");
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
@@ -122,7 +120,6 @@ export const onIssueSell = async (data_, callBack) => {
 // 腰斩
 export const onIssueSellOnETH = async (data_, callBack) => {
   let data = { ...data_ };
-  console.log(data_);
   data.category = getAddress(data.category);
   data.currency = getAddress(data.currency);
   data.settleToken = getAddress(data.settleToken);
@@ -132,7 +129,6 @@ export const onIssueSellOnETH = async (data_, callBack) => {
   data.expire = new Date(data.expire).getTime();
   data.expire = parseInt(precision.divide(data.expire, 1000));
   data.total = toWei(precision.times(data.price, data.volume), data_.currency);
-  console.log(data.total);
   // let premium = fixD(precision.divide(data.premium, data.price), 18);
   let premium = fixD(precision.divide(data.premium, data.volume), 18);
   // premium = toWei(premium, data_.currency);
@@ -149,7 +145,6 @@ export const onIssueSellOnETH = async (data_, callBack) => {
   let price = fixD(precision.divide(1, data.price), priceFix);
   // price = toWei(price, data_.currency);
   price = window.WEB3.utils.toWei(String(price), priceUnit);
-  console.log(data_.currency, data_.category, price, priceUnit);
   // window.WEB3.utils.toWei(String(number), unit);
   data.price = price;
 
@@ -158,7 +153,6 @@ export const onIssueSellOnETH = async (data_, callBack) => {
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
     conText: `<p>Rent <span>${data_.volume} ${data_.category}</span>, the execution price is <span>${data_.price} ${data_.currency}</span></p>`,
   });
-  console.log(data);
   try {
     const Contract = await expERC20(data.currency);
     // 一键判断是否需要授权，给予无限授权
@@ -230,7 +224,6 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   // 比如 WETH/DAI，两者精度都是18，那么价格的精度就是18-18+18=18
   // USDT/USDT，精度=6-6+18=18  在抵押物和结算物相同时，总是18
   let data = { ..._data };
-  console.log(_data);
 
   // const WEB3 = new web3();
   const charID = window.chainID;
@@ -264,7 +257,6 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   // );
   // console.log('data.volume####', data.volume);
   // return;
-  console.log(data);
   const Contract = await expERC20(data.settleToken);
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
@@ -411,7 +403,6 @@ export const getMint = async (callback) => {
 
 export const getWaive = async (buyer) => {
   const contract = await Order();
-  console.log(buyer, "getWaive");
   if (!buyer) {
     return [];
   }
