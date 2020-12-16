@@ -19,25 +19,25 @@
               : 'put_style'
           "
         >
-          <td :class="item._underlying == 'WBNB' ? 'green' : 'orange'">
-            {{
-              item._underlying == "WBNB" ? item._collateral : item._underlying
-            }}
-            <i
-              :class="item._underlying == 'WBNB' ? 'call_icon' : 'put_icon'"
-            ></i>
-          </td>
-          <td>
-            <!-- {{ addCommom(precision.plus(item.col, item.longBalance), 4) }} -->
-            {{ fixD(addCommom(item.longBalance, 4), 4) }}
-            {{ item._collateral }}
-          </td>
-          <td>
-            {{ fixD(addCommom(item.und || 0, 4), 4) }} {{ item._underlying }}
-          </td>
-          <td>
-            <button class="b_b_button" @click="toClaim(item)">取回</button>
-          </td>
+          <template v-if="item.hidden">
+            <td :class="item._underlying == 'WBNB' ? 'green' : 'orange'">
+              {{
+                item._underlying == "WBNB" ? item._collateral : item._underlying
+              }}
+              <i
+                :class="item._underlying == 'WBNB' ? 'call_icon' : 'put_icon'"
+              ></i>
+            </td>
+            <td>
+              <!-- {{ addCommom(precision.plus(item.col, item.longBalance), 4) }} -->
+              {{ fixD(addCommom(item.longBalance, 4), 4) }}
+              {{ item._collateral }}
+            </td>
+            <td>{{ fixD(addCommom(item.und), 8) }} {{ item._underlying }}</td>
+            <td>
+              <button class="b_b_button" @click="toClaim(item)">取回</button>
+            </td>
+          </template>
         </tr>
       </tbody>
     </table>
@@ -163,6 +163,8 @@ export default {
     // 格式化数据
     async setSettlementList(list) {
       const result = [];
+      let mapArray = [];
+      let obj = {};
       let item,
         longBalance,
         shortBalance,
@@ -178,8 +180,9 @@ export default {
         longBalance = await getBalance(item.longInfo.long, _collateral);
         _underlying = getTokenName(item.longInfo._underlying, window.chainID);
         shortBalance = await getBalance(item.longInfo.short, _collateral);
+
         let resultItem = {}
-        if (Number(shortBalance) > 0 && Number(longBalance) > 0) {
+        if (Number(shortBalance) > 0) {
           resultItem['askID'] = item.askID;
           resultItem['creator'] = item.seller;
           resultItem['_collateral'] = _collateral
@@ -190,25 +193,41 @@ export default {
           resultItem['Balance'] = Math.min(Number(shortBalance), Number(longBalance))
           resultItem['shortBalance'] = shortBalance
           number = precision.minus(shortBalance, longBalance);
-          if (Number(number) > 0) {
-            try {
-              volume = toWei(number, _collateral);
-              const settle = await settleable(item.longInfo.short, volume);
-              if (settle.col != '0' || settle.und != '0') {
-                if (_collateral == 'CTK') {
-                  und = fromWei(settle.und, 'CTK');
-                } else {
-                  und = fromWei(settle.und, _collateral);
-                }
-                resultItem['und'] = und;
-                resultItem['col'] = fromWei(settle.col, _collateral);
-                resultItem['fee'] = fromWei(settle.fee, _collateral);
+          try {
+            volume = toWei(number, _collateral);
+            const settle = await settleable(item.longInfo.short, volume);
+            if (settle.col != '0' || settle.und != '0') {
+              if (_collateral == 'CTK') {
+                und = fromWei(settle.und, 'CTK');
+              } else {
+                und = fromWei(settle.und, _collateral);
               }
-            } catch (err) {
-              // console.log(err)
+              resultItem['und'] = und;
+              resultItem['col'] = fromWei(settle.col, _collateral);
+              resultItem['fee'] = fromWei(settle.fee, _collateral);
+            } else {
+              resultItem['und'] = 0;
+              resultItem['col'] = 0;
+              resultItem['fee'] = 0;
             }
+          } catch (err) {
+            // console.log(err)
           }
-          result.push(resultItem)
+          if (Number(resultItem.longBalance) == 0 && Number(resultItem.und) == 0) {
+            resultItem['hidden'] = false;
+          } else {
+            resultItem['hidden'] = true;
+          }
+          // 判断有没有这个品种的单子
+          let Flag = mapArray.some(item => {
+            return item._underlying == resultItem._underlying && item._collateral == resultItem._collateral
+          })
+          // 没有这个品种则添加
+          if (!Flag) {
+            result.push(resultItem)
+          }
+          // 判断
+          mapArray = result.map(item => { return { _underlying: item._underlying, _collateral: item._collateral } })
         }
       }
       this.claimList = result

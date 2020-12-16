@@ -140,7 +140,7 @@ export default {
       return this.$store.state.myAboutInfoSell;
     },
     myAboutInfoBuy() {
-      return this.$store.state.myAboutInfoBuy;
+      return this.$store.state.aboutInfoBuy;
     },
   },
   watch: {
@@ -197,9 +197,10 @@ export default {
           resultItem['status'] = 'Dated';
           resultItem['sort'] = 0;
         }
+        console.log(askRes, '###############')
         resultItem['remain'] = askRes;
 
-        if (resultItem.beSold != 0 || resultItem.remain != 0) {
+        if (resultItem.beSold != 0 && askRes != 0) {
           result.push(resultItem)
         }
       }
@@ -215,6 +216,7 @@ export default {
       let arrayList = JSON.parse(JSON.stringify(array))
       if (arrayList.length) {
         arrayList.forEach(item => {
+          console.log(item)
           if (!isNaN(item.vol)) {
             number = Number(item.vol)
             num = num + number

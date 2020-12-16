@@ -143,12 +143,12 @@ export default {
     }
   },
   computed: {
-    aboutInfoBuySeller() {
-      return this.$store.state.aboutInfoBuySeller;
+    myAboutInfoBuy() {
+      return this.$store.state.myAboutInfoBuy;
     },
   },
   watch: {
-    aboutInfoBuySeller: {
+    myAboutInfoBuy: {
       handler: 'myAboutInfoBuyWatch',
       immediate: true,
     },
