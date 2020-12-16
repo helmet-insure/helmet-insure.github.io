@@ -162,7 +162,6 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-      console.log(list, 'claim claim claim claim claim')
       const result = [];
       let item,
         longBalance,
@@ -179,7 +178,6 @@ export default {
         longBalance = await getBalance(item.longInfo.long, _collateral);
         _underlying = getTokenName(item.longInfo._underlying, window.chainID);
         shortBalance = await getBalance(item.longInfo.short, _collateral);
-        console.log(longBalance, shortBalance, 'balance balance balance balance balance')
         let resultItem = {}
         if (Number(shortBalance) > 0 && Number(longBalance) > 0) {
           resultItem['askID'] = item.askID;
@@ -192,12 +190,10 @@ export default {
           resultItem['Balance'] = Math.min(Number(shortBalance), Number(longBalance))
           resultItem['shortBalance'] = shortBalance
           number = precision.minus(shortBalance, longBalance);
-          console.log(number, 'number number number number')
           if (Number(number) > 0) {
             try {
               volume = toWei(number, _collateral);
               const settle = await settleable(item.longInfo.short, volume);
-              console.log(settle)
               if (settle.col != '0' || settle.und != '0') {
                 if (_collateral == 'CTK') {
                   und = fromWei(settle.und, 'CTK');
@@ -215,7 +211,6 @@ export default {
           result.push(resultItem)
         }
       }
-      console.log(result)
       this.claimList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },

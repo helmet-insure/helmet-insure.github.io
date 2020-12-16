@@ -8,7 +8,7 @@
         {{ $t("Type.IssueInsurance") }}
       </button>
       <button @click="handleClickType(3)" :class="type == 3 ? 'active' : ''">
-        我的结算
+        {{ $t("Type.Claim") }}
       </button>
     </div>
     <MyGuarantee v-if="type == 1"></MyGuarantee>

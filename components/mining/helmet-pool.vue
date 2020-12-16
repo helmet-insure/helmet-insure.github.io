@@ -29,14 +29,16 @@
     <div class="pool">
       <div class="deposit">
         <div class="title">
-          <span>Deposit</span>
-          <p>{{ balance.Deposite }} LPT Available</p>
+          <span>{{ $t("Table.Deposit") }}</span>
+          <p>{{ balance.Deposite }} LPT {{ $t("Table.Available") }}</p>
         </div>
         <div class="content">
-          <label for="deposit">Amount to deposit</label>
+          <label for="deposit">{{ $t("Table.AmountDeposit") }}</label>
           <div class="input">
             <input name="deposit" type="text" v-model="DepositeNum" />
-            <span @click="DepositeNum = balance.Deposite">Max</span>
+            <span @click="DepositeNum = balance.Deposite">{{
+              $t("Table.Max")
+            }}</span>
           </div>
         </div>
         <div class="button">
@@ -44,10 +46,15 @@
             @click="toDeposite"
             :class="stakeLoading ? 'disable b_button' : 'b_button'"
           >
-            <i :class="stakeLoading ? 'loading_pic' : ''"></i>Confirm Deposit
+            <i :class="stakeLoading ? 'loading_pic' : ''"></i
+            >{{ $t("Table.ConfirmDeposit") }}
           </button>
           <p>
-            <span>My Deposit/Total Deposited：</span>
+            <span
+              >{{ $t("Table.MyDeposits") }}/{{
+                $t("Table.TotalDeposited")
+              }}：</span
+            >
             <span> {{ balance.Deposite }} LPT/{{ balance.TotalLPT }} LPT</span>
           </p>
           <p>
@@ -58,14 +65,16 @@
       </div>
       <div class="withdraw">
         <div class="title">
-          <span>Withdraw</span>
-          <p>{{ balance.Withdraw }} LPT Available</p>
+          <span>{{ $t("Table.Withdraw") }}</span>
+          <p>{{ balance.Withdraw }} LPT {{ $t("Table.Available") }}</p>
         </div>
         <div class="content">
-          <label for="withdraw">Amount to withdraw</label>
+          <label for="withdraw">{{ $t("Table.AmountWithdraw") }}</label>
           <div class="input">
             <input name="withdraw" type="text" v-model="WithdrawNum" />
-            <span @click="WithdrawNum = balance.Withdraw">Max</span>
+            <span @click="WithdrawNum = balance.Withdraw">{{
+              $t("Table.Max")
+            }}</span>
           </div>
         </div>
         <div class="button">
@@ -73,18 +82,20 @@
             @click="toExit"
             :class="exitLoading ? 'disable b_button' : 'b_button'"
           >
-            <i :class="exitLoading ? 'loading_pic' : ''"></i>Confirm Withdraw &
-            Claim Rewards
+            <i :class="exitLoading ? 'loading_pic' : ''"></i
+            >{{ $t("Table.ConfirmWithdraw") }} &
+            {{ $t("Table.ClaimRewards") }}
           </button>
           <p>
-            <span>HELMET Rewards：</span>
+            <span>{{ $t("Table.HELMETRewards") }}：</span>
             <span> {{ balance.Helmet }} HELMET</span>
           </p>
           <button
             @click="toClaim"
             :class="claimLoading ? 'disable o_button' : 'o_button'"
           >
-            <i :class="claimLoading ? 'loading_pic' : ''"></i>Claim all Rewards
+            <i :class="claimLoading ? 'loading_pic' : ''"></i
+            >{{ $t("Table.ClaimAllRewards") }}
           </button>
         </div>
       </div>
@@ -115,27 +126,27 @@ export default {
         name: 'HELMET-BNB'
       },
       textList: [{
-        text: 'Rewards Distribution',
+        text: this.$t('Table.RewardsDistribution'),
         num: 0,
         color: '#00B900',
         unit: '（weekly）'
       }, {
-        text: 'Pool APY',
+        text: this.$t('Table.PoolAPY'),
         num: 0,
         color: '#00B900',
         unit: ''
       }, {
-        text: 'Total Deposited ',
+        text: this.$t('Table.TotalDeposited'),
         num: 0,
         color: '#121212',
         unit: ''
       }, {
-        text: 'My Deposits',
+        text: this.$t('Table.MyDeposits'),
         num: 0,
         color: '#121212',
         unit: ''
       }, {
-        text: 'My Rewards',
+        text: this.$t('Table.MyRewards'),
         num: 0,
         color: '#00B900',
         unit: ''

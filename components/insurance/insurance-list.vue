@@ -4,8 +4,7 @@
       <thead>
         <tr>
           <td>{{ $t("Table.ID") }}</td>
-          <!-- <td>{{ $t("Table.Rent") }}</td> -->
-          <td>保单单价(HELMET)</td>
+          <td>{{ $t("Table.Rent") }}</td>
           <td>{{ $t("Table.Amount") }}</td>
           <td class="option">{{ $t("Table.Options") }}</td>
         </tr>

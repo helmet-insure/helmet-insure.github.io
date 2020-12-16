@@ -7,11 +7,11 @@
     >
       <h3>{{ item.title }}</h3>
       <p>
-        距离挖矿结束还剩：<span>{{ item.downTime }}</span>
+        {{ $t("Table.SurplusTime") }}：<span>{{ item.downTime }}</span>
       </p>
       <div>
         <div class="left">
-          <p>翻倍险<span>100%</span><i></i></p>
+          <p>{{ $t("Content.DoubleInsurance") }}<span>100%</span><i></i></p>
           <div>
             <div>
               <span>Minted</span>
@@ -32,7 +32,7 @@
                       : ''
                   "
                 ></i>
-                Claim Rewards
+                {{ $t("Table.ClaimRewards") }}
               </button>
             </div>
             <section class="cut_line"></section>
@@ -55,7 +55,7 @@
                       : ''
                   "
                 ></i>
-                Claim&Unstake
+                {{ $t("Table.Claim") }}&{{ $t("Table.Unstake") }}
               </button>
               <button
                 :class="
@@ -76,13 +76,13 @@
                       : ''
                   "
                 ></i>
-                Stake
+                {{ $t("Table.Stake") }}
               </button>
             </div>
           </div>
         </div>
         <div class="right">
-          <p>腰斩险<span>-50%</span><i></i></p>
+          <p>{{ $t("Content.HalfInsurance") }}<span>-50%</span><i></i></p>
           <div>
             <div>
               <span>Minted</span>
@@ -104,7 +104,7 @@
                       : ''
                   "
                 ></i>
-                Claim Rewards
+                {{ $t("Table.ClaimRewards") }}
               </button>
             </div>
             <section class="cut_line"></section>
@@ -127,7 +127,7 @@
                       : ''
                   "
                 ></i>
-                Claim&Unstake
+                {{ $t("Table.Claim") }}&{{ $t("Table.Unstake") }}
               </button>
               <button
                 :class="
@@ -148,7 +148,7 @@
                       : ''
                   "
                 ></i>
-                Stake
+                {{ $t("Table.Stake") }}
               </button>
             </div>
           </div>
@@ -499,6 +499,7 @@ export default {
             text-align: center;
             margin-top: 18px;
             font-size: 14px;
+            align-items: center;
             span {
               font-size: 16px;
               font-weight: bold;
@@ -534,11 +535,11 @@ export default {
                 margin: 20px 0 8px;
               }
               button {
-                min-width: 100px;
+                min-width: 134px;
                 margin-top: 20px;
               }
               .b_button {
-                width: 134px;
+                min-width: 134px;
               }
             }
           }

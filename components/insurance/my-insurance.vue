@@ -6,8 +6,8 @@
           <td>{{ $t("Table.ID") }}</td>
           <td>{{ $t("Table.Type") }}</td>
           <td>{{ $t("Table.InsurancePrice") }}</td>
-          <td>已出售</td>
-          <td>未出售</td>
+          <td>{{ $t("Table.Besold") }}</td>
+          <td>{{ $t("Table.Unsold") }}</td>
           <td>{{ $t("Table.CanCollateral") }}</td>
           <td>{{ $t("Table.DueTime") }}</td>
           <td class="option"></td>
@@ -157,7 +157,6 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-      console.log(list, 'sell sell sell sell sell')
       let result = []
       let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
       const currentTime = new Date().getTime();
@@ -204,7 +203,6 @@ export default {
           result.push(resultItem)
         }
       }
-      console.log(result)
       this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
@@ -325,7 +323,7 @@ export default {
         box-sizing: border-box;
         align-items: center;
         td {
-          width: 111px;
+          width: 100px;
           white-space: nowrap;
         }
       }

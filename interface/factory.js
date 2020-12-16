@@ -19,7 +19,6 @@ const getFactory = async () => {
 };
 
 export const settleable = async (seller, short) => {
-  console.log(seller, short, "####################");
   const factory = await getFactory();
   return factory.methods
     .settleable(seller, short)

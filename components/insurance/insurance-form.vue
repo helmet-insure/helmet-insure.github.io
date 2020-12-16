@@ -8,27 +8,29 @@
       </div>
       <div class="num">
         <input type="text" v-model="volume" />
-        <span class="right">全部</span>
+        <span class="right">{{ $t("Table.ALL") }}</span>
       </div>
-      <button class="b_b_button" @click="submitSupply">立即创建</button>
+      <button class="b_b_button" @click="submitSupply">
+        {{ $t("Content.Supply") }}
+      </button>
     </div>
     <div class="pay">
       <!-- <p>
         折合：<span>{{ strikePrice * volume }} {{ unit }}</span>
       </p> -->
       <p>
-        预期最大收益：<span>{{ earnings }} BNB</span>
+        {{ $t("Content.Earning") }}：<span>{{ earnings }} BNB</span>
       </p>
       <!-- <p>
         保费：<span>{{ Rent }} BNB</span>
       </p> -->
       <!-- <p>预期最大收益：<span>11111 BNB</span></p> -->
     </div>
-    <span>
+    <!-- <span>
       如果在行权日之前，价格没有达到
       <i></i>
       ，您将获得无风险收益。
-    </span>
+    </span> -->
   </div>
 </template>
 
