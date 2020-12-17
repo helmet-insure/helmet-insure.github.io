@@ -243,6 +243,7 @@ export default {
     },
     // 行权
     toActive(item) {
+      console.log(item)
       let data = {
         token: getTokenName(item._underlying),
         _underlying_vol: item.volume * item._strikePrice,
@@ -250,8 +251,9 @@ export default {
         bidID: item.bidID,
         long: item.long,
         exPrice: autoRounding(precision.divide(1, item._strikePrice)),
-        _underlying: item._underlying,
-        settleToken: item.settleToken,
+        _underlying: getTokenName(item._underlying),
+        _collateral: getTokenName(item._collateral),
+        settleToken: getTokenName(item.settleToken),
       }
       onExercise(data)
     },

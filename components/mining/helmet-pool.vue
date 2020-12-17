@@ -135,22 +135,26 @@ export default {
         num: 0,
         color: '#00B900',
         unit: ''
-      }, {
-        text: this.$t('Table.TotalDeposited'),
-        num: 0,
-        color: '#121212',
-        unit: ''
-      }, {
-        text: this.$t('Table.MyDeposits'),
-        num: 0,
-        color: '#121212',
-        unit: ''
-      }, {
-        text: this.$t('Table.MyRewards'),
-        num: 0,
-        color: '#00B900',
-        unit: ''
-      }],
+      },
+        //  {
+        //   text: this.$t('Table.TotalDeposited'),
+        //   num: 0,
+        //   color: '#121212',
+        //   unit: ''
+        // },
+        //  {
+        //   text: this.$t('Table.MyDeposits'),
+        //   num: 0,
+        //   color: '#121212',
+        //   unit: ''
+        // },
+        // {
+        //   text: this.$t('Table.MyRewards'),
+        //   num: 0,
+        //   color: '#00B900',
+        //   unit: ''
+        // }
+      ],
       balance: {
         Deposite: 0,
         Withdraw: 0,
@@ -311,11 +315,12 @@ export default {
     .text {
       display: flex;
       padding: 0 140px;
-      justify-content: space-between;
+      justify-content: flex-end;
       margin-top: 28px;
       p {
         display: flex;
         flex-direction: column;
+        margin-left: 100px;
         span {
           &:nth-of-type(1) {
             font-size: 14px;

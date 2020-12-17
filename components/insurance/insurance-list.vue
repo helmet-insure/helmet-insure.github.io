@@ -12,15 +12,7 @@
       <tbody>
         <tr v-for="(item, index) in showList" :key="index">
           <td>
-            {{
-              (
-                item.seller.substr(0, 2) +
-                item.seller.substr(2, 4) +
-                "..." +
-                item.seller.substr(-5)
-              ).toUpperCase()
-            }}
-            <!-- {{ item.id }} -->
+            {{ item.showID }}
           </td>
           <td>{{ item.price }}</td>
           <td>{{ item.remain }}</td>
@@ -28,7 +20,7 @@
             <PInput
               type="number"
               v-model="item.buyNum"
-              fix="2"
+              fix="4"
               maxValue="100000"
               :right="$t('Table.Insure')"
               @numChange="handleClickBuy(item)"
@@ -122,7 +114,7 @@ export default {
       showList: [],
       sellList: [],
       buyList: [],
-      isLoading: false
+      isLoading: true
     };
   },
   watch: {
@@ -195,6 +187,7 @@ export default {
         let token = getTokenName(item.longInfo._underlying)
         let coToken = getTokenName(item.longInfo._collateral)
         let price = coToken == 'CTK' ? fromWei(item.price, 30) : fromWei(item.price, token);
+        let showID = item.seller.substr(0, 2) + item.seller.substr(2, 4) + "..." + item.seller.substr(-5).toUpperCase()
         if (token == 'WBNB') {
           let res = await asks(item.askID, "sync", coToken);
           resultItem = {
@@ -208,6 +201,7 @@ export default {
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
             remain: res,
+            showID,
             buyNum: ''
           }
           if (res != 0 && time > now) {
@@ -232,6 +226,7 @@ export default {
             _expiry: item.longInfo._expiry,
             _collateral: item.longInfo._collateral,
             remain: res,
+            showID,
             buyNum: ''
           }
           if (res != 0 && time > now) {

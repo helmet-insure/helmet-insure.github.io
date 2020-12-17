@@ -29,7 +29,6 @@ export const settleable = async (seller, short) => {
 };
 
 export const burn = async (longOrshort, volume, opt = {}, data) => {
-  console.log(longOrshort, volume, (opt = {}), data);
   let colValue = addCommom(data.col + Number(data.longBalance), 4);
   let undValue = addCommom(data.und, 4);
   bus.$emit("OPEN_STATUS_DIALOG", {
@@ -54,6 +53,7 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
       });
     })
     .on("confirmation", (confirmationNumber, receipt) => {
+      console.log(confirmationNumber);
       // callBack('success');
       if (confirmationNumber === 0) {
         let confirmationTit = `<div>${colValue > 0 &&
@@ -88,10 +88,8 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
       bus.$emit("CLOSE_STATUS_DIALOG");
       if (error && error.message) {
         Message({
-          message: `${colValue > 0 && data._collateral} ${undValue > 0 &&
-            ", " +
-              data._underlying} settlement is successful, Please check in the wallet`,
-          type: "success",
+          message: error && error.message,
+          type: "error",
           // duration: 0,
         });
       }
@@ -102,11 +100,10 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
 };
 
 export const settle = async (short, data) => {
-  let colValue = addCommom(data.col + Number(data.longBalance), 4);
+  let colValue = addCommom(Number(data.col) + Number(data.longBalance), 4);
   let undValue = addCommom(data.und, 4);
-  let pendingText = `<p>Settlement <span>${colValue > 0 &&
-    colValue + data._collateral} ${undValue > 0 &&
-    "And" + undValue + data._underlying}</span></p>`;
+  let pendingText = `<p>Settlement <span>${colValue +
+    data._collateral} ${"And " + undValue + data._underlying}</span></p>`;
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
     //   conText: `<p>Settlement <span>${data_.volume} ${data}.category}</span> </p>`,

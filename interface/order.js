@@ -261,7 +261,10 @@ export const buyInsuranceBuy = async (_data, callBack) => {
   const Contract = await expERC20(data.settleToken);
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
-    conText: `<p>Rent <span>${_data.volume} ${_data._underlying}</span> hats, the execution price is <span>${_data.exPrice} ${_data.settleToken}</span></p>`,
+    conText: `<p>Rent <span>${_data.volume} ${_data._underlying}
+    </span> hats, the Premium is <span>
+    ${_data.price * _data.volume} ${_data._collateral}
+    </span></p>`,
   });
   // return;
   try {
@@ -617,10 +620,10 @@ export const onExercise = async (data, callBack) => {
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
     // 租用 0.5 个WETH 帽子，执行价格为300 USDT
-    conText: `<p>Activate <span>${toRounding(data._underlying_vol, 2)} ${
+    conText: `<p>Activate <span>${toRounding(data._underlying_vol, 4)} ${
       data._underlying
-    }</span> hats, the execution price is <span>${data.exPrice} ${
-      data.settleToken
+    }</span> hats, the execution price is <span>${data.vol} ${
+      data._collateral
     }</span></p>`,
   });
   bus.$emit("ONEXERCISE_PENDING", data.bidID);

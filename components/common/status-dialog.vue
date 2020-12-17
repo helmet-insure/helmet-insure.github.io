@@ -18,7 +18,12 @@
       <div class="con-text" v-html="data.conText"></div>
       <div class="btn-box">
         <slot name="footer">
-          <button @click="closeDialog">{{ data.btnText }}</button>
+          <button
+            @click="closeDialog"
+            :style="data.btnText == 'Approve' ? 'visibility: hidden' : ''"
+          >
+            {{ data.btnText }}
+          </button>
         </slot>
       </div>
     </div>
@@ -70,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and(min-width:750px) {
   .status-dialog {
     position: fixed;
@@ -107,7 +112,7 @@ export default {
         height: 20px;
         background-repeat: no-repeat;
         background-position: center center;
-        background-image: url('../../assets/img/icon/guanbi.png');
+        background-image: url("../../assets/img/icon/guanbi.png");
         background-size: 100% 100%;
         position: absolute;
         right: 20px;
@@ -158,11 +163,11 @@ export default {
           min-width: 96px;
           height: 32px;
           padding: 0px 12px;
-          background:#FF9600;
+          background: #ff9600;
           color: $text-m;
           font-size: 14px;
           &:hover {
-            background: #FFA000;
+            background: #ffa000;
           }
         }
       }
@@ -218,7 +223,7 @@ export default {
         height: 20px;
         background-repeat: no-repeat;
         background-position: center center;
-        background-image: url('../../assets/img/icon/guanbi.png');
+        background-image: url("../../assets/img/icon/guanbi.png");
         background-size: 100% 100%;
         position: absolute;
         right: 20px;
@@ -269,11 +274,11 @@ export default {
           min-width: 96px;
           height: 32px;
           padding: 0px 12px;
-          background: #FF9600;
+          background: #ff9600;
           color: $text-m;
           font-size: 14px;
           &:hover {
-            background: #FFA000;
+            background: #ffa000;
           }
         }
       }

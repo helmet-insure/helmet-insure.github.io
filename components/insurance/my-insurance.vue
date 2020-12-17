@@ -212,7 +212,6 @@ export default {
           result.push(resultItem)
         }
       }
-      console.log(result)
       this.isLoading = false;
       this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)

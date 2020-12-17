@@ -11,7 +11,7 @@
       <span>Token</span>
     </div>
     <p class="total-token">
-      <span>{{ current }} LP token：{{ lptBalance }}</span
+      <span>{{ current }} SHORT Token：{{ lptBalance }}</span
       ><a @click="addAll">{{ $t("Table.ALL") }}</a>
     </p>
     <a

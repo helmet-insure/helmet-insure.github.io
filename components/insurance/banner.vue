@@ -156,7 +156,7 @@ export default {
         border-radius: 3px;
         p {
           span {
-            color: #fff !important;
+            color: rgba(255, 255, 255, 0.8);
           }
         }
       }
