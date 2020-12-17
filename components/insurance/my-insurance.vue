@@ -53,7 +53,9 @@
             <td>{{ item.dueDate }}</td>
             <td class="option">
               <!-- <button class="o_button">{{ $t("Table.outSure") }}</button> -->
-              <button class="b_button">{{ $t("Table.Stakeing") }}</button>
+              <button class="b_button" @click="toMining">
+                {{ $t("Table.Stakeing") }}
+              </button>
             </td>
           </template>
         </tr>
@@ -250,6 +252,9 @@ export default {
       this.showList = list;
 
     },
+    toMining() {
+      this.$router.push('/mining')
+    }
   }
 };
 </script>

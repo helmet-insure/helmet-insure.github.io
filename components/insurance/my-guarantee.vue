@@ -213,10 +213,12 @@ export default {
           resultItem['status'] = 'Activated';
           resultItem['sort'] = 1;
         }
-        console.log()
+        if (resultItem['sort'] == 1 || resultItem['sort'] == 0) {
+          return
+        }
         result.push(resultItem)
       }
-      // console.log(result)
+
       this.guaranteeList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },

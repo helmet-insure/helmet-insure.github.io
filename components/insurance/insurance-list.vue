@@ -23,7 +23,7 @@
             <!-- {{ item.id }} -->
           </td>
           <td>{{ item.price }}</td>
-          <td>{{ item.remain }}</td>
+          <td>{{ item.volume }}</td>
           <td class="option">
             <PInput
               type="number"
@@ -165,10 +165,8 @@ export default {
     // 卖单数据
     aboutInfoSellWatch(newValue) {
       if (newValue) {
+
         this.setList(newValue, this.aboutInfoBuy);
-        this.currentType = 1
-        this.currentCoin = 'HELMET'
-        this.checkList(this.currentCoin, this.currentCoin)
       }
     },
     // 买单数据
@@ -184,13 +182,15 @@ export default {
       let spliceResult = []
       let item, volume, price, id, seller;
       let resultItem;
+      let now = new Date() * 1
       for (let i = 0; i < sell.length; i++) {
         item = sell[i]
+        let time = (item.longInfo._expiry * 1000)
         let token = getTokenName(item.longInfo._underlying)
         let coToken = getTokenName(item.longInfo._collateral)
         let price = coToken == 'CTK' ? fromWei(item.price, 30) : fromWei(item.price, token);
-        let res = await asks(item.askID, "sync", coToken);
         if (token == 'WBNB') {
+          let res = await asks(item.askID, "sync", coToken);
           resultItem = {
             seller: item.seller,
             id: item.askID,
@@ -204,17 +204,17 @@ export default {
             remain: res,
             buyNum: ''
           }
-          if (resultItem.remain != 0) {
+          if (res != 0 && time > now) {
             buyResult.push(resultItem)
           }
         } else {
           let Token = getTokenName(item.longInfo._collateral)
           let unToken = getTokenName(item.longInfo._underlying)
           let exPirce = fromWei(item.longInfo._strikePrice, Token)
-          let res = await asks(item.askID, "sync", Token);
           exPirce = precision.divide(1, exPirce)
           let volume = fromWei(item.volume, Token) * this.indexArray[0][unToken] / 2
           let price = fromWei(item.price, Token);
+          let res = await asks(item.askID, "sync", Token);
           resultItem = {
             seller: item.seller,
             id: item.askID,
@@ -228,12 +228,11 @@ export default {
             remain: res,
             buyNum: ''
           }
-          if (resultItem.remain != 0) {
+          if (res != 0 && time > now) {
             sellResult.push(resultItem)
           }
         }
       }
-      console.log(buyResult)
       this.buyList = buyResult
       this.sellList = sellResult
       let result = this.buyList.filter(item => getTokenName(item._collateral) == this.currentCoin)

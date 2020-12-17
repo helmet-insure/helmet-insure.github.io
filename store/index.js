@@ -9,6 +9,7 @@ import {
 import {
   getID,
   newGetSymbol,
+  getTokenName,
   getAddress,
   getContract,
   dealWithStrikePrice,
@@ -591,58 +592,54 @@ export const actions = {
     commit("SET_MY_UNI", res);
   },
   // 获取矿工帽列表  und 抵押物， col 标的物
-  async getHatList({ commit, state }, data) {
-    const und = data.und;
-    const col = data.col;
+  async getHatList({ commit, state }) {
     const list = state.notExpriedAbountInfoSell || [];
     let item;
     const result = [];
     let status = "";
     let sort = 0;
     let _strikePrice;
+    let resultItem;
     for (let i = 0; i < list.length; i++) {
       item = list[i];
       // 标的物
-      const _collateral = newGetSymbol(item.longInfo._collateral.toLowerCase());
+      const _collateral = getTokenName(item.longInfo._collateral);
       // 抵押物
-      const _underlying = newGetSymbol(item.longInfo._underlying.toLowerCase());
+      const _underlying = getTokenName(item.longInfo._underlying);
       // if (und && col) { // 抵押物，标的物双筛选
-      if (
-        (und === _underlying && col === _collateral) ||
-        (und === _underlying && !col)
-      ) {
-        let res = await asks(item.askID, "sync", _collateral);
-        // if (res === '0') {
-        if (Number(res) < 0.01) {
-          status = "售完";
-          sort = 1;
-        } else {
-          status = "在售";
-          sort = 2;
-        }
-        _strikePrice = fromWei(item.longInfo._strikePrice, _collateral);
-        // _strikePrice = dealWithStrikePrice(_strikePrice, _collateral);
-        result.push({
-          askID: item.askID,
-          seller: item.seller,
-          long: item.long,
-          _collateral,
-          price: fromWei(item.price, _collateral),
-          volume: fromWei(item.volume, _collateral),
-          settleToken: newGetSymbol(item.settleToken.toLowerCase()),
-          _underlying,
-          _strikePrice,
-          // _strikePrice: fromWei(
-          //     item.longInfo._strikePrice,
-          //     _collateral
-          // ),
-          _expiry: parseInt(item.longInfo._expiry * 1000),
-          count: item.longInfo.count,
-          remain: parseFloat(res),
-          status,
-          sort,
-        });
+      let res = await asks(item.askID, "sync", _collateral);
+      // if (res === '0') {
+      if (Number(res) == 0) {
+        status = "sellout";
+        sort = 1;
+      } else {
+        status = "onsell";
+        sort = 2;
       }
+      _strikePrice = fromWei(item.longInfo._strikePrice, _collateral);
+      // _strikePrice = dealWithStrikePrice(_strikePrice, _collateral);
+      resultItem = {
+        askID: item.askID,
+        seller: item.seller,
+        long: item.long,
+        _collateral,
+        price: fromWei(item.price, _collateral),
+        volume: fromWei(item.volume, _collateral),
+        settleToken: getTokenName(item.settleToken),
+        _underlying,
+        _strikePrice,
+        // _strikePrice: fromWei(
+        //     item.longInfo._strikePrice,
+        //     _collateral
+        // ),
+        _expiry: parseInt(item.longInfo._expiry * 1000),
+        count: item.longInfo.count,
+        remain: res,
+        status,
+        sort,
+        buyNum: "",
+      };
+      result.push(resultItem);
     }
     const sortResult = JSON.parse(JSON.stringify(result)).sort((a1, a2) => {
       return a2.sort - a1.sort;

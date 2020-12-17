@@ -202,7 +202,7 @@ export default {
       // 总抵押
       let TotalLPT = await totalSupply(type)
 
-
+      console.log(Deposite, Withdraw, Helmet, TotalLPT)
       this.balance.Deposite = addCommom(Deposite, 4)
       this.balance.Withdraw = addCommom(Withdraw, 4)
       this.balance.Helmet = addCommom(Helmet, 4)
