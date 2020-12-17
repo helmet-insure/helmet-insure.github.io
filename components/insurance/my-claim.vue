@@ -167,6 +167,7 @@ export default {
     // 格式化数据
     async setSettlementList(list) {
       this.isLoading = true
+      this.showList = []
       const result = [];
       let mapArray = [];
       let obj = {};
@@ -237,6 +238,7 @@ export default {
       }
       this.isLoading = false
       this.claimList = result
+      console.log(result)
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
     // 倒计时

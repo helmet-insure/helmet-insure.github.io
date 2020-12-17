@@ -441,9 +441,7 @@ export const claim = async () => {
         bus.$emit("CLOSE_STATUS_DIALOG");
         bus.$emit("OPEN_STATUS_DIALOG", {
           type: "submit",
-          conText: `<a href="https://${
-            netObj[Number(window.chainID)]
-          }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+          conText: `https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
         });
       })
       .on("confirmation", function(confirmationNumber, receipt) {
@@ -455,11 +453,7 @@ export const claim = async () => {
               type: "success",
               title: "Successfully rented",
               conTit: "<div>Hat activated successfully</div>",
-              conText: `<a href="https://${
-                netObj[Number(window.chainID)]
-              }etherscan.io/tx/${
-                receipt.transactionHash
-              }" target="_blank">View on Etherscan</a>`,
+              conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
             });
           } else {
             Message({
@@ -660,9 +654,7 @@ export const onExercise = async (data, callBack) => {
       bus.$emit("CLOSE_STATUS_DIALOG");
       bus.$emit("OPEN_STATUS_DIALOG", {
         type: "submit",
-        conText: `<a href="https://${
-          netObj[Number(window.chainID)]
-        }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+        conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
       });
     })
     // .on('receipt', function(receipt){
@@ -676,11 +668,7 @@ export const onExercise = async (data, callBack) => {
             type: "success",
             title: "Successfully rented",
             conTit: "<div>Hat activated successfully</div>",
-            conText: `<a href="https://${
-              netObj[Number(window.chainID)]
-            }etherscan.io/tx/${
-              receipt.transactionHash
-            }" target="_blank">View on Etherscan</a>`,
+            conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
           });
         } else {
           Message({

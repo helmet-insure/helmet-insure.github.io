@@ -216,10 +216,9 @@ export const uniswap = async (token1, token2) => {
     //   "HELMET"
     // );
     const route = new Route([pair], TOKEN1);
-    // if (token1 == "CTK") {
-    //   return route.midPrice.toSignificant(6);
-    // }
-    return route.midPrice.toSignificant(6);
+    let Price = route.midPrice.toSignificant(6);
+
+    return Price;
   } catch (error) {
     return 0;
   }

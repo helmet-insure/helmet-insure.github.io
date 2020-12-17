@@ -41,17 +41,16 @@
           </td>
         </tr>
       </tbody>
-      <section class="noData" v-if="showList.length < 1 && !isLoading">
-        <div>
-          <img src="~/assets/img/helmet/nodata.png" alt="" />
-          <p>{{ $t("Table.NoData") }}</p>
-        </div>
-      </section>
       <div class="loading" v-if="isLoading">
         <img src="~/assets/img/loading.gif" />
       </div>
     </table>
-
+    <section class="noData" v-if="showList.length < 1 && !isLoading">
+      <div>
+        <img src="~/assets/img/helmet/nodata.png" alt="" />
+        <p>{{ $t("Table.NoData") }}</p>
+      </div>
+    </section>
     <section class="pages" v-if="guaranteeList.length > 5">
       <div>
         <p @click="upPage">
@@ -167,17 +166,20 @@ export default {
     // 格式化数据
     async setSettlementList(list) {
       this.isLoading = true
+      this.showList = []
       const result = [];
+
       let item, resultItem, amount, InsurancePrice, Rent, downTime;
       let currentTime = new Date().getTime();
       let exerciseRes;
       let bidIDArr;
       for (let i = 0; i < list.length; i++) {
         item = list[i]
+        let Token = getTokenName(item.sellInfo.longInfo._collateral)
         // 数量
-        amount = fromWei(item.vol, item.sellInfo.settleToken)
+        amount = fromWei(item.vol, Token)
         // 保单价格
-        InsurancePrice = fromWei(item.sellInfo.price, item.sellInfo.settleToken)
+        InsurancePrice = fromWei(item.sellInfo.price, Token == 'CTK' ? 30 : Token)
         // 保费
         Rent = precision.times(amount, InsurancePrice)
         //倒计时

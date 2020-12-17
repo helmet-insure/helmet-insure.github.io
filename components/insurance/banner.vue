@@ -2,23 +2,23 @@
   <div class="insurance-banner">
     <ul>
       <li>
-        <!-- 已经成交的保险品种的种类 -->
+        <!-- 已成交保单 -->
         <p>
           <label>{{ $t("Banner.ClosedPolicy") }}</label>
-          <span>{{ addCommom(174, 2) }}</span>
+          <span>{{ helmetVarieties }}</span>
         </p>
         <img src="~/assets/img/helmet/ba1@2x.png" alt="" />
       </li>
       <li>
-        <!-- 保险交易过的资金量 -->
+        <!-- LONG当前总价值 -->
         <p>
           <label>{{ $t("Banner.LongValue") }}</label>
-          <span> {{ helmetVarieties }}</span>
+          <span> {{ addCommom(totalHelmetsBorrowedVolume, 4) }}</span>
         </p>
         <img src="~/assets/img/helmet/ba2@2x.png" alt="" />
       </li>
       <li>
-        <!-- 24小时Long token 铸造量 -->
+        <!-- Helmet流通量 -->
         <p>
           <label>{{ $t("Banner.HelmetTransfer") }}</label>
           <span>{{
@@ -76,7 +76,7 @@ export default {
   },
   mounted() {
     this.getBannerData();
-    console.log(this.$store.state.assets);
+    console.log(this.$store.state);
   },
   methods: {
     async getBannerData() {

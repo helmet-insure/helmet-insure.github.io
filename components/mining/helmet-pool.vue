@@ -197,10 +197,10 @@ export default {
       let Deposite = await getBalance(lpttype)
       // 可赎回数量
       let Withdraw = await getLPTOKEN(type);
-      // 可领取
-      let Helmet = await CangetPAYA(type);
       // 总抵押
       let TotalLPT = await totalSupply(type)
+      // 可领取
+      let Helmet = await CangetPAYA(type);
 
       console.log(Deposite, Withdraw, Helmet, TotalLPT)
       this.balance.Deposite = addCommom(Deposite, 4)

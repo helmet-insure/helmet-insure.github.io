@@ -76,7 +76,6 @@ export default {
       return this.$store.state.dueDate
     },
     undAndCol() {
-      console.log(this.currentCoin, this.currentType)
       if (this.currentCoin && this.currentType) {
         return {
           underly: this.currentCoin,
@@ -85,7 +84,8 @@ export default {
       }
     },
     IndexPxArray() {
-      return this.$store.state.allIndexPrice
+      let list = this.$store.state.allIndexPrice
+      return list
     },
   },
   watch: {
@@ -118,7 +118,6 @@ export default {
     },
     IndexPxArray(newValue, value) {
       if (newValue) {
-        this.IndexPxArray = newValue
         this.strikePrice = 0.0067
       }
     }

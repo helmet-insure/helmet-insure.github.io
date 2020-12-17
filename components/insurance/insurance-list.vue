@@ -23,7 +23,7 @@
             <!-- {{ item.id }} -->
           </td>
           <td>{{ item.price }}</td>
-          <td>{{ item.volume }}</td>
+          <td>{{ item.remain }}</td>
           <td class="option">
             <PInput
               type="number"
@@ -182,6 +182,7 @@ export default {
     // 格式化数据
     async setList(sell) {
       this.isLoading = true;
+      this.showList = []
       const sellResult = []
       const buyResult = []
       let spliceResult = []

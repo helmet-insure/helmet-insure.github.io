@@ -265,7 +265,6 @@ export default {
       this.$store.commit('SET_ALL_HELMET_PRICE', arr1)
       arr.push(callIndexPirce)
       arr.push(putIndexPirce)
-      console.log(arr)
       this.$store.commit('SET_ALL_INDEX_PRICE', arr)
     }
   },

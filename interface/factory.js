@@ -29,11 +29,12 @@ export const settleable = async (seller, short) => {
 };
 
 export const burn = async (longOrshort, volume, opt = {}, data) => {
+  console.log(longOrshort, volume, (opt = {}), data);
   let colValue = addCommom(data.col + Number(data.longBalance), 4);
   let undValue = addCommom(data.und, 4);
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
-    conText: `<p>Settlement ${addCommom(volume, 4)} ${data._collateral}</p>`,
+    conText: `<p>Settlement ${addCommom(volume)} ${data._collateral}</p>`,
   });
   const factory = await getFactory();
   const wei = await getWei(opt._collateral);
@@ -49,9 +50,7 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
       bus.$emit("CLOSE_STATUS_DIALOG");
       bus.$emit("OPEN_STATUS_DIALOG", {
         type: "submit",
-        conText: `<a href="https://${
-          netObj[Number(window.chainID)]
-        }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+        conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
       });
     })
     .on("confirmation", (confirmationNumber, receipt) => {
@@ -67,11 +66,7 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
             type: "success",
             title: "Successfully rented",
             conTit: confirmationTit,
-            conText: `<a href="https://${
-              netObj[Number(window.chainID)]
-            }etherscan.io/tx/${
-              receipt.transactionHash
-            }" target="_blank">View on Etherscan</a>`,
+            conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
           });
         } else {
           Message({
@@ -130,9 +125,7 @@ export const settle = async (short, data) => {
       bus.$emit("CLOSE_STATUS_DIALOG");
       bus.$emit("OPEN_STATUS_DIALOG", {
         type: "submit",
-        conText: `<a href="https://${
-          netObj[Number(window.chainID)]
-        }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+        conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
       });
     })
     .on("confirmation", (confirmationNumber, receipt) => {
@@ -148,11 +141,7 @@ export const settle = async (short, data) => {
             type: "success",
             title: "Successfully rented",
             conTit: confirmationTit,
-            conText: `<a href="https://${
-              netObj[Number(window.chainID)]
-            }etherscan.io/tx/${
-              receipt.transactionHash
-            }" target="_blank">View on Etherscan</a>`,
+            conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
           });
         } else {
           Message({

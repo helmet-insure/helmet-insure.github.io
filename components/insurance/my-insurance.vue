@@ -166,6 +166,7 @@ export default {
     // 格式化数据
     async setSettlementList(list) {
       this.isLoading = true;
+      this.showList = []
       let result = []
       let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
       const currentTime = new Date().getTime();
@@ -175,7 +176,7 @@ export default {
         let Token = getTokenName(item.longInfo._collateral)
         amount = fromWei(item.volume, Token)
         // 保单价格
-        InsurancePrice = fromWei(item.price, Token)
+        InsurancePrice = fromWei(item.price, Token == 'CTK' ? 30 : Token)
         //倒计时
         downTime = new Date(item.longInfo._expiry * 1000).toLocaleDateString();
         //已出售
@@ -211,6 +212,7 @@ export default {
           result.push(resultItem)
         }
       }
+      console.log(result)
       this.isLoading = false;
       this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
