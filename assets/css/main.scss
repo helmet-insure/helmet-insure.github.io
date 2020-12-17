@@ -319,7 +319,10 @@ $td-gap: 16px;
   }
 }
 .loading {
-  text-align: center;
+  height: 220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   img {
     width: 40px;
     height: 40px;

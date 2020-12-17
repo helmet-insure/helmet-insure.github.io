@@ -36,8 +36,11 @@
           </td>
         </tr>
       </tbody>
+      <div class="loading" v-if="isLoading">
+        <img src="~/assets/img/loading.gif" />
+      </div>
     </table>
-    <section class="noData" v-if="!showList.length">
+    <section class="noData" v-if="showList.length < 1 && !isLoading">
       <div>
         <img src="~/assets/img/helmet/nodata.png" alt="" />
         <p>{{ $t("Table.NoData") }}</p>
@@ -118,7 +121,8 @@ export default {
       insuranceList: [],
       showList: [],
       sellList: [],
-      buyList: []
+      buyList: [],
+      isLoading: false
     };
   },
   watch: {
@@ -177,6 +181,7 @@ export default {
     },
     // 格式化数据
     async setList(sell) {
+      this.isLoading = true;
       const sellResult = []
       const buyResult = []
       let spliceResult = []
@@ -233,6 +238,7 @@ export default {
           }
         }
       }
+      this.isLoading = false;
       this.buyList = buyResult
       this.sellList = sellResult
       let result = this.buyList.filter(item => getTokenName(item._collateral) == this.currentCoin)

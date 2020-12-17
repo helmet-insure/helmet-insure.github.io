@@ -40,8 +40,11 @@
           </template>
         </tr>
       </tbody>
+      <div class="loading" v-if="isLoading">
+        <img src="~/assets/img/loading.gif" />
+      </div>
     </table>
-    <section class="noData" v-if="!showList.length">
+    <section class="noData" v-if="showList.length < 1 && !isLoading">
       <div>
         <img src="~/assets/img/helmet/nodata.png" alt="" />
         <p>{{ $t("Table.NoData") }}</p>
@@ -141,6 +144,7 @@ export default {
       fixD,
       page: 0,
       limit: 8,
+      isLoading: true,
     }
   },
   computed: {
@@ -162,6 +166,7 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
+      this.isLoading = true
       const result = [];
       let mapArray = [];
       let obj = {};
@@ -230,6 +235,7 @@ export default {
           mapArray = result.map(item => { return { _underlying: item._underlying, _collateral: item._collateral } })
         }
       }
+      this.isLoading = false
       this.claimList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
@@ -248,6 +254,7 @@ export default {
     },
     // 行权
     toClaim(item) {
+      console.log(item)
       if (item.longBalance != 0) {
         burn(
           item.short,

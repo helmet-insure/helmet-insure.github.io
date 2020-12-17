@@ -41,13 +41,17 @@
           </td>
         </tr>
       </tbody>
-    </table>
-    <section class="noData" v-if="!showList.length">
-      <div>
-        <img src="~/assets/img/helmet/nodata.png" alt="" />
-        <p>{{ $t("Table.NoData") }}</p>
+      <section class="noData" v-if="showList.length < 1 && !isLoading">
+        <div>
+          <img src="~/assets/img/helmet/nodata.png" alt="" />
+          <p>{{ $t("Table.NoData") }}</p>
+        </div>
+      </section>
+      <div class="loading" v-if="isLoading">
+        <img src="~/assets/img/loading.gif" />
       </div>
-    </section>
+    </table>
+
     <section class="pages" v-if="guaranteeList.length > 5">
       <div>
         <p @click="upPage">
@@ -140,6 +144,7 @@ export default {
       getTokenName, fixD,
       page: 0,
       limit: 5,
+      isLoading: true
     }
   },
   computed: {
@@ -161,6 +166,7 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
+      this.isLoading = true
       const result = [];
       let item, resultItem, amount, InsurancePrice, Rent, downTime;
       let currentTime = new Date().getTime();
@@ -176,7 +182,6 @@ export default {
         Rent = precision.times(amount, InsurancePrice)
         //倒计时
         downTime = this.getDownTime(item.sellInfo.longInfo._expiry)
-
         resultItem = {
           id: item.bidID,
           bidID: item.bidID,
@@ -213,12 +218,11 @@ export default {
           resultItem['status'] = 'Activated';
           resultItem['sort'] = 1;
         }
-        if (resultItem['sort'] == 1 || resultItem['sort'] == 0) {
-          return
+        if (resultItem['sort'] != 1 && resultItem['sort'] != 0) {
+          result.push(resultItem)
         }
-        result.push(resultItem)
       }
-
+      this.isLoading = false
       this.guaranteeList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },

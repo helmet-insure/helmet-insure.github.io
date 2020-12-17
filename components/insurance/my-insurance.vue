@@ -60,8 +60,11 @@
           </template>
         </tr>
       </tbody>
+      <div class="loading" v-if="isLoading">
+        <img src="~/assets/img/loading.gif" />
+      </div>
     </table>
-    <section class="noData" v-if="!showList.length">
+    <section class="noData" v-if="showList.length < 1 && !isLoading">
       <div>
         <img src="~/assets/img/helmet/nodata.png" alt="" />
         <p>{{ $t("Table.NoData") }}</p>
@@ -137,6 +140,7 @@ export default {
       fixD,
       page: 0,
       limit: 5,
+      isLoading: true
     }
   },
   computed: {
@@ -161,6 +165,7 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
+      this.isLoading = true;
       let result = []
       let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
       const currentTime = new Date().getTime();
@@ -206,6 +211,7 @@ export default {
           result.push(resultItem)
         }
       }
+      this.isLoading = false;
       this.insuranceList = result
       this.showList = result.slice(this.page * this.limit, this.limit)
     },
