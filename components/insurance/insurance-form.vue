@@ -8,7 +8,7 @@
       </div>
       <div class="num">
         <input type="text" v-model="volume" />
-        <span class="right">{{ $t("Table.ALL") }}</span>
+        <span class="right" @click='toAll'>{{ $t("Table.ALL") }}</span>
       </div>
       <button class="b_b_button" @click="submitSupply">
         {{ $t("Content.Supply") }}
@@ -86,6 +86,9 @@ export default {
     },
     HelmetPrice() {
       return this.$store.state.allHelmetPrice
+    },
+    BalanceArray(){
+      return this.$store.state.BalanceArray
     }
   },
   watch: {
@@ -113,6 +116,11 @@ export default {
     },
   },
   methods: {
+    toAll(){
+      if(this.BalanceArray){
+         this.volume = this.BalanceArray[this.currentCoin]
+      }
+    },
     submitSupply() {
       // 私有化  不要
       // 标的物

@@ -46,7 +46,7 @@
                 class="cancel"
                 @click="handleClickCancel(item)"
                 v-if="item.remain != 0"
-                >撤销</span
+                >{{ $t("Table.Cancel") }}</span
               >
             </td>
             <td>{{ toRounding(item.shortBalance, 4) }}</td>

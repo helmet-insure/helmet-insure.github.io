@@ -1,5 +1,5 @@
 <template>
-  <div class="my_guarantee">
+  <div class="my_claim">
     <table>
       <thead>
         <tr>
@@ -34,8 +34,10 @@
               {{ item._collateral }}
             </td>
             <td>{{ fixD(addCommom(item.und), 8) }} {{ item._underlying }}</td>
-            <td>
-              <button class="b_b_button" @click="toClaim(item)">取回</button>
+            <td class="option">
+              <button class="b_b_button" @click="toClaim(item)">
+                {{ $t("Table.GetBack") }}
+              </button>
             </td>
           </template>
         </tr>
@@ -335,7 +337,7 @@ export default {
     }
   }
 
-  .my_guarantee {
+  .my_claim {
     position: relative;
     > div {
       display: none;
@@ -360,7 +362,7 @@ export default {
       }
       .option {
         text-align: right;
-        width: 265px;
+        width: 100px;
       }
       thead {
         width: 100%;
@@ -413,7 +415,7 @@ export default {
           .option {
             display: flex;
             align-items: center;
-            transform: translateX(20px);
+            justify-content: flex-end;
           }
         }
       }
@@ -421,7 +423,7 @@ export default {
   }
 }
 @media screen and (max-width: 750px) {
-  .my_guarantee {
+  .my_claim {
     table {
       display: none;
     }

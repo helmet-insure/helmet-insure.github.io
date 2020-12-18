@@ -139,6 +139,7 @@ export default {
         BalanceArray[key] = toRounding(balance, 4)
       }
       this.BalanceArray = BalanceArray
+      this.$store.commit('SET_BALANCE',BalanceArray)
     },
     undAndColWatch(newValue) {
       let list = this.IndexPxArray

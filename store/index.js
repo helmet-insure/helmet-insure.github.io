@@ -111,7 +111,7 @@ export const state = () => ({
     FOR_BNB: false,
     BNB_FOR: false,
   },
-  dueDate: "2020-12-18 00:00",
+  dueDate: "2020-12-20 00:00",
   allIndexPrice: [
     {
       HELMET: 0,
@@ -140,6 +140,7 @@ export const state = () => ({
       FORTUBE: 0,
     },
   ],
+  BalanceArray: {},
 });
 
 export const mutations = {
@@ -248,6 +249,10 @@ export const mutations = {
   },
   SET_ALL_HELMET_PRICE(state, data) {
     state.allHelmetPrice = data;
+  },
+  // 存放余额
+  SET_BALANCE(state, data) {
+    state.BalanceArray = data;
   },
 };
 
