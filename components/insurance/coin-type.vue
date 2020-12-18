@@ -32,6 +32,7 @@ export default {
   methods: {
     handleClickCoin(coin) {
       this.$emit('changeCoin', coin);
+      this.$bus.$emit('WATCH_COIN', coin)
       this.curCoin = coin;
     },
   },

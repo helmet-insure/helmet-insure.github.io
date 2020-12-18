@@ -111,7 +111,7 @@ export const state = () => ({
     FOR_BNB: false,
     BNB_FOR: false,
   },
-  dueDate: "2020-12-20 00:00",
+  dueDate: "2020-12-31 00:00",
   allIndexPrice: [
     {
       HELMET: 0,

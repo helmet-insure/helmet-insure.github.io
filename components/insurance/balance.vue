@@ -32,7 +32,7 @@
         <p v-if="TradeType != 'buy'">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-BNB"></use></svg
-          >{{ BalanceArray["WBNB"] }} WBNB
+          >{{ BalanceArray["BNB"] }} BNB
         </p>
         <!-- <p>
           <svg class="icon" aria-hidden="true">
@@ -50,6 +50,7 @@ import { getBalance } from '~/interface/order.js';
 import { uniswap } from '~/assets/utils/address-pool.js';
 import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
+import { toWei, fromWei } from "~/assets/utils/web3-fun.js";
 export default {
   props: ['currentCoin', 'currentType', 'TradeType'],
   data() {
@@ -57,7 +58,13 @@ export default {
       underly: 'HELMET', //标的物
       curType: 1,
       collateral: 'WBNB', //抵押物
-      BalanceArray: {}, //当前结算币种
+      BalanceArray: {
+        HELMET: 0,
+        CAKE: 0,
+        CTK: 0,
+        FORTUBE: 0,
+        BNB: 0,
+      }, //当前结算币种
       QUSD: 0,
       BNB: 0,
       CAKE: 0,
@@ -68,7 +75,7 @@ export default {
       unit: 'WBNB',
       precision, toRounding, autoRounding, fixD, addCommom,
       strikePrice: 0.0067,
-      coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB'],
+      coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE',],
       dueDate: 0,
     };
   },
@@ -124,9 +131,11 @@ export default {
     this.$bus.$on('REFRESH_BALANCE', () => {
       this.getBalance();
     });
-    setTimeout(() => {
-      this.getBalance();
-    }, 1000);
+    if (window.chainID == 56) {
+      setTimeout(() => {
+        this.getBalance();
+      }, 1000);
+    }
     setInterval(() => {
       setTimeout(() => {
         this.getDownTime()
@@ -153,6 +162,11 @@ export default {
         let balance = await getBalance(this.coinList[i]);
         let key = this.coinList[i]
         BalanceArray[key] = toRounding(balance, 4)
+      }
+      if (window.CURRENTADDRESS) {
+        window.WEB3.eth.getBalance(window.CURRENTADDRESS).then(res => {
+          BalanceArray['BNB'] = toRounding(fromWei(res), 4)
+        })
       }
       this.BalanceArray = BalanceArray
       this.$store.commit('SET_BALANCE', BalanceArray)

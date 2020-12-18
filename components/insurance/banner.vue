@@ -75,8 +75,9 @@ export default {
     },
   },
   mounted() {
-    this.getBannerData();
-    console.log(this.$store.state);
+    if (window.chainID == 56) {
+      this.getBannerData();
+    }
   },
   methods: {
     async getBannerData() {

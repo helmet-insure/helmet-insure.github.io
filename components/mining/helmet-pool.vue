@@ -30,7 +30,10 @@
       <div class="deposit">
         <div class="title">
           <span>{{ $t("Table.Deposit") }}</span>
-          <p>{{ balance.Deposite }} LPT {{ $t("Table.Available") }}</p>
+          <p>
+            {{ balance.Deposite.length > 60 ? 0 : balance.Deposite }} LPT
+            {{ $t("Table.Available") }}
+          </p>
         </div>
         <div class="content">
           <label for="deposit">{{ $t("Table.AmountDeposit") }}</label>
@@ -88,7 +91,9 @@
           </button>
           <p>
             <span>{{ $t("Table.HELMETRewards") }}：</span>
-            <span> {{ balance.Helmet }} HELMET</span>
+            <span>
+              {{ balance.Helmet.length > 60 ? 0 : balance.Helmet }} HELMET</span
+            >
           </p>
           <button
             @click="toClaim"
@@ -206,12 +211,11 @@ export default {
       // 可领取
       let Helmet = await CangetPAYA(type);
 
-      console.log(Deposite, Withdraw, Helmet, TotalLPT)
       this.balance.Deposite = addCommom(Deposite, 4)
       this.balance.Withdraw = addCommom(Withdraw, 4)
       this.balance.Helmet = addCommom(Helmet, 4)
       this.balance.TotalLPT = addCommom(TotalLPT, 4)
-      this.balance.Share = addCommom(Deposite / TotalLPT)
+      this.balance.Share = toRounding(Deposite / TotalLPT, 1) * 100
       this.textList[2].num = addCommom(TotalLPT, 4)
       this.textList[3].num = addCommom(Deposite, 4)
       this.textList[4].num = addCommom(Helmet, 4)

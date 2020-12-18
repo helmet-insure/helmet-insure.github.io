@@ -16,7 +16,9 @@
             <div>
               <span>{{ $t("Table.Minted") }}</span>
               <p>HELMET</p>
-              <strong>{{ item.callMined }}</strong>
+              <strong>{{
+                item.callMined.length > 60 ? 0 : item.callMined
+              }}</strong>
               <button
                 :class="
                   claimLoading && claimIndex == index && claimType == 'call'
@@ -38,8 +40,10 @@
             <section class="cut_line"></section>
             <div>
               <span>{{ $t("Table.CurrentlyStaked") }}</span>
-              <p>{{ item.call }} Short Token</p>
-              <strong>{{ item.callSpToken }}</strong>
+              <p>{{ item.call.length > 60 ? 0 : item.call }} Short Token</p>
+              <strong>{{
+                item.callSpToken.length > 60 ? 0 : item.callSpToken
+              }}</strong>
               <button
                 :class="
                   exitLoading && exitIndex == index && exitType == 'call'
@@ -87,7 +91,9 @@
             <div>
               <span>{{ $t("Table.Minted") }}</span>
               <p>HELMET</p>
-              <strong>{{ item.putMined }}</strong>
+              <strong>{{
+                item.putMined.length > 60 ? 0 : item.putMined
+              }}</strong>
               <button
                 class="o_button"
                 :class="
@@ -110,8 +116,10 @@
             <section class="cut_line"></section>
             <div>
               <span>{{ $t("Table.CurrentlyStaked") }}</span>
-              <p>{{ item.put }} Short Token</p>
-              <strong>{{ item.putSpToken }}</strong>
+              <p>{{ item.put.length > 60 ? 0 : item.put }} Short Token</p>
+              <strong>{{
+                item.putSpToken.length > 60 ? 0 : item.putSpToken
+              }}</strong>
               <button
                 :class="
                   exitLoading && exitIndex == index && exitType == 'put'
@@ -187,7 +195,7 @@ export default {
           putMined: 0,
           callSpToken: 0,
           putSpToken: 0,
-          dueDate: '2020-12-15 00:00',
+          dueDate: '2020-12-31 00:00',
           downTime: '',
         },
         {
@@ -198,7 +206,7 @@ export default {
           putMined: 0,
           callSpToken: 0,
           putSpToken: 0,
-          dueDate: '2020-12-15 00:00',
+          dueDate: '2020-12-31 00:00',
           downTime: '',
         },
         {
@@ -206,9 +214,10 @@ export default {
           call: 'BNB-CTK',
           put: 'CTK-BNB',
           callMined: 0,
-          putMined: 0, callSpToken: 0,
+          putMined: 0,
+          callSpToken: 0,
           putSpToken: 0,
-          dueDate: '2020-12-15 00:00',
+          dueDate: '2020-12-31 00:00',
           downTime: '',
         },
         {
@@ -219,7 +228,7 @@ export default {
           putMined: 0,
           callSpToken: 0,
           putSpToken: 0,
-          dueDate: '2020-12-15 00:00',
+          dueDate: '2020-12-31 00:00',
           downTime: '',
         },
       ],

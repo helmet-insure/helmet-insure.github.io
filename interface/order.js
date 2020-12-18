@@ -816,3 +816,8 @@ export const onWaive = async (data) => {
       bus.$emit("ONWAIVE_END", data.bidID);
     });
 };
+
+export const RePrice = async (data) => {
+  const charID = window.chainID;
+  console.log(data);
+};

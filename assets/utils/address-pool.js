@@ -220,6 +220,7 @@ export const uniswap = async (token1, token2) => {
 
     return Price;
   } catch (error) {
+    console.log(error);
     return 0;
   }
 };

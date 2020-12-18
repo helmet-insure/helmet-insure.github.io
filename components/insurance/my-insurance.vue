@@ -126,7 +126,7 @@ import precision from '~/assets/js/precision.js';
 import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
 import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
 import { getTokenName } from '~/assets/utils/address-pool.js';
-import { onCancel, getBalance, asks } from '~/interface/order.js'
+import { onCancel, getBalance, asks, RePrice } from '~/interface/order.js'
 export default {
   data() {
     return {
@@ -238,6 +238,7 @@ export default {
     // 撤销
     handleClickCancel(data) {
       onCancel(data.id, (status) => { });
+      // RePrice(data)
     },
     // 分页
     upPage() {

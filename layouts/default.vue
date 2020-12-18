@@ -87,6 +87,7 @@ export default {
     aboutInfoSell() {
       return this.$store.state.aboutInfoSell;
     },
+
   },
   watch: {
     longMapAndSellMap: {
@@ -103,11 +104,11 @@ export default {
     // if (!window.localStorage.getItem('readRisk')) {
     //   this.showRiskWarning = true;
     // }
-
     window.WEB3 = await web3();
     window.chainID = await getID();
-    this.getUserInfo();
+    console.log(window.chainID, window.chainID != 56, '##############')
 
+    this.getUserInfo();
     // 获取映射
     this.$store.dispatch('setAllMap');
     this.monitorNetWorkChange();
@@ -125,12 +126,18 @@ export default {
       this.openStatusDialog();
       window.statusDialog = true;
     });
+
     // 关闭状态弹框
     this.$bus.$on('CLOSE_STATUS_DIALOG', (data) => {
       this.closeStatusDialog();
       window.statusDialog = false;
     });
-
+    if (window.chainID != 56) {
+      this.$bus.$emit("OPEN_STATUS_DIALOG", {
+        type: "warning",
+        conText: '请连接到Binance Smart Chain网络',
+      });
+    }
     // 刷新所有数据
     this.$bus.$on('REFRESH_ALL_DATA', (data) => {
       this.refreshAllData();
@@ -140,6 +147,8 @@ export default {
   methods: {
     getStatusTitle(type) {
       switch (type) {
+        case 'warning':
+          return 'Warning'
         case 'pending':
           return 'Waiting for confirmation';
         case 'submit':
@@ -150,6 +159,8 @@ export default {
     },
     getConTit(type) {
       switch (type) {
+        case 'warning':
+          return 'Please connect to the Binance Smart Chain network'
         case 'pending':
           return 'Please confirm the transaction in the wallet';
         case 'submit':
@@ -160,6 +171,8 @@ export default {
     },
     getBtnTit(type) {
       switch (type) {
+        case 'warning':
+          return 'OK';
         case 'pending':
           return 'Approve';
         case 'submit':
