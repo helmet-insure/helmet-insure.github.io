@@ -155,8 +155,11 @@ export default {
         background: #ff9600;
         border-radius: 3px;
         p {
-          span {
+          label {
             color: rgba(255, 255, 255, 0.8);
+          }
+          span {
+            color: #fff;
           }
         }
       }

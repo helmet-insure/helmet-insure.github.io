@@ -69,12 +69,10 @@ export default {
       precision, toRounding, autoRounding, fixD, addCommom,
       strikePrice: 0.0067,
       coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE', 'WBNB'],
+      dueDate: 0,
     };
   },
   computed: {
-    dueDate() {
-      return this.$store.state.dueDate
-    },
     undAndCol() {
       if (this.currentCoin && this.currentType) {
         return {
@@ -129,8 +127,26 @@ export default {
     setTimeout(() => {
       this.getBalance();
     }, 1000);
+    setInterval(() => {
+      setTimeout(() => {
+        this.getDownTime()
+      });
+      clearTimeout()
+    }, 1000);
   },
   methods: {
+    // 倒计时
+    getDownTime(time) {
+      let now = new Date() * 1
+      let dueDate = new Date(this.$store.state.dueDate)
+      let DonwTime = dueDate - now
+      let day = Math.floor(DonwTime / (24 * 3600000))
+      let hour = Math.floor((DonwTime - (day * 24 * 3600000)) / 3600000)
+      let minute = Math.floor(((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) / 60000)
+      let second = Math.floor((((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) - (minute * 60000)) / 1000)
+      let template = `${day}天${hour}时${minute}分${second}秒`
+      this.dueDate = template
+    },
     async getBalance() {
       let BalanceArray = {}
       for (let i = 0; i < this.coinList.length; i++) {
@@ -139,7 +155,7 @@ export default {
         BalanceArray[key] = toRounding(balance, 4)
       }
       this.BalanceArray = BalanceArray
-      this.$store.commit('SET_BALANCE',BalanceArray)
+      this.$store.commit('SET_BALANCE', BalanceArray)
     },
     undAndColWatch(newValue) {
       let list = this.IndexPxArray

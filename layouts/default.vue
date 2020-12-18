@@ -7,11 +7,11 @@
     <PFooter :padding="200"></PFooter>
     <MyPayaso></MyPayaso>
     <PMask></PMask>
-    <RiskWarning
+    <!-- <RiskWarning
       v-if="showRiskWarning"
       @close="closeRiskWarning"
       @confirm="closeRiskWarning"
-    ></RiskWarning>
+    ></RiskWarning> -->
     <!-- 下载钱包指引界面 -->
     <WallectDownLoad></WallectDownLoad>
     <!-- 钱包交互状态提示弹框 -->
@@ -100,9 +100,9 @@ export default {
   },
   async mounted() {
     // 是否阅读过【风险提示】
-    if (!window.localStorage.getItem('readRisk')) {
-      this.showRiskWarning = true;
-    }
+    // if (!window.localStorage.getItem('readRisk')) {
+    //   this.showRiskWarning = true;
+    // }
 
     window.WEB3 = await web3();
     window.chainID = await getID();

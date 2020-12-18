@@ -8,7 +8,7 @@
       </div>
       <div class="num">
         <input type="text" v-model="volume" />
-        <span class="right" @click='toAll'>{{ $t("Table.ALL") }}</span>
+        <span class="right" @click="toAll">{{ $t("Table.ALL") }}</span>
       </div>
       <button class="b_b_button" @click="submitSupply">
         {{ $t("Content.Supply") }}
@@ -87,7 +87,7 @@ export default {
     HelmetPrice() {
       return this.$store.state.allHelmetPrice
     },
-    BalanceArray(){
+    BalanceArray() {
       return this.$store.state.BalanceArray
     }
   },
@@ -116,9 +116,9 @@ export default {
     },
   },
   methods: {
-    toAll(){
-      if(this.BalanceArray){
-         this.volume = this.BalanceArray[this.currentCoin]
+    toAll() {
+      if (this.BalanceArray) {
+        this.volume = this.BalanceArray[this.currentCoin]
       }
     },
     submitSupply() {
@@ -245,7 +245,7 @@ input:focus {
           height: 40px;
           border: 1px solid #cfcfd2;
           padding: 0 30px 0 55px;
-          color: #919aa6;
+          color: #121212;
           text-align: right;
         }
         .left {
@@ -269,7 +269,7 @@ input:focus {
           height: 40px;
           border: 1px solid #cfcfd2;
           padding: 0 60px 0 12px;
-          color: #919aa6;
+          color: #121212;
         }
         .right {
           color: #ff9600;
