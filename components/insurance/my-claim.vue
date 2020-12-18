@@ -19,7 +19,7 @@
               : 'put_style'
           "
         >
-          <template v-if="item.hidden">
+          <template>
             <td :class="item._underlying == 'WBNB' ? 'green' : 'orange'">
               {{
                 item._underlying == "WBNB" ? item._collateral : item._underlying
@@ -30,7 +30,7 @@
             </td>
             <td>
               <!-- {{ addCommom(precision.plus(item.col, item.longBalance), 4) }} -->
-              {{ fixD(addCommom(item.longBalance, 4), 4) }}
+              {{ toRounding(item.longBalance, 4) }}
               {{ item._collateral }}
             </td>
             <td>{{ fixD(addCommom(item.und), 8) }} {{ item._underlying }}</td>
@@ -188,7 +188,7 @@ export default {
         longBalance = await getBalance(item.longInfo.long, _collateral);
         _underlying = getTokenName(item.longInfo._underlying, window.chainID);
         shortBalance = await getBalance(item.longInfo.short, _collateral);
-
+        let Token = _underlying == 'WBNB' ? _underlying : _collateral
         let resultItem = {}
         if (Number(shortBalance) > 0) {
           resultItem['askID'] = item.askID;
@@ -205,14 +205,14 @@ export default {
             volume = toWei(number, _collateral);
             const settle = await settleable(item.longInfo.short, volume);
             if (settle.col != '0' || settle.und != '0') {
-              if (_collateral == 'CTK') {
+              if (_underlying == 'CTK') {
                 und = fromWei(settle.und, 'CTK');
               } else {
-                und = fromWei(settle.und, _collateral);
+                und = fromWei(settle.und, Token);
               }
               resultItem['und'] = und;
-              resultItem['col'] = fromWei(settle.col, _collateral);
-              resultItem['fee'] = fromWei(settle.fee, _collateral);
+              resultItem['col'] = fromWei(settle.col, Token);
+              resultItem['fee'] = fromWei(settle.fee, Token);
             } else {
               resultItem['und'] = 0;
               resultItem['col'] = 0;
@@ -231,7 +231,7 @@ export default {
             return item._underlying == resultItem._underlying && item._collateral == resultItem._collateral
           })
           // 没有这个品种则添加
-          if (!Flag) {
+          if (!Flag && resultItem['hidden']) {
             result.push(resultItem)
           }
           // 判断
@@ -259,7 +259,7 @@ export default {
     // 行权
     toClaim(item) {
       console.log(item)
-      if (item.longBalance != 0) {
+      if (Number(item.longBalance) != 0) {
         burn(
           item.short,
           item.longBalance,

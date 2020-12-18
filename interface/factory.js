@@ -53,13 +53,10 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
       });
     })
     .on("confirmation", (confirmationNumber, receipt) => {
-      console.log(confirmationNumber);
       // callBack('success');
       if (confirmationNumber === 0) {
-        let confirmationTit = `<div>${colValue > 0 &&
-          data._collateral} ${undValue > 0 &&
-          ", " +
-            data._underlying} settlement is successful, Please check in the <span>wallet</span></div>`;
+        let confirmationTit = `<div>${data._collateral} ${", " +
+          data._underlying} settlement is successful, Please check in the <span>wallet</span></div>`;
         if (window.statusDialog) {
           bus.$emit("CLOSE_STATUS_DIALOG");
           bus.$emit("OPEN_STATUS_DIALOG", {
