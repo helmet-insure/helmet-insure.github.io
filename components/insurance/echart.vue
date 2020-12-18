@@ -46,9 +46,9 @@ export default {
       str: '0,150 500,150 1080,0',
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
-    polyLinePoints() {},
+    polyLinePoints() { },
   },
 };
 </script>

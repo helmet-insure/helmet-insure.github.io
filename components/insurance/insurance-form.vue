@@ -93,7 +93,10 @@ export default {
   },
   watch: {
     dpr(newValue, val) {
-      this.dpr = fixInput(newValue, 0);
+      this.dpr = fixInput(newValue, 1);
+      if (newValue > 10) {
+        this.dpr = 10
+      }
     },
     volume(newValue, val) {
       this.volume = fixInput(newValue, 4);
