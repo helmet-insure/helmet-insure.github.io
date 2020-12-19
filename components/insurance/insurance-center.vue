@@ -38,16 +38,18 @@
       :currentCoin="curCoin"
       :currentType="TradeType"
     ></InsuranceForm>
+    <RePrice v-if="repriceflag" :option="option"> </RePrice>
   </div>
 </template>
 
 <script>
-import CoinType from './coin-type.vue';
-import Echart from './echart.vue';
-import InsuranceType from './insurance-type.vue';
-import Balance from './balance.vue';
-import InsuranceList from './insurance-list.vue';
-import InsuranceForm from './insurance-form.vue';
+import CoinType from "./coin-type.vue";
+import Echart from "./echart.vue";
+import InsuranceType from "./insurance-type.vue";
+import Balance from "./balance.vue";
+import InsuranceList from "./insurance-list.vue";
+import InsuranceForm from "./insurance-form.vue";
+import RePrice from "./re-price.vue";
 export default {
   components: {
     CoinType,
@@ -56,15 +58,26 @@ export default {
     Balance,
     InsuranceList,
     InsuranceForm,
+    RePrice,
   },
   data() {
     return {
-      type: 'buy',
-      curCoin: 'HELMET',
+      type: "buy",
+      curCoin: "HELMET",
       TradeType: 1,
+      repriceflag: false,
+      option: {},
     };
   },
-  mounted() { },
+  mounted() {
+    this.$bus.$on("OPEN_REPRICE", (data) => {
+      this.repriceflag = true;
+      this.option = data;
+    });
+    this.$bus.$on("CLOSE_REPRICE", () => {
+      this.repriceflag = true;
+    });
+  },
   methods: {
     // 选择买卖类型
     handleClickType(type) {

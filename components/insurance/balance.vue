@@ -23,11 +23,17 @@
     <div>
       <span>{{ $t("Content.UsableBalance") }}</span>
       <div>
-        <p>
+        <p v-if="TradeType == 'sell'">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Helmet"></use></svg
           >{{ BalanceArray[underly] }}
           {{ underly == "FORTUBE" ? "FOR" : underly }}
+        </p>
+        <p v-else>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-Helmet"></use></svg
+          >{{ BalanceArray["HELMET"] }}
+          HELMET
         </p>
         <p v-if="TradeType != 'buy'">
           <svg class="icon" aria-hidden="true">
@@ -45,19 +51,19 @@
 </template>
 
 <script>
-import '~/assets/svg/iconfont.js';
-import { getBalance } from '~/interface/order.js';
-import { uniswap } from '~/assets/utils/address-pool.js';
-import precision from '~/assets/js/precision.js';
-import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
+import "~/assets/svg/iconfont.js";
+import { getBalance } from "~/interface/order.js";
+import { uniswap } from "~/assets/utils/address-pool.js";
+import precision from "~/assets/js/precision.js";
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
 import { toWei, fromWei } from "~/assets/utils/web3-fun.js";
 export default {
-  props: ['currentCoin', 'currentType', 'TradeType'],
+  props: ["currentCoin", "currentType", "TradeType"],
   data() {
     return {
-      underly: 'HELMET', //标的物
+      underly: "HELMET", //标的物
       curType: 1,
-      collateral: 'WBNB', //抵押物
+      collateral: "WBNB", //抵押物
       BalanceArray: {
         HELMET: 0,
         CAKE: 0,
@@ -72,10 +78,14 @@ export default {
       CKT: 0,
       FORTUBE: 0,
       indexPx: 0.0033,
-      unit: 'WBNB',
-      precision, toRounding, autoRounding, fixD, addCommom,
+      unit: "WBNB",
+      precision,
+      toRounding,
+      autoRounding,
+      fixD,
+      addCommom,
       strikePrice: 0.0067,
-      coinList: ['HELMET', 'CAKE', 'CTK', 'FORTUBE',],
+      coinList: ["HELMET", "CAKE", "CTK", "FORTUBE"],
       dueDate: 0,
     };
   },
@@ -89,46 +99,46 @@ export default {
       }
     },
     IndexPxArray() {
-      let list = this.$store.state.allIndexPrice
-      return list
+      let list = this.$store.state.allIndexPrice;
+      return list;
     },
   },
   watch: {
     currentCoin(val, oldVal) {
       if (val) {
         this.underly = val;
-        this.currentCoin = val
+        this.currentCoin = val;
       }
     },
     currentType(val, oldVal) {
       if (val) {
         this.curType = val;
-        this.currentType = val
+        this.currentType = val;
       }
     },
     TradeType(val) {
       if (val) {
-        this.TradeType = val
+        this.TradeType = val;
       }
     },
     undAndCol: {
-      handler: 'undAndColWatch',
+      handler: "undAndColWatch",
       deep: true,
       immediate: true,
     },
     strikePrice(newValue, value) {
       if (newValue) {
-        this.strikePrice = newValue
+        this.strikePrice = newValue;
       }
     },
     IndexPxArray(newValue, value) {
       if (newValue) {
-        this.strikePrice = 0.0067
+        this.strikePrice = 0.0067;
       }
-    }
+    },
   },
   mounted() {
-    this.$bus.$on('REFRESH_BALANCE', () => {
+    this.$bus.$on("REFRESH_BALANCE", () => {
       this.getBalance();
     });
     if (window.chainID == 56) {
@@ -138,60 +148,64 @@ export default {
     }
     setInterval(() => {
       setTimeout(() => {
-        this.getDownTime()
+        this.getDownTime();
       });
-      clearTimeout()
+      clearTimeout();
     }, 1000);
   },
   methods: {
     // 倒计时
     getDownTime(time) {
-      let now = new Date() * 1
-      let dueDate = new Date(this.$store.state.dueDate)
-      let DonwTime = dueDate - now
-      let day = Math.floor(DonwTime / (24 * 3600000))
-      let hour = Math.floor((DonwTime - (day * 24 * 3600000)) / 3600000)
-      let minute = Math.floor(((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) / 60000)
-      let second = Math.floor((((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) - (minute * 60000)) / 1000)
-      let template = `${day}天${hour}时${minute}分${second}秒`
-      this.dueDate = template
+      let now = new Date() * 1;
+      let dueDate = new Date(this.$store.state.dueDate);
+      let DonwTime = dueDate - now;
+      let day = Math.floor(DonwTime / (24 * 3600000));
+      let hour = Math.floor((DonwTime - day * 24 * 3600000) / 3600000);
+      let minute = Math.floor(
+        (DonwTime - day * 24 * 3600000 - hour * 3600000) / 60000
+      );
+      let second = Math.floor(
+        (DonwTime - day * 24 * 3600000 - hour * 3600000 - minute * 60000) / 1000
+      );
+      let template = `${day}天${hour}时${minute}分${second}秒`;
+      this.dueDate = template;
     },
     async getBalance() {
-      let BalanceArray = {}
+      let BalanceArray = {};
       for (let i = 0; i < this.coinList.length; i++) {
         let balance = await getBalance(this.coinList[i]);
-        let key = this.coinList[i]
-        BalanceArray[key] = toRounding(balance, 4)
+        let key = this.coinList[i];
+        BalanceArray[key] = toRounding(balance, 4);
       }
       if (window.CURRENTADDRESS) {
-        window.WEB3.eth.getBalance(window.CURRENTADDRESS).then(res => {
-          BalanceArray['BNB'] = toRounding(fromWei(res), 4)
-        })
+        window.WEB3.eth.getBalance(window.CURRENTADDRESS).then((res) => {
+          BalanceArray["BNB"] = toRounding(fromWei(res), 4);
+        });
       }
-      this.BalanceArray = BalanceArray
-      this.$store.commit('SET_BALANCE', BalanceArray)
+      this.BalanceArray = BalanceArray;
+      this.$store.commit("SET_BALANCE", BalanceArray);
     },
     undAndColWatch(newValue) {
-      let list = this.IndexPxArray
-      let coin = newValue.underly
-      let type = newValue.curType
+      let list = this.IndexPxArray;
+      let coin = newValue.underly;
+      let type = newValue.curType;
       let px;
       let exPx;
 
       if (!list.length) {
-        return
+        return;
       }
       if (type == 1) {
-        px = list[1][coin]
-        exPx = list[1][coin] * 2
-        this.unit = 'WBNB'
+        px = list[1][coin];
+        exPx = list[1][coin] * 2;
+        this.unit = "WBNB";
       } else {
-        px = list[1][coin]
-        exPx = list[1][coin] * 0.5
-        this.unit = 'WBNB'
+        px = list[1][coin];
+        exPx = list[1][coin] * 0.5;
+        this.unit = "WBNB";
       }
-      this.indexPx = fixD(toRounding(px, 4), 4)
-      this.strikePrice = fixD(toRounding(exPx, 4), 4)
+      this.indexPx = fixD(toRounding(px, 4), 4);
+      this.strikePrice = fixD(toRounding(exPx, 4), 4);
     },
   },
 };

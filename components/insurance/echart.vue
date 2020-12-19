@@ -45,108 +45,113 @@
 </template>
 
 <script>
-import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
 export default {
   data() {
     return {
-      str: '0,150 500,150 1080,0',
-      xAis: ['25%', '50%', '75%'],
-      curCoin: 'HELMET',
+      str: "0,150 500,150 1080,0",
+      xAis: ["25%", "50%", "75%"],
+      curCoin: "HELMET",
       price: {},
       linePrice: {},
       toRounding,
       autoRounding,
       max: 0,
       line: [],
-      upCover: '',
-      dwCover: ''
+      upCover: "",
+      dwCover: "",
     };
   },
   mounted() {
-    this.$bus.$on('WATCH_COIN', (coin) => {
-      this.curCoin = coin
-    })
+    this.$bus.$on("WATCH_COIN", (coin) => {
+      this.curCoin = coin;
+    });
     setTimeout(() => {
-      let arr = this.$store.state.allIndexPrice[1]
+      let arr = this.$store.state.allIndexPrice[1];
       if (this.$store.state.allIndexPrice.length) {
-        let max = toRounding((arr[this.curCoin] * 2 * 1.5), 4)
-        this.max = max
+        let max = toRounding(arr[this.curCoin] * 2 * 1.5, 4);
+        this.max = max;
         this.price = {
           IndexPrice: toRounding(Number(arr[this.curCoin]), 4),
-          Cover100: toRounding((arr[this.curCoin] * 2), 4),
-          Cover50: toRounding((arr[this.curCoin] / 2), 4),
-        }
+          Cover100: toRounding(arr[this.curCoin] * 2, 4),
+          Cover50: toRounding(arr[this.curCoin] / 2, 4),
+        };
         this.line = [
           {
-            line: (100 - toRounding(((arr[this.curCoin] * 2 / max) * 100), 0)),
-            cover: (1 - toRounding(((arr[this.curCoin] * 2 / max)), 2)),
-            num: toRounding((arr[this.curCoin] * 2), 4),
-            color: '#00B900'
+            line: 100 - toRounding(((arr[this.curCoin] * 2) / max) * 100, 0),
+            cover: 1 - toRounding((arr[this.curCoin] * 2) / max, 2),
+            num: toRounding(arr[this.curCoin] * 2, 4),
+            color: "#00B900",
           },
           {
-            line: (100 - toRounding((Number(arr[this.curCoin] / max) * 100), 0)),
-            cover: (1 - toRounding((Number(arr[this.curCoin] / max)), 2)),
-            num: toRounding((arr[this.curCoin]), 4),
-            color: '#919AA6'
+            line: 100 - toRounding(Number(arr[this.curCoin] / max) * 100, 0),
+            cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
+            num: toRounding(arr[this.curCoin], 4),
+            color: "#919AA6",
           },
           {
-            line: (100 - toRounding(((arr[this.curCoin] / 2 / max) * 100), 0)),
-            cover: (1 - toRounding(((arr[this.curCoin] / 2 / max)), 2)),
-            num: toRounding((arr[this.curCoin] / 2), 4),
-            color: '#FF9600'
+            line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
+            cover: 1 - toRounding(arr[this.curCoin] / 2 / max, 2),
+            num: toRounding(arr[this.curCoin] / 2, 4),
+            color: "#FF9600",
           },
-        ]
+        ];
 
-        this.upCover = `M40 0 L1080 0 L1080 ${this.line[0].cover * 200} L40 ${this.line[0].cover * 200} Z`
-        this.dwCover = `M40 200 L1080 200 L1080 ${this.line[2].cover * 200} L40 ${this.line[2].cover * 200} Z`
+        this.upCover = `M40 0 L1080 0 L1080 ${this.line[0].cover * 200} L40 ${
+          this.line[0].cover * 200
+        } Z`;
+        this.dwCover = `M40 200 L1080 200 L1080 ${
+          this.line[2].cover * 200
+        } L40 ${this.line[2].cover * 200} Z`;
       }
-
-    }, 1000);
-
+    }, 2000);
   },
   watch: {
     curCoin(newVal, Val) {
       let arr = this.$store.state.allIndexPrice[1];
-      let max = toRounding((arr[this.curCoin] * 2 * 1.5), 4)
-      this.max = max
+      let max = toRounding(arr[this.curCoin] * 2 * 1.5, 4);
+      this.max = max;
       if (newVal) {
         this.price = {
           IndexPrice: toRounding(Number(arr[newVal]), 4),
-          Cover100: toRounding((arr[newVal] * 2), 4),
-          Cover50: toRounding((arr[newVal] / 2), 4),
-        }
+          Cover100: toRounding(arr[newVal] * 2, 4),
+          Cover50: toRounding(arr[newVal] / 2, 4),
+        };
         this.line = [
           {
-            line: (100 - toRounding(((arr[this.curCoin] * 2 / max) * 100), 0)),
-            cover: (1 - toRounding(((arr[this.curCoin] * 2 / max)), 2)),
-            num: toRounding((arr[this.curCoin] * 2), 4),
-            color: '#00B900'
+            line: 100 - toRounding(((arr[this.curCoin] * 2) / max) * 100, 0),
+            cover: 1 - toRounding((arr[this.curCoin] * 2) / max, 2),
+            num: toRounding(arr[this.curCoin] * 2, 4),
+            color: "#00B900",
           },
           {
-            line: (100 - toRounding((Number(arr[this.curCoin] / max) * 100), 0)),
-            cover: (1 - toRounding((Number(arr[this.curCoin] / max)), 2)),
-            num: toRounding((arr[this.curCoin]), 4),
-            color: '#000'
+            line: 100 - toRounding(Number(arr[this.curCoin] / max) * 100, 0),
+            cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
+            num: toRounding(arr[this.curCoin], 4),
+            color: "#000",
           },
           {
-            line: (100 - toRounding(((arr[this.curCoin] / 2 / max) * 100), 0)),
-            cover: (1 - toRounding(((arr[this.curCoin] / 2 / max)), 2)),
-            num: toRounding((arr[this.curCoin] / 2), 4),
-            color: '#FF9600'
+            line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
+            cover: 1 - toRounding(arr[this.curCoin] / 2 / max, 2),
+            num: toRounding(arr[this.curCoin] / 2, 4),
+            color: "#FF9600",
           },
-        ]
-        this.upCover = `M40 0 L1080 0 L1080 ${this.line[0].cover * 200} L40 ${this.line[0].cover * 200} Z`
-        this.dwCover = `M40 200 L1080 200 L1080 ${this.line[2].cover * 200} L40 ${this.line[2].cover * 200} Z`
+        ];
+        this.upCover = `M40 0 L1080 0 L1080 ${this.line[0].cover * 200} L40 ${
+          this.line[0].cover * 200
+        } Z`;
+        this.dwCover = `M40 200 L1080 200 L1080 ${
+          this.line[2].cover * 200
+        } L40 ${this.line[2].cover * 200} Z`;
       }
-    }
+    },
   },
   computed: {
     IndexPrice() {
-      return this.$store.state.allIndexPrice
-    }
+      return this.$store.state.allIndexPrice;
+    },
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 

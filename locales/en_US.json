@@ -45,7 +45,7 @@
     "ExecutivePrice": "Policy Price",
     "CanCollateral": "SHORT Token",
     "DueTime": "Expires At",
-    "Cancel": "Revoke",
+    "Cancel": "RePrice",
     "Stakeing": "Mining",
     "Deposite": "Stake",
     "Confirm": "Confirm",

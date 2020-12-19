@@ -122,11 +122,11 @@
 </template>
 
 <script>
-import precision from '~/assets/js/precision.js';
-import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
-import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
-import { getTokenName } from '~/assets/utils/address-pool.js';
-import { onCancel, getBalance, asks, RePrice } from '~/interface/order.js'
+import precision from "~/assets/js/precision.js";
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
+import { toWei, fromWei } from "~/assets/utils/web3-fun.js";
+import { getTokenName } from "~/assets/utils/address-pool.js";
+import { onCancel, getBalance, asks, RePrice } from "~/interface/order.js";
 export default {
   data() {
     return {
@@ -140,8 +140,8 @@ export default {
       fixD,
       page: 0,
       limit: 5,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   },
   computed: {
     myAboutInfoSell() {
@@ -153,7 +153,7 @@ export default {
   },
   watch: {
     myAboutInfoSell: {
-      handler: 'myAboutInfoSellWatch',
+      handler: "myAboutInfoSellWatch",
       immediate: true,
     },
   },
@@ -165,23 +165,33 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
+      console.log(list);
       this.isLoading = true;
-      this.showList = []
-      let result = []
-      let item, resultItem, amount, InsurancePrice, _underlying, downTime, beSold, unSold, shortBalance, askRes;
+      this.showList = [];
+      let result = [];
+      let item,
+        resultItem,
+        amount,
+        InsurancePrice,
+        _underlying,
+        downTime,
+        beSold,
+        unSold,
+        shortBalance,
+        askRes;
       const currentTime = new Date().getTime();
       for (let i = 0; i < list.length; i++) {
-        item = list[i]
+        item = list[i];
         // 数量
-        let Token = getTokenName(item.longInfo._collateral)
-        amount = fromWei(item.volume, Token)
+        let Token = getTokenName(item.longInfo._collateral);
+        amount = fromWei(item.volume, Token);
         // 保单价格
-        InsurancePrice = fromWei(item.price, Token == 'CTK' ? 30 : Token)
+        InsurancePrice = fromWei(item.price, Token == "CTK" ? 30 : Token);
         //倒计时
         downTime = new Date(item.longInfo._expiry * 1000).toLocaleDateString();
         //已出售
-        beSold = fromWei(this.getBeSold(item.askID), Token)
-        unSold = precision.minus(amount, beSold)
+        beSold = fromWei(this.getBeSold(item.askID), Token);
+        unSold = precision.minus(amount, beSold);
         shortBalance = await getBalance(item.longInfo.short, item._collateral);
         resultItem = {
           id: item.askID,
@@ -194,76 +204,82 @@ export default {
           _expiry: item.longInfo._expiry * 1000,
           _collateral: item.longInfo._collateral,
           _underlying: item.longInfo._underlying,
-        }
-        askRes = await asks(resultItem.id, 'sync', resultItem._collateral);
-        if (askRes == '0') {
-          resultItem['status'] = 'Beborrowed';
-          resultItem['sort'] = 1;
+        };
+        askRes = await asks(resultItem.id, "sync", resultItem._collateral);
+        if (askRes == "0") {
+          resultItem["status"] = "Beborrowed";
+          resultItem["sort"] = 1;
         } else {
-          resultItem['status'] = 'Unborrowed';
-          resultItem['sort'] = 2;
+          resultItem["status"] = "Unborrowed";
+          resultItem["sort"] = 2;
         }
         if (parseInt(resultItem._expiry) < currentTime) {
-          resultItem['status'] = 'Dated';
-          resultItem['sort'] = 0;
+          resultItem["status"] = "Dated";
+          resultItem["sort"] = 0;
         }
-        resultItem['remain'] = askRes;
+        resultItem["remain"] = askRes;
         if (resultItem.remain != 0) {
-          result.push(resultItem)
+          result.push(resultItem);
         }
       }
       this.isLoading = false;
-      this.insuranceList = result
-      this.showList = result.slice(this.page * this.limit, this.limit)
+      this.insuranceList = result;
+      this.showList = result.slice(this.page * this.limit, this.limit);
     },
     //获取已出售
     getBeSold(id) {
-      let list = this.myAboutInfoBuy
-      let array = list.filter(item => item.askID === id)
+      let list = this.myAboutInfoBuy;
+      let array = list.filter((item) => item.askID === id);
       let num = 0;
-      let number = 0
-      let arrayList = JSON.parse(JSON.stringify(array))
+      let number = 0;
+      let arrayList = JSON.parse(JSON.stringify(array));
       if (arrayList.length) {
-        arrayList.forEach(item => {
+        arrayList.forEach((item) => {
           if (!isNaN(item.vol)) {
-            number = Number(item.vol)
-            num = num + number
+            number = Number(item.vol);
+            num = num + number;
           }
-        })
-        return num
+        });
+        return num;
       } else {
-        return 0
+        return 0;
       }
     },
     // 撤销
     handleClickCancel(data) {
-      onCancel(data.id, (status) => { });
+      this.$bus.$emit("OPEN_REPRICE", data);
+      // onCancel(data.id, (status) => { });
       // RePrice(data)
     },
     // 分页
     upPage() {
       if (this.page <= 0) {
-        return
+        return;
       }
-      let page = this.page
-      this.page = page - 1
-      let list = this.insuranceList.slice((this.page * this.limit), (page * this.limit))
-      this.showList = list
+      let page = this.page;
+      this.page = page - 1;
+      let list = this.insuranceList.slice(
+        this.page * this.limit,
+        page * this.limit
+      );
+      this.showList = list;
     },
     downPage() {
-      if (Math.ceil(this.insuranceList.length / this.limit) <= (this.page + 1)) {
-        return
+      if (Math.ceil(this.insuranceList.length / this.limit) <= this.page + 1) {
+        return;
       }
-      let page = this.page + 1
-      this.page = page
-      let list = this.insuranceList.slice((this.page * this.limit), ((page + 1) * this.limit))
+      let page = this.page + 1;
+      this.page = page;
+      let list = this.insuranceList.slice(
+        this.page * this.limit,
+        (page + 1) * this.limit
+      );
       this.showList = list;
-
     },
     toMining() {
-      this.$router.push('/mining')
-    }
-  }
+      this.$router.push("/mining");
+    },
+  },
 };
 </script>
 
