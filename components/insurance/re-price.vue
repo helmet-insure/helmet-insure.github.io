@@ -34,15 +34,21 @@ export default {
   },
   methods: {
     closeRePrice() {
-      this.$bus.$emit("CLONE_REPRICE");
+      this.$bus.$emit("CLOSE_REPRICE");
     },
     submitRePrice() {
       let option = this.option;
-      option.price = this.price;
-      option._collateral = getTokenName(this.option._collateral);
-      option._underlying = getTokenName(this.option._underlying);
-      RePrice(option);
-      this.$bus.$emit("CLONE_REPRICE");
+      let _collateral = getTokenName(this.option._collateral);
+      let _underlying = getTokenName(this.option._underlying);
+         let data = {
+        price:this.price,
+        id:option.id,
+        _collateral:_collateral,
+        _underlying:_underlying,
+      }
+      RePrice(data);
+   
+      this.$bus.$emit("CLOSE_REPRICE");
     },
   },
 };

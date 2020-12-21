@@ -75,7 +75,7 @@ export default {
       this.option = data;
     });
     this.$bus.$on("CLOSE_REPRICE", () => {
-      this.repriceflag = true;
+      this.repriceflag = false;
     });
   },
   methods: {

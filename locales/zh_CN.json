@@ -29,7 +29,11 @@
     "ProtectTheCycle": "保护周期",
     "UsableBalance": "可用余额",
     "Supply": "立即创建",
-    "Earning": "预期最大收益"
+    "Earning": "预期最大收益",
+    "Day":"天",
+    "Hour":"时",
+    "Min":"分",
+    "Second":"秒"
   },
   "Table": {
     "ID": "ID",

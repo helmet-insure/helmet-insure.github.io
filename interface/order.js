@@ -354,6 +354,21 @@ export const getSellLog = async (callback) => {
     });
 };
 
+export const getRePrice = async (callback) => {
+    Order().then((contract) => {
+        contract.getPastEvents(
+            'Reprice',
+            {
+                fromBlock: 0,
+                toBlock: 'latest',
+            },
+            (error, events) => {
+                callback(error, events);
+            }
+        );
+    });
+};
+
 export const getOptionCreatedLog = async (callback) => {
     return Factory().then((contract) => {
         contract.getPastEvents(
@@ -830,7 +845,6 @@ export const onWaive = async (data) => {
 
 export const RePrice = async (data) => {
     const charID = window.chainID;
-    console.log(data);
     let askID = data.id;
     let price;
     if (data._underlying == 'WBNB') {
@@ -847,15 +861,13 @@ export const RePrice = async (data) => {
         .reprice(askID, price)
         .send({ from: window.CURRENTADDRESS })
         .on('transactionHash', (hash) => {
-            callBack('approve');
+            bus.$emit('CLONE_REPRICE');
             //onChangeHash(hash);
         })
         .on('confirmation', (_, receipt) => {
-            callBack('success');
             //onReceiptChange(receipt);
         })
         .on('error', (err, receipt) => {
-            callBack('failed');
             bus.$emit('CLONE_REPRICE');
             //onReceiptChange(receipt);
         });

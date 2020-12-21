@@ -144,14 +144,14 @@ export default {
     if (window.chainID == 56) {
       setTimeout(() => {
         this.getBalance();
-      }, 1000);
+      }, 2000);
     }
     setInterval(() => {
       setTimeout(() => {
         this.getDownTime();
       });
       clearTimeout();
-    }, 1000);
+    }, 2000);
   },
   methods: {
     // 倒计时
@@ -167,7 +167,7 @@ export default {
       let second = Math.floor(
         (DonwTime - day * 24 * 3600000 - hour * 3600000 - minute * 60000) / 1000
       );
-      let template = `${day}天${hour}时${minute}分${second}秒`;
+      let template = `${day} ${this.$t('Content.Day')} ${hour} ${this.$t('Content.Hour')} ${minute} ${this.$t('Content.Min')} ${second} ${this.$t('Content.Second')}`;
       this.dueDate = template;
     },
     async getBalance() {
@@ -222,7 +222,7 @@ export default {
         &:nth-of-type(1) {
           width: 250px;
         }
-        width: 200px;
+        width: 300px;
 
         span {
           font-size: 14px;

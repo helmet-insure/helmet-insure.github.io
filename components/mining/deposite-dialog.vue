@@ -14,7 +14,7 @@
       <span>{{ current }} SHORT Token：{{ lptBalance }}</span
       ><a @click="addAll">{{ $t("Table.ALL") }}</a>
     </p>
-    <a
+    <!-- <a
       v-if="current"
       class="to-gettoken"
       :href="`https://app.uniswap.org/#/add/ETH/${getAddress(
@@ -22,7 +22,7 @@
       )}`"
       target="_blank"
       >{{ $t("Table.GetLP") }}</a
-    >
+    > -->
     <div class="check" v-if="!hiddenGlobal">
       <img
         src="~/assets/img/helmet/checked2.png"

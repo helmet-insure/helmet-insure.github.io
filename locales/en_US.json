@@ -29,7 +29,11 @@
     "ProtectTheCycle": "Insurance Period",
     "UsableBalance": "Your Balance",
     "Supply": "Supply",
-    "Earning": "Expected maximum return"
+    "Earning": "Expected maximum return",
+    "Day": "days",
+    "Hour": "hours",
+    "Min": "minutes",
+    "Second": "seconds"
   },
   "Table": {
     "ID": "ID",

@@ -150,6 +150,9 @@ export default {
     myAboutInfoBuy() {
       return this.$store.state.aboutInfoBuy;
     },
+    rePriceMap(){
+      return this.$store.state.repriceMap
+    }
   },
   watch: {
     myAboutInfoSell: {
@@ -165,7 +168,6 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-      console.log(list);
       this.isLoading = true;
       this.showList = [];
       let result = [];
@@ -177,6 +179,7 @@ export default {
         downTime,
         beSold,
         unSold,
+        newArray,
         shortBalance,
         askRes;
       const currentTime = new Date().getTime();
@@ -192,6 +195,7 @@ export default {
         //已出售
         beSold = fromWei(this.getBeSold(item.askID), Token);
         unSold = precision.minus(amount, beSold);
+        
         shortBalance = await getBalance(item.longInfo.short, item._collateral);
         resultItem = {
           id: item.askID,
@@ -205,6 +209,12 @@ export default {
           _collateral: item.longInfo._collateral,
           _underlying: item.longInfo._underlying,
         };
+        newArray = this.getNewPrice(item.askID);
+        if(newArray){
+          resultItem['volume']=amount = fromWei(newArray.volume, Token);
+          resultItem['price']=amount = fromWei(newArray.newPrice, Token == "CTK" ? 30 : Token);
+          resultItem['id']=amount = newArray.newAskID
+        }
         askRes = await asks(resultItem.id, "sync", resultItem._collateral);
         if (askRes == "0") {
           resultItem["status"] = "Beborrowed";
@@ -229,6 +239,9 @@ export default {
     //获取已出售
     getBeSold(id) {
       let list = this.myAboutInfoBuy;
+      if(!list){
+        return
+      }
       let array = list.filter((item) => item.askID === id);
       let num = 0;
       let number = 0;
@@ -244,6 +257,15 @@ export default {
       } else {
         return 0;
       }
+    },
+    getNewPrice(id){
+
+      let list = this.rePriceMap
+      if(!list){
+        return
+      }
+      let array = list.filter((item)=>item.askID ===id)[0]
+      return array
     },
     // 撤销
     handleClickCancel(data) {
