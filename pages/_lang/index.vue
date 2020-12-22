@@ -6,7 +6,7 @@
     <div class="helmet_content">
       <div class="right_text">
         <h3><span>HELMET</span>.INSURE</h3>
-        <p>Crypto-assets insruance trading platform on BSC</p>
+        <p>Crypto-assets insurance trading platform on BSC</p>
         <div>
           <button>
             <img src="~/assets/img/helmet/home_github.png" alt="" />
@@ -26,12 +26,12 @@
 </template>
 <script>
 // import Insurance from '~/components/insurance/index.vue';
-import Banner from '~/components/insurance/banner.vue';
-import Footer from '~/components/common/footer.vue';
-import '~/assets/svg/iconfont.js';
+import Banner from "~/components/insurance/banner.vue";
+import Footer from "~/components/common/footer.vue";
+import "~/assets/svg/iconfont.js";
 export default {
-  layout: 'helmet',
-  name: 'home',
+  layout: "helmet",
+  name: "home",
   components: {
     Banner,
     // Insurance,
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     toProduct() {
-      this.$router.push('/product');
+      this.$router.push("/product");
     },
   },
 };

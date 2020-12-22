@@ -2,6 +2,7 @@
   "Header": {
     "Trade": "Tradingview",
     "Mining": "Mining",
+    "Plan": "Plan",
     "Govern": "Governance",
     "GuideBook": "Guide"
   },
@@ -33,7 +34,14 @@
     "Day": "days",
     "Hour": "hours",
     "Min": "minutes",
-    "Second": "seconds"
+    "Second": "seconds",
+    "DayM": "D",
+    "HourM": "H",
+    "MinM": "M",
+    "SecondM": "S",
+    "LastOne": "最后一次成为流动性商的机会",
+    "curPlan": "当前预计APY",
+    "PlanToLp": "立即质押LP token"
   },
   "Table": {
     "ID": "ID",

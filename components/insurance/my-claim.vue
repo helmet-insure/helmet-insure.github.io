@@ -126,13 +126,17 @@
 </template>
 
 <script>
-import '~/assets/svg/iconfont.js';
-import precision from '~/assets/js/precision.js';
-import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
-import { getBalance } from '~/interface/order.js';
-import { newGetSymbol, getWei, getTokenName } from '~/assets/utils/address-pool.js';
-import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
-import { settleable, burn, settle } from '~/interface/factory.js';
+import "~/assets/svg/iconfont.js";
+import precision from "~/assets/js/precision.js";
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
+import { getBalance } from "~/interface/order.js";
+import {
+  newGetSymbol,
+  getWei,
+  getTokenName,
+} from "~/assets/utils/address-pool.js";
+import { toWei, fromWei } from "~/assets/utils/web3-fun.js";
+import { settleable, burn, settle } from "~/interface/factory.js";
 export default {
   data() {
     return {
@@ -147,7 +151,7 @@ export default {
       page: 0,
       limit: 8,
       isLoading: true,
-    }
+    };
   },
   computed: {
     myAboutInfoSell() {
@@ -156,7 +160,7 @@ export default {
   },
   watch: {
     myAboutInfoSell: {
-      handler: 'myAboutInfoSellWatch',
+      handler: "myAboutInfoSellWatch",
       immediate: true,
     },
   },
@@ -168,8 +172,8 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-      this.isLoading = true
-      this.showList = []
+      this.isLoading = true;
+      this.showList = [];
       const result = [];
       let mapArray = [];
       let obj = {};
@@ -188,77 +192,93 @@ export default {
         longBalance = await getBalance(item.longInfo.long, _collateral);
         _underlying = getTokenName(item.longInfo._underlying, window.chainID);
         shortBalance = await getBalance(item.longInfo.short, _collateral);
-        let Token = _underlying == 'WBNB' ? _underlying : _collateral
-        let resultItem = {}
+        let Token = _underlying == "WBNB" ? _underlying : _collateral;
+        let resultItem = {};
         if (Number(shortBalance) > 0) {
-          resultItem['askID'] = item.askID;
-          resultItem['creator'] = item.seller;
-          resultItem['_collateral'] = _collateral
-          resultItem['_underlying'] = _underlying
-          resultItem['long'] = item.longInfo.long
-          resultItem['short'] = item.longInfo.short
-          resultItem['longBalance'] = longBalance
-          resultItem['Balance'] = Math.min(Number(shortBalance), Number(longBalance))
-          resultItem['shortBalance'] = shortBalance
+          resultItem["askID"] = item.askID;
+          resultItem["creator"] = item.seller;
+          resultItem["_collateral"] = _collateral;
+          resultItem["_underlying"] = _underlying;
+          resultItem["long"] = item.longInfo.long;
+          resultItem["short"] = item.longInfo.short;
+          resultItem["longBalance"] = longBalance;
+          resultItem["Balance"] = Math.min(
+            Number(shortBalance),
+            Number(longBalance)
+          );
+          resultItem["shortBalance"] = shortBalance;
           number = precision.minus(shortBalance, longBalance);
           try {
             volume = toWei(number, _collateral);
             const settle = await settleable(item.longInfo.short, volume);
-            if (settle.col != '0' || settle.und != '0') {
-              if (_underlying == 'CTK') {
-                und = fromWei(settle.und, 'CTK');
+            if (settle.col != "0" || settle.und != "0") {
+              if (_underlying == "CTK") {
+                und = fromWei(settle.und, "CTK");
               } else {
                 und = fromWei(settle.und, Token);
               }
-              resultItem['und'] = und;
-              resultItem['col'] = fromWei(settle.col, Token);
-              resultItem['fee'] = fromWei(settle.fee, Token);
+              resultItem["und"] = und;
+              resultItem["col"] = fromWei(settle.col, Token);
+              resultItem["fee"] = fromWei(settle.fee, Token);
             } else {
-              resultItem['und'] = 0;
-              resultItem['col'] = 0;
-              resultItem['fee'] = 0;
+              resultItem["und"] = 0;
+              resultItem["col"] = 0;
+              resultItem["fee"] = 0;
             }
           } catch (err) {
             // console.log(err)
           }
-          if (Number(resultItem.longBalance) == 0 && Number(resultItem.und) == 0) {
-            resultItem['hidden'] = false;
+          if (
+            Number(resultItem.longBalance) == 0 &&
+            Number(resultItem.und) == 0
+          ) {
+            resultItem["hidden"] = false;
           } else {
-            resultItem['hidden'] = true;
+            resultItem["hidden"] = true;
           }
           // 判断有没有这个品种的单子
-          let Flag = mapArray.some(item => {
-            return item._underlying == resultItem._underlying && item._collateral == resultItem._collateral
-          })
+          let Flag = mapArray.some((item) => {
+            return (
+              item._underlying == resultItem._underlying &&
+              item._collateral == resultItem._collateral
+            );
+          });
           // 没有这个品种则添加
-          if (!Flag && resultItem['hidden']) {
-            result.push(resultItem)
+          if (!Flag && resultItem["hidden"]) {
+            result.push(resultItem);
           }
           // 判断
-          mapArray = result.map(item => { return { _underlying: item._underlying, _collateral: item._collateral } })
+          mapArray = result.map((item) => {
+            return {
+              _underlying: item._underlying,
+              _collateral: item._collateral,
+            };
+          });
         }
       }
-      this.isLoading = false
-      this.claimList = result
-      console.log(result)
-      this.showList = result.slice(this.page * this.limit, this.limit)
+      this.isLoading = false;
+      this.claimList = result;
+      this.showList = result.slice(this.page * this.limit, this.limit);
     },
     // 倒计时
     getDownTime(time) {
-      let now = new Date() * 1
-      let dueDate = time * 1000
-      dueDate = new Date(dueDate)
-      let DonwTime = dueDate - now
-      let day = Math.floor(DonwTime / (24 * 3600000))
-      let hour = Math.floor((DonwTime - (day * 24 * 3600000)) / 3600000)
-      let minute = Math.floor(((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) / 60000)
-      let second = Math.floor((((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) - (minute * 60000)) / 1000)
-      let template = `${day}天${hour}时${minute}分${second}秒`
-      return template
+      let now = new Date() * 1;
+      let dueDate = time * 1000;
+      dueDate = new Date(dueDate);
+      let DonwTime = dueDate - now;
+      let day = Math.floor(DonwTime / (24 * 3600000));
+      let hour = Math.floor((DonwTime - day * 24 * 3600000) / 3600000);
+      let minute = Math.floor(
+        (DonwTime - day * 24 * 3600000 - hour * 3600000) / 60000
+      );
+      let second = Math.floor(
+        (DonwTime - day * 24 * 3600000 - hour * 3600000 - minute * 60000) / 1000
+      );
+      let template = `${day}天${hour}时${minute}分${second}秒`;
+      return template;
     },
     // 行权
     toClaim(item) {
-      console.log(item)
       if (Number(item.longBalance) != 0) {
         burn(
           item.short,
@@ -273,23 +293,29 @@ export default {
     // 分页
     upPage() {
       if (this.page <= 0) {
-        return
+        return;
       }
-      let page = this.page
-      this.page = page - 1
-      let list = this.claimList.slice((this.page * this.limit), (page * this.limit))
-      this.showList = list
-    },
-    downPage() {
-      if (Math.ceil(this.claimList.length / this.limit) <= (this.page + 1)) {
-        return
-      }
-      let page = this.page + 1
-      this.page = page
-      let list = this.claimList.slice((this.page * this.limit), ((page + 1) * this.limit))
+      let page = this.page;
+      this.page = page - 1;
+      let list = this.claimList.slice(
+        this.page * this.limit,
+        page * this.limit
+      );
       this.showList = list;
     },
-  }
+    downPage() {
+      if (Math.ceil(this.claimList.length / this.limit) <= this.page + 1) {
+        return;
+      }
+      let page = this.page + 1;
+      this.page = page;
+      let list = this.claimList.slice(
+        this.page * this.limit,
+        (page + 1) * this.limit
+      );
+      this.showList = list;
+    },
+  },
 };
 </script>
 

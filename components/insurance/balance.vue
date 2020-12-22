@@ -52,7 +52,6 @@
 
 <script>
 import "~/assets/svg/iconfont.js";
-import { getBalance } from "~/interface/order.js";
 import { uniswap } from "~/assets/utils/address-pool.js";
 import precision from "~/assets/js/precision.js";
 import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
@@ -64,13 +63,6 @@ export default {
       underly: "HELMET", //标的物
       curType: 1,
       collateral: "WBNB", //抵押物
-      BalanceArray: {
-        HELMET: 0,
-        CAKE: 0,
-        CTK: 0,
-        FORTUBE: 0,
-        BNB: 0,
-      }, //当前结算币种
       QUSD: 0,
       BNB: 0,
       CAKE: 0,
@@ -85,7 +77,6 @@ export default {
       fixD,
       addCommom,
       strikePrice: 0.0067,
-      coinList: ["HELMET", "CAKE", "CTK", "FORTUBE"],
       dueDate: 0,
     };
   },
@@ -101,6 +92,10 @@ export default {
     IndexPxArray() {
       let list = this.$store.state.allIndexPrice;
       return list;
+    },
+    BalanceArray() {
+      let obj = this.$store.state.BalanceArray;
+      return obj;
     },
   },
   watch: {
@@ -138,14 +133,6 @@ export default {
     },
   },
   mounted() {
-    this.$bus.$on("REFRESH_BALANCE", () => {
-      this.getBalance();
-    });
-    if (window.chainID == 56) {
-      setTimeout(() => {
-        this.getBalance();
-      }, 2000);
-    }
     setInterval(() => {
       setTimeout(() => {
         this.getDownTime();
@@ -167,24 +154,14 @@ export default {
       let second = Math.floor(
         (DonwTime - day * 24 * 3600000 - hour * 3600000 - minute * 60000) / 1000
       );
-      let template = `${day} ${this.$t('Content.Day')} ${hour} ${this.$t('Content.Hour')} ${minute} ${this.$t('Content.Min')} ${second} ${this.$t('Content.Second')}`;
+      let template = `${day} ${this.$t("Content.Day")} ${hour} ${this.$t(
+        "Content.Hour"
+      )} ${minute} ${this.$t("Content.Min")} ${second} ${this.$t(
+        "Content.Second"
+      )}`;
       this.dueDate = template;
     },
-    async getBalance() {
-      let BalanceArray = {};
-      for (let i = 0; i < this.coinList.length; i++) {
-        let balance = await getBalance(this.coinList[i]);
-        let key = this.coinList[i];
-        BalanceArray[key] = toRounding(balance, 4);
-      }
-      if (window.CURRENTADDRESS) {
-        window.WEB3.eth.getBalance(window.CURRENTADDRESS).then((res) => {
-          BalanceArray["BNB"] = toRounding(fromWei(res), 4);
-        });
-      }
-      this.BalanceArray = BalanceArray;
-      this.$store.commit("SET_BALANCE", BalanceArray);
-    },
+
     undAndColWatch(newValue) {
       let list = this.IndexPxArray;
       let coin = newValue.underly;

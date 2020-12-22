@@ -125,12 +125,12 @@
 </template>
 
 <script>
-import '~/assets/svg/iconfont.js';
-import precision from '~/assets/js/precision.js';
-import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
-import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
-import { getTokenName } from '~/assets/utils/address-pool.js';
-import { onExercise, getExercise } from '~/interface/order.js'
+import "~/assets/svg/iconfont.js";
+import precision from "~/assets/js/precision.js";
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
+import { toWei, fromWei } from "~/assets/utils/web3-fun.js";
+import { getTokenName } from "~/assets/utils/address-pool.js";
+import { onExercise, getExercise } from "~/interface/order.js";
 export default {
   data() {
     return {
@@ -140,11 +140,12 @@ export default {
       toRounding: toRounding,
       showList: [],
       guaranteeList: [],
-      getTokenName, fixD,
+      getTokenName,
+      fixD,
       page: 0,
       limit: 5,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   },
   computed: {
     myAboutInfoBuy() {
@@ -153,7 +154,7 @@ export default {
   },
   watch: {
     myAboutInfoBuy: {
-      handler: 'myAboutInfoBuyWatch',
+      handler: "myAboutInfoBuyWatch",
       immediate: true,
     },
   },
@@ -165,8 +166,8 @@ export default {
     },
     // 格式化数据
     async setSettlementList(list) {
-      this.isLoading = true
-      this.showList = []
+      this.isLoading = true;
+      this.showList = [];
       const result = [];
 
       let item, resultItem, amount, InsurancePrice, Rent, downTime;
@@ -174,16 +175,19 @@ export default {
       let exerciseRes;
       let bidIDArr;
       for (let i = 0; i < list.length; i++) {
-        item = list[i]
-        let Token = getTokenName(item.sellInfo.longInfo._collateral)
+        item = list[i];
+        let Token = getTokenName(item.sellInfo.longInfo._collateral);
         // 数量
-        amount = fromWei(item.vol, Token)
+        amount = fromWei(item.vol, Token);
         // 保单价格
-        InsurancePrice = fromWei(item.sellInfo.price, Token == 'CTK' ? 30 : Token)
+        InsurancePrice = fromWei(
+          item.sellInfo.price,
+          Token == "CTK" ? 30 : Token
+        );
         // 保费
-        Rent = precision.times(amount, InsurancePrice)
+        Rent = precision.times(amount, InsurancePrice);
         //倒计时
-        downTime = this.getDownTime(item.sellInfo.longInfo._expiry)
+        downTime = this.getDownTime(item.sellInfo.longInfo._expiry);
         resultItem = {
           id: item.bidID,
           bidID: item.bidID,
@@ -204,46 +208,54 @@ export default {
           long: item.sellInfo.long,
           short: item.sellInfo.longInfo.short,
           count: item.sellInfo.longInfo.count,
-        }
+        };
         if (resultItem._expiry < currentTime) {
-          resultItem['status'] = 'Dated';
-          resultItem['sort'] = 0;
+          resultItem["status"] = "Dated";
+          resultItem["sort"] = 0;
         } else {
-          resultItem['status'] = 'Unactivated';
-          resultItem['sort'] = 2;
+          resultItem["status"] = "Unactivated";
+          resultItem["sort"] = 2;
         }
         exerciseRes = await getExercise(resultItem.buyer);
         bidIDArr = exerciseRes.map((eItem) => {
           return eItem.returnValues.bidID;
         });
         if (bidIDArr.includes(resultItem.bidID)) {
-          resultItem['status'] = 'Activated';
-          resultItem['sort'] = 1;
+          resultItem["status"] = "Activated";
+          resultItem["sort"] = 1;
         }
-        if (resultItem['sort'] != 1 && resultItem['sort'] != 0) {
-          result.push(resultItem)
+        if (resultItem["sort"] != 1 && resultItem["sort"] != 0) {
+          result.push(resultItem);
         }
       }
-      this.isLoading = false
-      this.guaranteeList = result
-      this.showList = result.slice(this.page * this.limit, this.limit)
+      this.isLoading = false;
+      this.guaranteeList = result;
+      this.showList = result.slice(this.page * this.limit, this.limit);
     },
     // 倒计时
     getDownTime(time) {
-      let now = new Date() * 1
-      let dueDate = time * 1000
-      dueDate = new Date(dueDate)
-      let DonwTime = dueDate - now
-      let day = Math.floor(DonwTime / (24 * 3600000))
-      let hour = Math.floor((DonwTime - (day * 24 * 3600000)) / 3600000)
-      let minute = Math.floor(((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) / 60000)
-      let second = Math.floor((((DonwTime - (day * 24 * 3600000)) - (hour * 3600000)) - (minute * 60000)) / 1000)
-      let template = `${day}天${hour}时${minute}分${second}秒`
-      return template
+      let now = new Date() * 1;
+      let dueDate = time * 1000;
+      dueDate = new Date(dueDate);
+      let DonwTime = dueDate - now;
+      let day = Math.floor(DonwTime / (24 * 3600000));
+      let hour = Math.floor((DonwTime - day * 24 * 3600000) / 3600000);
+      let minute = Math.floor(
+        (DonwTime - day * 24 * 3600000 - hour * 3600000) / 60000
+      );
+      let second = Math.floor(
+        (DonwTime - day * 24 * 3600000 - hour * 3600000 - minute * 60000) / 1000
+      );
+      let template = `${day} ${this.$t("Content.DayM")} ${hour} ${this.$t(
+        "Content.HourM"
+      )} ${minute} ${this.$t("Content.MinM")} ${second} ${this.$t(
+        "Content.SecondM"
+      )}`;
+      return template;
     },
     // 行权
     toActive(item) {
-      console.log(item)
+      console.log(item);
       let data = {
         token: getTokenName(item._underlying),
         _underlying_vol: item.volume * item._strikePrice,
@@ -254,29 +266,35 @@ export default {
         _underlying: getTokenName(item._underlying),
         _collateral: getTokenName(item._collateral),
         settleToken: getTokenName(item.settleToken),
-      }
-      onExercise(data)
+      };
+      onExercise(data);
     },
     // 分页
     upPage() {
       if (this.page <= 0) {
-        return
+        return;
       }
-      let page = this.page
-      this.page = page - 1
-      let list = this.guaranteeList.slice((this.page * this.limit), (page * this.limit))
-      this.showList = list
-    },
-    downPage() {
-      if (Math.ceil(this.guaranteeList.length / this.limit) <= (this.page + 1)) {
-        return
-      }
-      let page = this.page + 1
-      this.page = page
-      let list = this.guaranteeList.slice((this.page * this.limit), ((page + 1) * this.limit))
+      let page = this.page;
+      this.page = page - 1;
+      let list = this.guaranteeList.slice(
+        this.page * this.limit,
+        page * this.limit
+      );
       this.showList = list;
     },
-  }
+    downPage() {
+      if (Math.ceil(this.guaranteeList.length / this.limit) <= this.page + 1) {
+        return;
+      }
+      let page = this.page + 1;
+      this.page = page;
+      let list = this.guaranteeList.slice(
+        this.page * this.limit,
+        (page + 1) * this.limit
+      );
+      this.showList = list;
+    },
+  },
 };
 </script>
 

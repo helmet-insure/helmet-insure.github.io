@@ -116,11 +116,11 @@ export default {
           link: false,
           text: this.$t('Header.Mining'),
         },
-        // {
-        //   url: '/sell',
-        //   link: false,
-        //   text: this.$t('Header.MySupply'),
-        // },
+        {
+          url: '/plan',
+          link: false,
+          text: this.$t('Header.MySupply'),
+        },
         // {
         //   url: '/mining',
         //   link: false,
