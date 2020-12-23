@@ -20,12 +20,12 @@
                 item.callMined.length > 60 ? 0 : item.callMined
               }}</strong>
               <button
-                disabled
                 :class="
                   claimLoading && claimIndex == index && claimType == 'call'
                     ? 'loading o_button'
                     : 'o_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toClaim(item, index, 'call')"
               >
                 <i
@@ -46,12 +46,12 @@
                 item.callSpToken.length > 60 ? 0 : item.callSpToken
               }}</strong>
               <button
-                disabled
                 :class="
                   exitLoading && exitIndex == index && exitType == 'call'
                     ? 'loading o_button'
                     : 'o_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toExit(item, index, 'call')"
               >
                 <i
@@ -64,7 +64,6 @@
                 {{ $t("Table.Claim") }}&{{ $t("Table.Unstake") }}
               </button>
               <button
-                disabled
                 :class="
                   depositeLoading &&
                   depositeIndex == index &&
@@ -72,6 +71,7 @@
                     ? 'loading b_button'
                     : 'b_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toDeposite(item, index, 'call')"
               >
                 <i
@@ -98,13 +98,13 @@
                 item.putMined.length > 60 ? 0 : item.putMined
               }}</strong>
               <button
-                disabled
                 class="o_button"
                 :class="
                   claimLoading && claimIndex == index && claimType == 'put'
                     ? 'loading o_button'
                     : 'o_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toClaim(item, index, 'put')"
               >
                 <i
@@ -125,12 +125,12 @@
                 item.putSpToken.length > 60 ? 0 : item.putSpToken
               }}</strong>
               <button
-                disabled
                 :class="
                   exitLoading && exitIndex == index && exitType == 'put'
                     ? 'loading o_button'
                     : 'o_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toExit(item, index, 'put')"
               >
                 <i
@@ -143,7 +143,6 @@
                 {{ $t("Table.Claim") }}&{{ $t("Table.Unstake") }}
               </button>
               <button
-                disabled
                 :class="
                   depositeLoading &&
                   depositeIndex == index &&
@@ -151,6 +150,7 @@
                     ? 'loading b_button'
                     : 'b_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toDeposite(item, index, 'put')"
               >
                 <i

@@ -216,9 +216,9 @@ export default {
       this.balance.Helmet = addCommom(Helmet, 4)
       this.balance.TotalLPT = addCommom(TotalLPT, 4)
       this.balance.Share = toRounding(Deposite / TotalLPT, 1) * 100
-      this.textList[2].num = addCommom(TotalLPT, 4)
-      this.textList[3].num = addCommom(Deposite, 4)
-      this.textList[4].num = addCommom(Helmet, 4)
+      // this.textList[2].num = addCommom(TotalLPT, 4)
+      // this.textList[3].num = addCommom(Deposite, 4)
+      // this.textList[4].num = addCommom(Helmet, 4)
     },
     // 抵押
     toDeposite() {

@@ -7,8 +7,14 @@
     @confirm="submitRePrice"
   >
     <div class="input">
-      <input type="text" v-model="id" />
-      <input type="text" v-model="price" />
+      <label for="">
+        <span>ID</span>
+        <input type="text" v-model="id" />
+      </label>
+      <label for="">
+        <span>{{ $t("Table.InsurancePrice") }}</span>
+        <input type="text" v-model="price" />
+      </label>
     </div>
   </PDailog>
 </template>
@@ -40,14 +46,14 @@ export default {
       let option = this.option;
       let _collateral = getTokenName(this.option._collateral);
       let _underlying = getTokenName(this.option._underlying);
-         let data = {
-        price:this.price,
-        id:option.id,
-        _collateral:_collateral,
-        _underlying:_underlying,
-      }
+      let data = {
+        price: this.price,
+        id: option.id,
+        _collateral: _collateral,
+        _underlying: _underlying,
+      };
       RePrice(data);
-   
+
       this.$bus.$emit("CLOSE_REPRICE");
     },
   },
@@ -64,7 +70,11 @@ export default {
     padding: 0 12px;
     border: 1px solid #cfcfd2;
     height: 40px;
-    margin: 20px 0 10px 0;
+    margin: 5px 0 10px 0;
+  }
+  label {
+    margin-top: 10px;
+    display: block;
   }
 }
 </style>
