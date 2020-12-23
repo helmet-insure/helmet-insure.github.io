@@ -26,6 +26,7 @@
     "DoubleInsurance": "Cover",
     "HalfInsurance": "Cover",
     "InsurancePrice": "Insurance Price",
+    "IndexPrice": "IndexPrice",
     "NoData": "No data",
     "ProtectTheCycle": "Insurance Period",
     "UsableBalance": "Your Balance",

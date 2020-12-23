@@ -99,7 +99,7 @@ export default {
             cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
             num: toRounding(arr[this.curCoin], 4),
             color: "#919AA6",
-            title: this.$t("Content.InsurancePrice"),
+            title: this.$t("Content.IndexPrice"),
           },
           {
             line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
@@ -143,7 +143,7 @@ export default {
             cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
             num: toRounding(arr[this.curCoin], 4),
             color: "#919AA6",
-            title: this.$t("Content.InsurancePrice"),
+            title: this.$t("Content.IndexPrice"),
           },
           {
             line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),

@@ -26,6 +26,7 @@
     "DoubleInsurance": "翻倍险",
     "HalfInsurance": "腰斩险",
     "InsurancePrice": "出险价格",
+    "IndexPrice":"当前价格",
     "NoData": "暂无数据",
     "ProtectTheCycle": "保护周期",
     "UsableBalance": "可用余额",
