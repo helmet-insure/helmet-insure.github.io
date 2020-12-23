@@ -32,6 +32,16 @@
       >
         {{ item.num }}
       </text>
+      <text
+        v-for="(item, index) in line"
+        :key="index + 'key'"
+        x="45%"
+        :y="item.line + 1.5 + '%'"
+        style="font-size: 12px"
+        fill="#919AA6"
+      >
+        {{ item.title }}
+      </text>
       <!-- <polyline
         :points="str"
         style="fill: none; stroke: #000; stroke-width: 2; stroke: #ff9600"
@@ -82,18 +92,21 @@ export default {
             cover: 1 - toRounding((arr[this.curCoin] * 2) / max, 2),
             num: toRounding(arr[this.curCoin] * 2, 4),
             color: "#00B900",
+            title: this.$t("Content.DoubleInsurance") + " " + 100 + "%",
           },
           {
             line: 100 - toRounding(Number(arr[this.curCoin] / max) * 100, 0),
             cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
             num: toRounding(arr[this.curCoin], 4),
             color: "#919AA6",
+            title: this.$t("Content.InsurancePrice"),
           },
           {
             line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
             cover: 1 - toRounding(arr[this.curCoin] / 2 / max, 2),
             num: toRounding(arr[this.curCoin] / 2, 4),
             color: "#FF9600",
+            title: this.$t("Content.DoubleInsurance") + " " + 50 + "%",
           },
         ];
 
@@ -123,18 +136,21 @@ export default {
             cover: 1 - toRounding((arr[this.curCoin] * 2) / max, 2),
             num: toRounding(arr[this.curCoin] * 2, 4),
             color: "#00B900",
+            title: this.$t("Content.DoubleInsurance") + " " + 100 + "%",
           },
           {
             line: 100 - toRounding(Number(arr[this.curCoin] / max) * 100, 0),
             cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
             num: toRounding(arr[this.curCoin], 4),
-            color: "#000",
+            color: "#919AA6",
+            title: this.$t("Content.InsurancePrice"),
           },
           {
             line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
             cover: 1 - toRounding(arr[this.curCoin] / 2 / max, 2),
             num: toRounding(arr[this.curCoin] / 2, 4),
             color: "#FF9600",
+            title: this.$t("Content.DoubleInsurance") + " " + 50 + "%",
           },
         ];
         this.upCover = `M40 0 L1080 0 L1080 ${this.line[0].cover * 200} L40 ${

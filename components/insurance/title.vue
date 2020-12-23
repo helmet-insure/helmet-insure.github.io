@@ -10,11 +10,9 @@
 <script>
 export default {
   data() {
-    return {
-
-    }
-  }
-}
+    return {};
+  },
+};
 </script>
 
 <style lang='scss' scoped>
@@ -22,7 +20,7 @@ export default {
   height: 220px;
   background: #ffffff;
   margin-bottom: 15px;
-  padding: 0 120px;
+  padding: 0 60px;
   display: flex;
   justify-content: space-between;
   background-image: url("../../assets/img/helmet/banner_ill.png");

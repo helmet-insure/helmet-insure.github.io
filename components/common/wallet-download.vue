@@ -141,7 +141,7 @@ export default {
       font-weight: 600;
     }
     a {
-      color: $text-l;
+      color: #ff9600;
     }
   }
   .wallet-download-button {
@@ -209,7 +209,7 @@ export default {
       font-weight: 600;
     }
     a {
-      color: $text-l;
+      color: #ff9600;
     }
   }
   .wallet-download-button {

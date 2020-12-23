@@ -1,13 +1,36 @@
 <template>
   <div class="plan_echart">
-    <div class="echart_bg">
-      <img src="~/assets/img/helmet/echart_pic.png" alt="" />
-    </div>
+    <div class="echart_bg" id="echart_bg"></div>
   </div>
 </template>
 
 <script>
-export default {};
+import { Liquid, measureTextWidth } from "@antv/g2plot";
+export default {
+  data() {
+    return {};
+  },
+  mounted() {
+    const liquidPlot = new Liquid("echart_bg", {
+      percent: 0.10,
+      outline: {
+        border: 4,
+        distance: 8,
+      },
+      wave: {
+        length: 128,
+      },
+      liquidStyle: ({ percent }) => {
+        return {
+          fill: "#FF9600",
+          stroke: "#FF9600",
+        };
+      },
+    });
+    liquidPlot.render();
+  },
+  methods: {},
+};
 </script>
 
 <style lang='scss' scoped>
@@ -18,13 +41,6 @@ export default {};
   .echart_bg {
     width: 420px;
     height: 470px;
-    background-image: url("../../assets/img/helmet/echart_bg.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    img {
-      width: 100%;
-      height: 100%;
-    }
   }
 }
 </style>

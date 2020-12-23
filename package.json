@@ -18,6 +18,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@antv/g2plot": "^2.3.3",
     "@ethersproject/contracts": "^5.0.2",
     "@ethersproject/providers": "^5.0.2",
     "@ethersproject/solidity": "^5.0.2",
