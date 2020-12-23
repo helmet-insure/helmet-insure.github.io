@@ -9,7 +9,7 @@
     <div class="input">
       <label for="">
         <span>ID</span>
-        <input type="text" v-model="id" />
+        <input type="text" v-model="id" readonly />
       </label>
       <label for="">
         <span>{{ $t("Table.InsurancePrice") }}</span>
