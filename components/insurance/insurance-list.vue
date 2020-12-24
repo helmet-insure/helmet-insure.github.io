@@ -20,7 +20,7 @@
             <PInput
               type="number"
               v-model="item.buyNum"
-              fix="4"
+              fix="8"
               maxValue="100000"
               :right="$t('Table.Insure')"
               @numChange="handleClickBuy(item)"
@@ -89,21 +89,21 @@
 </template>
 
 <script>
-import PInput from '~/components/common/p-input.vue';
-import '~/assets/svg/iconfont.js'
-import precision from '~/assets/js/precision.js';
-import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
-import { toWei, fromWei } from '~/assets/utils/web3-fun.js';
-import { buyInsuranceBuy, asks } from '~/interface/order.js'
-import { getTokenName } from '~/assets/utils/address-pool.js';
+import PInput from "~/components/common/p-input.vue";
+import "~/assets/svg/iconfont.js";
+import precision from "~/assets/js/precision.js";
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
+import { toWei, fromWei } from "~/assets/utils/web3-fun.js";
+import { buyInsuranceBuy, asks } from "~/interface/order.js";
+import { getTokenName } from "~/assets/utils/address-pool.js";
 export default {
-  props: ['currentCoin', 'currentType',],
+  props: ["currentCoin", "currentType"],
   components: {
     PInput,
   },
   data() {
     return {
-      price: '',
+      price: "",
       precision,
       addCommom: addCommom,
       autoRounding: autoRounding,
@@ -114,54 +114,53 @@ export default {
       showList: [],
       sellList: [],
       buyList: [],
-      isLoading: true
+      isLoading: true,
     };
   },
   watch: {
     currentCoin(newValue) {
       if (newValue) {
-        this.currentCoin = newValue
+        this.currentCoin = newValue;
         this.page = 0;
         this.limit = 10;
-        this.checkList(newValue, this.currentType)
+        this.checkList(newValue, this.currentType);
       }
     },
     currentType(newValue) {
       if (newValue) {
-        this.currentType = newValue
+        this.currentType = newValue;
         this.page = 0;
         this.limit = 10;
-        this.checkList(this.currentCoin, newValue)
+        this.checkList(this.currentCoin, newValue);
       }
     },
     aboutInfoSell: {
-      handler: 'aboutInfoSellWatch',
+      handler: "aboutInfoSellWatch",
       immediate: true,
     },
     aboutInfoBuy: {
-      handler: 'aboutInfoBuyWatch',
+      handler: "aboutInfoBuyWatch",
       immediate: true,
-    }
+    },
   },
   computed: {
     aboutInfoSell() {
-      let list = this.$store.state.aboutInfoSell
-      return list
+      let list = this.$store.state.aboutInfoSell;
+      return list;
     },
     aboutInfoBuy() {
-      let list = this.$store.state.aboutInfoBuy
-      return list
+      let list = this.$store.state.aboutInfoBuy;
+      return list;
     },
     indexArray() {
-      let list = this.$store.state.allIndexPrice
-      return list
-    }
+      let list = this.$store.state.allIndexPrice;
+      return list;
+    },
   },
   methods: {
     // 卖单数据
     aboutInfoSellWatch(newValue) {
       if (newValue) {
-
         this.setList(newValue, this.aboutInfoBuy);
       }
     },
@@ -174,21 +173,28 @@ export default {
     // 格式化数据
     async setList(sell) {
       this.isLoading = true;
-      this.showList = []
-      const sellResult = []
-      const buyResult = []
-      let spliceResult = []
+      this.showList = [];
+      const sellResult = [];
+      const buyResult = [];
+      let spliceResult = [];
       let item, volume, price, id, seller;
       let resultItem;
-      let now = new Date() * 1
+      let now = new Date() * 1;
       for (let i = 0; i < sell.length; i++) {
-        item = sell[i]
-        let time = (item.longInfo._expiry * 1000)
-        let token = getTokenName(item.longInfo._underlying)
-        let coToken = getTokenName(item.longInfo._collateral)
-        let price = coToken == 'CTK' ? fromWei(item.price, 30) : fromWei(item.price, token);
-        let showID = item.seller.substr(0, 2) + item.seller.substr(2, 4) + "..." + item.seller.substr(-5).toUpperCase()
-        if (token == 'WBNB') {
+        item = sell[i];
+        let time = item.longInfo._expiry * 1000;
+        let token = getTokenName(item.longInfo._underlying);
+        let coToken = getTokenName(item.longInfo._collateral);
+        let price =
+          coToken == "CTK"
+            ? fromWei(item.price, 30)
+            : fromWei(item.price, token);
+        let showID =
+          item.seller.substr(0, 2) +
+          item.seller.substr(2, 4) +
+          "..." +
+          item.seller.substr(-5).toUpperCase();
+        if (token == "WBNB") {
           let res = await asks(item.askID, "sync", coToken);
           resultItem = {
             seller: item.seller,
@@ -202,17 +208,18 @@ export default {
             _collateral: item.longInfo._collateral,
             remain: res,
             showID,
-            buyNum: ''
-          }
+            buyNum: "",
+          };
           if (res != 0 && time > now) {
-            buyResult.push(resultItem)
+            buyResult.push(resultItem);
           }
         } else {
-          let Token = getTokenName(item.longInfo._collateral)
-          let unToken = getTokenName(item.longInfo._underlying)
-          let exPirce = fromWei(item.longInfo._strikePrice, Token)
-          exPirce = precision.divide(1, exPirce)
-          let volume = fromWei(item.volume, Token) * this.indexArray[0][unToken] / 2
+          let Token = getTokenName(item.longInfo._collateral);
+          let unToken = getTokenName(item.longInfo._underlying);
+          let exPirce = fromWei(item.longInfo._strikePrice, Token);
+          exPirce = precision.divide(1, exPirce);
+          let volume =
+            (fromWei(item.volume, Token) * this.indexArray[0][unToken]) / 2;
           let price = fromWei(item.price, Token);
           let res = await asks(item.askID, "sync", Token);
           resultItem = {
@@ -227,55 +234,60 @@ export default {
             _collateral: item.longInfo._collateral,
             remain: res,
             showID,
-            buyNum: ''
-          }
+            buyNum: "",
+          };
           if (res != 0 && time > now) {
-            sellResult.push(resultItem)
+            sellResult.push(resultItem);
           }
         }
       }
       this.isLoading = false;
-      this.buyList = buyResult
-      this.sellList = sellResult
-      let result = this.buyList.filter(item => getTokenName(item._collateral) == this.currentCoin)
-      this.insuranceList = result
-      this.showList = result.slice(this.page * this.limit, this.limit)
+      this.buyList = buyResult;
+      this.sellList = sellResult;
+      let result = this.buyList.filter(
+        (item) => getTokenName(item._collateral) == this.currentCoin
+      );
+      this.insuranceList = result;
+      this.showList = result.slice(this.page * this.limit, this.limit);
     },
     checkList(coin, type) {
       if (type == 1) {
-        let result = this.buyList.filter(item => getTokenName(item._collateral) == this.currentCoin)
-        this.insuranceList = result
-        this.showList = result.slice(this.page * this.limit, this.limit)
+        let result = this.buyList.filter(
+          (item) => getTokenName(item._collateral) == this.currentCoin
+        );
+        this.insuranceList = result;
+        this.showList = result.slice(this.page * this.limit, this.limit);
       } else {
-        let result = this.sellList.filter(item => getTokenName(item._underlying) == this.currentCoin)
-        this.insuranceList = result
-        this.showList = result.slice(this.page * this.limit, this.limit)
+        let result = this.sellList.filter(
+          (item) => getTokenName(item._underlying) == this.currentCoin
+        );
+        this.insuranceList = result;
+        this.showList = result.slice(this.page * this.limit, this.limit);
       }
     },
     // 分页
     upPage() {
       if (this.page <= 0) {
-        return
+        return;
       }
-      let page = this.page
-      this.page = page - 1
-      let list = this.insuranceList.slice((this.page * 10), (page * 10))
-      this.showList = list
+      let page = this.page;
+      this.page = page - 1;
+      let list = this.insuranceList.slice(this.page * 10, page * 10);
+      this.showList = list;
     },
     downPage() {
-      if (Math.ceil(this.insuranceList.length / this.limit) <= (this.page + 1)) {
-        return
+      if (Math.ceil(this.insuranceList.length / this.limit) <= this.page + 1) {
+        return;
       }
-      let page = this.page + 1
-      this.page = page
-      let list = this.insuranceList.slice((this.page * 10), ((page + 1) * 10))
+      let page = this.page + 1;
+      this.page = page;
+      let list = this.insuranceList.slice(this.page * 10, (page + 1) * 10);
       this.showList = list;
-
     },
     // 承保按钮
     handleClickBuy(data) {
       if (!data.buyNum) {
-        return
+        return;
       }
       let datas;
       if (this.currentType == 1) {
@@ -283,19 +295,20 @@ export default {
           askID: data.id,
           volume: data.buyNum,
           price: data.price,
-          settleToken: 'HELMET',
+          settleToken: "HELMET",
           _strikePrice: data._strikePrice,
           _underlying: getTokenName(data._underlying),
           _expiry: data._expiry,
           _collateral: getTokenName(data._collateral),
         };
       } else {
-        let Token = getTokenName(data._underlying)
+        let Token = getTokenName(data._underlying);
+        // (fromWei(item.volume, Token) * this.indexArray[0][unToken]) / 2;
         datas = {
           askID: data.id,
-          volume: fixD(data.buyNum * 2 / this.indexArray[0][Token], 8),
+          volume: fixD(data.buyNum * this.indexArray[0][Token], 8) / 2,
           price: data.price,
-          settleToken: 'HELMET',
+          settleToken: "HELMET",
           _strikePrice: data._strikePrice,
           _underlying: getTokenName(data._underlying),
           _expiry: data._expiry,
@@ -303,14 +316,11 @@ export default {
         };
       }
 
-      buyInsuranceBuy(datas, (status) => { });
+      buyInsuranceBuy(datas, (status) => {});
     },
     // 计算数量
-    setNum() {
-
-    },
-  }
-
+    setNum() {},
+  },
 };
 </script>
 
