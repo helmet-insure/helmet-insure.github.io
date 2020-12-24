@@ -9,7 +9,7 @@
           <input type="text" v-model="num" />
           <span>BNB</span>
         </label>
-        <button>MAX</button>
+        <button @click="num = bnbBalance">MAX</button>
       </div>
 
       <p>我的余额: {{ bnbBalance }} BNB</p>
