@@ -21,7 +21,7 @@
               type="number"
               v-model="item.buyNum"
               fix="8"
-              maxValue="100000"
+              maxValue="10000000"
               :right="$t('Table.Insure')"
               @numChange="handleClickBuy(item)"
             ></PInput>
@@ -306,7 +306,8 @@ export default {
         // (fromWei(item.volume, Token) * this.indexArray[0][unToken]) / 2;
         datas = {
           askID: data.id,
-          volume: fixD(data.buyNum * this.indexArray[0][Token], 8) / 2,
+          volume: data.buyNum,
+          // volume: fixD(data.buyNum * this.indexArray[0][Token], 8) / 2,
           price: data.price,
           settleToken: "HELMET",
           _strikePrice: data._strikePrice,
