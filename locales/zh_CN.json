@@ -26,7 +26,7 @@
     "DoubleInsurance": "翻倍险",
     "HalfInsurance": "腰斩险",
     "InsurancePrice": "出险价格",
-    "IndexPrice":"当前价格",
+    "IndexPrice": "当前价格",
     "NoData": "暂无数据",
     "ProtectTheCycle": "保护周期",
     "UsableBalance": "可用余额",
@@ -42,7 +42,10 @@
     "SecondM": "秒",
     "LastOne": "最后一次成为流动性商的机会",
     "curPlan": "当前预计APY",
-    "PlanToLp": "立即质押LP token"
+    "PlanToLp": "立即质押L当前价格P token",
+    "ChartUp": "翻倍险",
+    "ChartOff": "腰斩险",
+    "ChartPrice": "当前价格"
   },
   "Table": {
     "ID": "ID",

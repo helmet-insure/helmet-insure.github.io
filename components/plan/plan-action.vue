@@ -16,10 +16,10 @@
     </div>
     <div class="confim">
       <button class="o_button" @click="toPlanStake">质押</button>
-      <div>
+      <!-- <div>
         <p>{{ $t("Content.curPlan") }}：<span>500% - 1000%</span></p>
         <span>{{ $t("Content.PlanToLp") }}</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

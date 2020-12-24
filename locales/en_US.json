@@ -42,7 +42,10 @@
     "SecondM": "S",
     "LastOne": "最后一次成为流动性商的机会",
     "curPlan": "当前预计APY",
-    "PlanToLp": "立即质押LP token"
+    "PlanToLp": "立即质押LP token",
+    "ChartUp": "Cover 100% Up",
+    "ChartOff": "Cover 50% Off",
+    "ChartPrice": "Current Price"
   },
   "Table": {
     "ID": "ID",

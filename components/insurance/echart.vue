@@ -92,21 +92,21 @@ export default {
             cover: 1 - toRounding((arr[this.curCoin] * 2) / max, 2),
             num: toRounding(arr[this.curCoin] * 2, 4),
             color: "#00B900",
-            title: this.$t("Content.DoubleInsurance") + " " + 100 + "%",
+            title: this.$t("Content.ChartUp"),
           },
           {
             line: 100 - toRounding(Number(arr[this.curCoin] / max) * 100, 0),
             cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
             num: toRounding(arr[this.curCoin], 4),
             color: "#919AA6",
-            title: this.$t("Content.IndexPrice"),
+            title: this.$t("Content.ChartPrice"),
           },
           {
             line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
             cover: 1 - toRounding(arr[this.curCoin] / 2 / max, 2),
             num: toRounding(arr[this.curCoin] / 2, 4),
             color: "#FF9600",
-            title: this.$t("Content.DoubleInsurance") + " " + 50 + "%",
+            title: this.$t("Content.ChartOff"),
           },
         ];
 
@@ -136,21 +136,21 @@ export default {
             cover: 1 - toRounding((arr[this.curCoin] * 2) / max, 2),
             num: toRounding(arr[this.curCoin] * 2, 4),
             color: "#00B900",
-            title: this.$t("Content.DoubleInsurance") + " " + 100 + "%",
+            title: this.$t("Content.ChartUp"),
           },
           {
             line: 100 - toRounding(Number(arr[this.curCoin] / max) * 100, 0),
             cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
             num: toRounding(arr[this.curCoin], 4),
             color: "#919AA6",
-            title: this.$t("Content.IndexPrice"),
+            title: this.$t("Content.ChartPrice"),
           },
           {
             line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
             cover: 1 - toRounding(arr[this.curCoin] / 2 / max, 2),
             num: toRounding(arr[this.curCoin] / 2, 4),
             color: "#FF9600",
-            title: this.$t("Content.DoubleInsurance") + " " + 50 + "%",
+            title: this.$t("Content.ChartOff"),
           },
         ];
         this.upCover = `M40 0 L1080 0 L1080 ${this.line[0].cover * 200} L40 ${

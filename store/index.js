@@ -7,6 +7,7 @@ import {
     getMint,
     getRePrice,
 } from '~/interface/order.js';
+import { getProgress } from '~/interface/price.js';
 import {
     getID,
     newGetSymbol,
@@ -267,7 +268,7 @@ export const actions = {
     //     store.commit('SET_LANG', req.locale);
     //   }
     // },
-
+    
     setLanguage({ commit }, data) {
         commit('SET_LANG', data);
     },
@@ -285,6 +286,7 @@ export const actions = {
     setCurrentId({ commit }, data) {
         commit('SET_CURRENT_ID', data);
     },
+
     // 获取long, Sell, Buy映射
     setAllMap({ commit }) {
         // 创建long映射对象

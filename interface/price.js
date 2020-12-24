@@ -14,7 +14,6 @@ export const getBalance = async (address1, address2) => {
     if (adress1.indexOf('0x') === -1) {
         adress1 = getAddress(address1, charID);
     }
-    console.log(adress1, adress2);
     if (adress2.indexOf('0x') === -1) {
         adress2 = getAddress(address2, charID);
     }
@@ -28,6 +27,15 @@ export const getBalance = async (address1, address2) => {
             return window.WEB3.utils.fromWei(res, getWei(tocurrcy));
         });
 };
+export const getProgess = async () => {
+    const contract = await Payaso();
+    return contract.methods
+        .getProgess()
+        .call()
+        .then((res) => {
+            return window.WEB3.utils.fromWei(res, getWei('BNB'));
+        });
+};
 export const recruit = async (address, num) => {
     const charID = window.chainID;
     let adress = address;
@@ -37,6 +45,7 @@ export const recruit = async (address, num) => {
     let volume = toWei(Number(num), 'BNB');
     try {
         const contract = await Payaso();
+        console.log(contract);
         return contract.methods
             .recruit()
             .send({ from: window.CURRENTADDRESS, value: volume })

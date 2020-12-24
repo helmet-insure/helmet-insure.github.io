@@ -6,30 +6,45 @@
 
 <script>
 import { Liquid, measureTextWidth } from "@antv/g2plot";
+import { getProgess } from "~/interface/price.js";
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
 export default {
   data() {
-    return {};
+    return {
+      num: 0,
+    };
   },
   mounted() {
-    const liquidPlot = new Liquid("echart_bg", {
-      percent: 0.10,
-      outline: {
-        border: 4,
-        distance: 8,
-      },
-      wave: {
-        length: 128,
-      },
-      liquidStyle: ({ percent }) => {
-        return {
-          fill: "#FF9600",
-          stroke: "#FF9600",
-        };
-      },
-    });
-    liquidPlot.render();
+    setTimeout(() => {
+      this.getProgress();
+    }, 500);
+    setTimeout(() => {
+      const liquidPlot = new Liquid("echart_bg", {
+        percent: this.num,
+        outline: {
+          border: 4,
+          distance: 8,
+        },
+        wave: {
+          length: 128,
+        },
+        liquidStyle: ({ percent }) => {
+          return {
+            fill: "#FF9600",
+            stroke: "#FF9600",
+          };
+        },
+      });
+      liquidPlot.render();
+    }, 1000);
   },
-  methods: {},
+  methods: {
+    async getProgress() {
+      let res = await getProgess();
+      res = toRounding(res, 4);
+      this.num = res;
+    },
+  },
 };
 </script>
 
