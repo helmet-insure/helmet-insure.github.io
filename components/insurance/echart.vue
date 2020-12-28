@@ -4,7 +4,7 @@
       <line
         v-for="item in xAis"
         :key="item"
-        x1="40"
+        x1="0"
         :y1="item"
         x2="100%"
         :y2="item"
@@ -14,7 +14,7 @@
       <line
         v-for="(item, index) in line"
         :key="item.line"
-        x1="40"
+        x1="0"
         :y1="item.line + '%'"
         x2="100%"
         :y2="item.line + '%'"
@@ -110,12 +110,12 @@ export default {
           },
         ];
 
-        this.upCover = `M40 0 L1080 0 L1080 ${this.line[0].cover * 200} L40 ${
+        this.upCover = `M0 0 L1080 0 L1080 ${this.line[0].cover * 200} L0 ${
           this.line[0].cover * 200
         } Z`;
-        this.dwCover = `M40 200 L1080 200 L1080 ${
+        this.dwCover = `M0 200 L1080 200 L1080 ${this.line[2].cover * 200} L0 ${
           this.line[2].cover * 200
-        } L40 ${this.line[2].cover * 200} Z`;
+        } Z`;
       }
     }, 2000);
   },
@@ -153,12 +153,12 @@ export default {
             title: this.$t("Content.ChartOff"),
           },
         ];
-        this.upCover = `M40 0 L1080 0 L1080 ${this.line[0].cover * 200} L40 ${
+        this.upCover = `M0 0 L1080 0 L1080 ${this.line[0].cover * 200} L0 ${
           this.line[0].cover * 200
         } Z`;
-        this.dwCover = `M40 200 L1080 200 L1080 ${
+        this.dwCover = `M0 200 L1080 200 L1080 ${this.line[2].cover * 200} L0 ${
           this.line[2].cover * 200
-        } L40 ${this.line[2].cover * 200} Z`;
+        } Z`;
       }
     },
   },

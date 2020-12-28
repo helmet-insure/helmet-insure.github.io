@@ -45,6 +45,55 @@
         <img src="~/assets/img/loading.gif" />
       </div>
     </table>
+
+    <div>
+      <div class="item_box" v-for="(item, index) in showList" :key="index">
+        <p>
+          <span>{{ $t("Table.ID") }}</span
+          ><span>{{ item.id }}</span>
+        </p>
+        <div>
+          <p>
+            <span>{{ $t("Table.Type") }}</span
+            ><span>
+              {{
+                getTokenName(item._underlying) == "WBNB"
+                  ? getTokenName(item._collateral)
+                  : getTokenName(item._underlying)
+              }}</span
+            >
+          </p>
+          <p>
+            <span>{{ $t("Table.InsurancePrice") }}</span
+            ><span>{{ fixD(toRounding(item.price, 4), 4) }}</span>
+          </p>
+        </div>
+        <div>
+          <p>
+            <span>{{ $t("Table.Rent") }}</span
+            ><span>{{ fixD(toRounding(item.Rent, 4), 4) }}</span>
+          </p>
+          <p>
+            <span>{{ $t("Table.Position") }}</span
+            ><span>{{ fixD(toRounding(item.volume, 4), 4) }}</span>
+          </p>
+        </div>
+        <section>
+          <span>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-time"></use>
+            </svg>
+            {{ item.dueDate }}
+          </span>
+          <button class="b_b_button" @click="toActive(item)">
+            {{ $t("Table.outSure") }}
+          </button>
+        </section>
+      </div>
+      <div class="loading" v-if="isLoading">
+        <img src="~/assets/img/loading.gif" />
+      </div>
+    </div>
     <section class="noData" v-if="showList.length < 1 && !isLoading">
       <div>
         <img src="~/assets/img/helmet/nodata.png" alt="" />
@@ -66,61 +115,6 @@
         </p>
       </div>
     </section>
-    <div>
-      <p>
-        <span>{{ $t("Table.ID") }}</span
-        ><span>0123</span>
-      </p>
-      <div>
-        <p>
-          <span>{{ $t("Table.Type") }}</span
-          ><span>0123</span>
-        </p>
-        <p>
-          <span>{{ $t("Table.InsurancePrice") }}</span
-          ><span>0123</span>
-        </p>
-      </div>
-      <div>
-        <p>
-          <span>{{ $t("Table.Rent") }}</span
-          ><span>0123</span>
-        </p>
-        <p>
-          <span>{{ $t("Table.Position") }}</span
-          ><span>0123</span>
-        </p>
-      </div>
-      <section>
-        <span>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-time"></use>
-          </svg>
-          200.0100 BNB
-        </span>
-        <button class="b_b_button">{{ $t("Table.outSure") }}</button>
-      </section>
-    </div>
-    <div>
-      <p><span>ID</span><span>0123</span></p>
-      <div>
-        <p><span>品种</span><span>0123</span></p>
-        <p><span>保单价格</span><span>0123</span></p>
-      </div>
-      <div>
-        <p><span>保费 (HELMET)</span><span>0123</span></p>
-        <p><span>持有量（SHort Token)</span><span>0123</span></p>
-      </div>
-      <section>
-        <span>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-time"></use>
-          </svg>
-          200.0100 BNB
-        </span>
-        <button class="b_b_button">出险</button>
-      </section>
-    </div>
   </div>
 </template>
 
@@ -340,6 +334,9 @@ export default {
     position: relative;
     > div {
       display: none;
+      .loading {
+        display: none;
+      }
     }
     table {
       width: 100%;
@@ -412,46 +409,51 @@ export default {
   .my_guarantee {
     table {
       display: none;
+      .loading {
+        display: none;
+      }
     }
     > div {
-      margin-top: 20px;
-      width: 100%;
-      height: 208px;
-      padding: 20px 10px;
-      background: #f7f7fa;
-
-      p {
-        display: flex;
-        span:nth-of-type(1) {
-          font-size: 12px;
-          color: #919aa6;
-        }
-        span:nth-of-type(2) {
-          font-weight: bold;
-          color: #121212;
-        }
-      }
-      > p {
-        align-items: center;
-        span:nth-of-type(1) {
-          margin-right: 4px;
-        }
-      }
-      > div {
-        margin: 12px 0 16px 0;
-        display: flex;
+      .item_box {
+        margin-top: 20px;
+        width: 100%;
+        height: 208px;
+        padding: 20px 10px;
+        background: #f7f7fa;
+        box-sizing: border-box;
         p {
-          flex: 1;
           display: flex;
-          flex-direction: column;
+          span:nth-of-type(1) {
+            font-size: 12px;
+            color: #919aa6;
+          }
+          span:nth-of-type(2) {
+            font-weight: bold;
+            color: #121212;
+          }
         }
-      }
-      > section {
-        display: flex;
-        justify-content: space-between;
-        span {
-          display: flex;
+        > p {
           align-items: center;
+          span:nth-of-type(1) {
+            margin-right: 4px;
+          }
+        }
+        > div {
+          margin: 12px 0 16px 0;
+          display: flex;
+          p {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+          }
+        }
+        > section {
+          display: flex;
+          justify-content: space-between;
+          span {
+            display: flex;
+            align-items: center;
+          }
         }
       }
     }

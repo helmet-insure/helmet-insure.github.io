@@ -46,6 +46,60 @@
         <img src="~/assets/img/loading.gif" />
       </div>
     </table>
+
+    <div>
+      <div
+        v-for="(item, index) in showList"
+        :key="index"
+        :class="
+          getTokenName(item._underlying) == 'WBNB'
+            ? 'call_style item_box'
+            : 'put_style item_box'
+        "
+      >
+        <div>
+          <p>
+            <span>{{ $t("Table.Type") }}</span
+            ><span :class="item._underlying == 'WBNB' ? 'green' : 'orange'">
+              {{
+                item._underlying == "WBNB" ? item._collateral : item._underlying
+              }}
+              <i
+                :class="item._underlying == 'WBNB' ? 'call_icon' : 'put_icon'"
+              ></i
+            ></span>
+          </p>
+        </div>
+        <div>
+          <p>
+            <span>{{ $t("Table.DenAssets") }}</span
+            ><span>
+              {{ toRounding(item.longBalance, 4) }} {{ item._collateral }}</span
+            >
+          </p>
+          <p>
+            <span>{{ $t("Table.BaseAssets") }}</span
+            ><span
+              >{{ fixD(addCommom(item.und), 8) }} {{ item._underlying }}</span
+            >
+          </p>
+        </div>
+        <section>
+          <!-- <span>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-time"></use>
+            </svg>
+            200.0100 BNB
+          </span> -->
+          <button class="b_b_button" @click="toClaim(item)">
+            {{ $t("Table.outSure") }}
+          </button>
+        </section>
+      </div>
+      <div class="loading" v-if="isLoading">
+        <img src="~/assets/img/loading.gif" />
+      </div>
+    </div>
     <section class="noData" v-if="showList.length < 1 && !isLoading">
       <div>
         <img src="~/assets/img/helmet/nodata.png" alt="" />
@@ -67,61 +121,6 @@
         </p>
       </div>
     </section>
-    <div>
-      <p>
-        <span>{{ $t("Table.ID") }}</span
-        ><span>0123</span>
-      </p>
-      <div>
-        <p>
-          <span>{{ $t("Table.Type") }}</span
-          ><span>0123</span>
-        </p>
-        <p>
-          <span>{{ $t("Table.InsurancePrice") }}</span
-          ><span>0123</span>
-        </p>
-      </div>
-      <div>
-        <p>
-          <span>{{ $t("Table.Rent") }}</span
-          ><span>0123</span>
-        </p>
-        <p>
-          <span>{{ $t("Table.Position") }}</span
-          ><span>0123</span>
-        </p>
-      </div>
-      <section>
-        <span>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-time"></use>
-          </svg>
-          200.0100 BNB
-        </span>
-        <button class="b_b_button">{{ $t("Table.outSure") }}</button>
-      </section>
-    </div>
-    <div>
-      <p><span>ID</span><span>0123</span></p>
-      <div>
-        <p><span>品种</span><span>0123</span></p>
-        <p><span>保单价格</span><span>0123</span></p>
-      </div>
-      <div>
-        <p><span>保费 (HELMET)</span><span>0123</span></p>
-        <p><span>持有量（SHort Token)</span><span>0123</span></p>
-      </div>
-      <section>
-        <span>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-time"></use>
-          </svg>
-          200.0100 BNB
-        </span>
-        <button class="b_b_button">出险</button>
-      </section>
-    </div>
   </div>
 </template>
 
@@ -327,42 +326,41 @@ export default {
 .orange {
   color: #ff6400 !important;
 }
+.call_style {
+  background: rgba(0, 185, 0, 0.04);
+  &:hover {
+    td {
+      &:first-child:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0px;
+        border-left: 2px solid#00b900;
+      }
+    }
+  }
+}
+.put_style {
+  background: rgba(255, 100, 0, 0.04);
+  &:hover {
+    td {
+      &:first-child:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0px;
+        border-left: 2px solid#ff9600;
+      }
+    }
+  }
+}
 @media screen and (min-width: 750px) {
-  .call_style {
-    background: rgba(0, 185, 0, 0.04);
-    &:hover {
-      td {
-        &:first-child:before {
-          content: "";
-          display: block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
-          width: 0px;
-          border-left: 2px solid#00b900;
-        }
-      }
-    }
-  }
-  .put_style {
-    background: rgba(255, 100, 0, 0.04);
-    &:hover {
-      td {
-        &:first-child:before {
-          content: "";
-          display: block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
-          width: 0px;
-          border-left: 2px solid#ff9600;
-        }
-      }
-    }
-  }
-
   .my_claim {
     position: relative;
     > div {
@@ -454,44 +452,62 @@ export default {
       display: none;
     }
     > div {
-      margin-top: 20px;
-      width: 100%;
-      height: 208px;
-      padding: 20px 10px;
-      background: #f7f7fa;
-
-      p {
-        display: flex;
-        span:nth-of-type(1) {
-          font-size: 12px;
-          color: #919aa6;
-        }
-        span:nth-of-type(2) {
-          font-weight: bold;
-          color: #121212;
-        }
-      }
-      > p {
-        align-items: center;
-        span:nth-of-type(1) {
-          margin-right: 4px;
-        }
-      }
-      > div {
-        margin: 12px 0 16px 0;
-        display: flex;
+      .item_box {
+        margin-top: 20px;
+        width: 100%;
+        height: 208px;
+        padding: 20px 10px;
+        // background: #f7f7fa;
         p {
-          flex: 1;
           display: flex;
-          flex-direction: column;
+          span:nth-of-type(1) {
+            font-size: 12px;
+            color: #919aa6;
+          }
+          span:nth-of-type(2) {
+            font-weight: bold;
+            color: #121212;
+          }
+          i {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin-left: 4px;
+          }
+          .call_icon {
+            background-image: url("../../assets/img/helmet/tablecall.png");
+          }
+          .put_icon {
+            background-image: url("../../assets/img/helmet/tableput.png");
+          }
         }
-      }
-      > section {
-        display: flex;
-        justify-content: space-between;
-        span {
-          display: flex;
+        > p {
           align-items: center;
+          span:nth-of-type(1) {
+            margin-right: 4px;
+          }
+        }
+        > div {
+          margin: 12px 0 16px 0;
+          display: flex;
+          p {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+          }
+        }
+        > section {
+          display: flex;
+          justify-content: space-between;
+          span {
+            display: flex;
+            align-items: center;
+          }
+          button {
+            width: 100% !important;
+          }
         }
       }
     }

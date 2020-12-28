@@ -334,8 +334,8 @@ export default {
 @media screen and (max-width: 750px) {
   .layout-container {
     .main-container {
-      margin: 0px auto 0;
       width: 100%;
+      overflow: hidden;
     }
   }
 }

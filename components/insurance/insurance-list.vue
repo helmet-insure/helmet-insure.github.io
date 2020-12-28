@@ -32,6 +32,37 @@
         <img src="~/assets/img/loading.gif" />
       </div>
     </table>
+    <!-- H5 -->
+    <div>
+      <section v-for="(item, index) in showList" :key="index">
+        <p>
+          <span>{{ $t("Table.ID") }}</span
+          ><span>{{ item.showID }}</span>
+        </p>
+        <div>
+          <p>
+            <span>{{ $t("Table.Rent") }}</span> <span>{{ item.price }}</span>
+          </p>
+          <p>
+            <span>{{ $t("Table.Amount") }}</span
+            ><span>{{ item.remain }}</span>
+          </p>
+        </div>
+        <div>
+          <PInput
+            type="number"
+            v-model="item.buyNum"
+            fix="8"
+            maxValue="10000000"
+            :right="$t('Table.Insure')"
+            @numChange="handleClickBuy(item)"
+          ></PInput>
+        </div>
+      </section>
+      <div class="loading" v-if="isLoading">
+        <img src="~/assets/img/loading.gif" />
+      </div>
+    </div>
     <section class="noData" v-if="showList.length < 1 && !isLoading">
       <div>
         <img src="~/assets/img/helmet/nodata.png" alt="" />
@@ -53,38 +84,6 @@
         </p>
       </div>
     </section>
-    <div>
-      <p><span>ID</span><span>01239012</span></p>
-      <div>
-        <p><span>保费(HELMET)</span> <span>100只</span></p>
-        <p><span>保单数量</span><span>10000</span></p>
-      </div>
-      <div>
-        <PInput
-          type="number"
-          v-model="price"
-          fix="2"
-          :right="$t('Table.Insure')"
-          maxValue="10000"
-        ></PInput>
-      </div>
-    </div>
-    <div>
-      <p><span>ID</span><span>01239012</span></p>
-      <div>
-        <p><span>保费(HELMET)</span> <span>100只</span></p>
-        <p><span>保单数量</span><span>10000</span></p>
-      </div>
-      <div>
-        <PInput
-          type="number"
-          v-model="price"
-          fix="2"
-          :right="$t('Table.Insure')"
-          maxValue="10000"
-        ></PInput>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -396,37 +395,40 @@ export default {
     }
     > div {
       width: 100%;
-      height: 160px;
-      padding: 20px 10px;
-      background: #f7f7fa;
-      margin-bottom: 10px;
-      &:last-of-type {
-        margin-bottom: 0;
-      }
-      p {
-        display: flex;
-        span:nth-of-type(1) {
-          font-size: 12px;
-          color: #919aa6;
+      section {
+        height: 160px;
+        box-sizing: border-box;
+        padding: 20px 10px;
+        background: #f7f7fa;
+        margin-bottom: 10px;
+        &:last-of-type {
+          margin-bottom: 0;
         }
-        span:nth-of-type(2) {
-          font-weight: bold;
-          color: #121212;
-        }
-      }
-      > p {
-        align-items: center;
-        span:nth-of-type(1) {
-          margin-right: 4px;
-        }
-      }
-      > div {
-        margin: 12px 0 16px 0;
-        display: flex;
         p {
-          flex: 1;
           display: flex;
-          flex-direction: column;
+          span:nth-of-type(1) {
+            font-size: 12px;
+            color: #919aa6;
+          }
+          span:nth-of-type(2) {
+            font-weight: bold;
+            color: #121212;
+          }
+        }
+        > p {
+          align-items: center;
+          span:nth-of-type(1) {
+            margin-right: 4px;
+          }
+        }
+        > div {
+          margin: 12px 0 16px 0;
+          display: flex;
+          p {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+          }
         }
       }
     }

@@ -33,11 +33,11 @@
   </div>
 </template>
 <script>
-import Langauage from '~/components/common/langauage.vue';
-import '~/assets/svg/iconfont.js';
+import Langauage from "~/components/common/langauage.vue";
+import "~/assets/svg/iconfont.js";
 export default {
-  props: ['padding'],
-  name: 'p-footer',
+  props: ["padding"],
+  name: "p-footer",
   components: { Langauage },
 };
 </script>
@@ -129,6 +129,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 16px !important;
       display: flex;
       p {
         width: 100%;

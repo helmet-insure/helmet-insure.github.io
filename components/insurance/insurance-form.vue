@@ -8,6 +8,7 @@
       </div>
       <div class="num">
         <input type="text" v-model="volume" />
+        <i>{{ unit == "FORTUBE" ? "FOR" : unit }}</i>
         <span class="right" @click="toAll">{{ $t("Table.ALL") }}</span>
       </div>
       <button class="b_b_button" @click="submitSupply">
@@ -39,26 +40,35 @@
 </template>
 
 <script>
-import { onIssueSell, onIssueSellOnETH } from '~/interface/order.js';
-import precision from '~/assets/js/precision.js';
-import { fixD, addCommom, autoRounding, toRounding, fixInput } from '~/assets/js/util.js';
+import { onIssueSell, onIssueSellOnETH } from "~/interface/order.js";
+import precision from "~/assets/js/precision.js";
+import {
+  fixD,
+  addCommom,
+  autoRounding,
+  toRounding,
+  fixInput,
+} from "~/assets/js/util.js";
 export default {
-  props: ['currentCoin', 'currentType'],
+  props: ["currentCoin", "currentType"],
   data() {
     return {
-      dpr: '', //DPR
-      volume: '', //数量
+      dpr: "", //DPR
+      volume: "", //数量
       precision,
       Rent: 0,
       indexPx: 0.0033,
       strikePrice: 0.0067,
-      unit: 'BNB',
-      currency: 'WBNB',
-      earnings: 0, fixD, addCommom, autoRounding, toRounding,
+      unit: "BNB",
+      currency: "WBNB",
+      earnings: 0,
+      fixD,
+      addCommom,
+      autoRounding,
+      toRounding,
     };
   },
   computed: {
-
     undAndCol() {
       if (this.currentCoin && this.currentType) {
         return {
@@ -82,20 +92,20 @@ export default {
       };
     },
     IndexPxArray() {
-      return this.$store.state.allIndexPrice
+      return this.$store.state.allIndexPrice;
     },
     HelmetPrice() {
-      return this.$store.state.allHelmetPrice
+      return this.$store.state.allHelmetPrice;
     },
     BalanceArray() {
-      return this.$store.state.BalanceArray
-    }
+      return this.$store.state.BalanceArray;
+    },
   },
   watch: {
     dpr(newValue, val) {
       this.dpr = fixInput(newValue, 1);
       if (newValue > 10) {
-        this.dpr = 10
+        this.dpr = 10;
       }
     },
     volume(newValue, val) {
@@ -108,12 +118,12 @@ export default {
       this.currentType = val;
     },
     undAndCol: {
-      handler: 'undAndColWatch',
+      handler: "undAndColWatch",
       immediate: true,
     },
     RentGrounp: {
       handler: {
-        handler: 'watchRent',
+        handler: "watchRent",
         immediate: true,
       },
     },
@@ -121,7 +131,7 @@ export default {
   methods: {
     toAll() {
       if (this.BalanceArray) {
-        this.volume = this.BalanceArray[this.currentCoin]
+        this.volume = this.BalanceArray[this.currentCoin];
       }
     },
     submitSupply() {
@@ -134,41 +144,47 @@ export default {
       let data;
       if (this.currentType == 2) {
         data = {
-          private: false, // 
+          private: false, //
           annual: this.dpr,
-          category: this.currentCoin, // 
-          currency: this.currency, // 
-          expire: this._expiry, // 
+          category: this.currentCoin, //
+          currency: this.currency, //
+          expire: this._expiry, //
           premium: this.Rent,
           price: this.strikePrice,
-          volume: this.volume, // 
-          settleToken: 'HELMET',
+          volume: this.volume, //
+          settleToken: "HELMET",
           _yield: 0,
-        }
-        onIssueSellOnETH(data, (status) => { })
+        };
+        onIssueSellOnETH(data, (status) => {});
       } else {
         data = {
-          private: false, // 
+          private: false, //
           annual: this.dpr,
-          category: this.currency, // 
-          currency: this.currentCoin, // 
-          expire: this._expiry, // 
+          category: this.currency, //
+          currency: this.currentCoin, //
+          expire: this._expiry, //
           premium: this.Rent,
           price: this.strikePrice,
-          volume: this.volume, // 
-          settleToken: 'HELMET',
+          volume: this.volume, //
+          settleToken: "HELMET",
           _yield: 0,
-        }
-        onIssueSell(data, (status) => { });
+        };
+        onIssueSell(data, (status) => {});
       }
     },
     watchRent(newValue) {
       if (!newValue.dpr || !newValue.num) {
-        this.Rent = 0
-        return
+        this.Rent = 0;
+        return;
       }
-      let { dpr, indexPx, num, strikePrice, _expiry } = newValue
-      if (newValue.dpr && newValue.num && newValue.indexPx && newValue.strikePrice && newValue._expiry) {
+      let { dpr, indexPx, num, strikePrice, _expiry } = newValue;
+      if (
+        newValue.dpr &&
+        newValue.num &&
+        newValue.indexPx &&
+        newValue.strikePrice &&
+        newValue._expiry
+      ) {
         let DPR = dpr / 100;
         let time1 = new Date(_expiry).getTime();
         let time2 = new Date().getTime();
@@ -177,53 +193,61 @@ export default {
         let earnings;
         let number;
         if (this.currentType == 1) {
-          if (this.currentCoin == 'HELMET') {
-            number = precision.times(DPR, num, day)
+          if (this.currentCoin == "HELMET") {
+            number = precision.times(DPR, num, day);
           } else {
-            number = precision.times(DPR, (this.HelmetPrice[1][this.currentCoin] * num), day)
+            number = precision.times(
+              DPR,
+              this.HelmetPrice[1][this.currentCoin] * num,
+              day
+            );
           }
           premium = precision.minus(
             number,
             Math.min(precision.minus(strikePrice, indexPx), 0)
           );
 
-          earnings = - (Math.max(indexPx - strikePrice, 0) - premium)
+          earnings = -(Math.max(indexPx - strikePrice, 0) - premium);
         } else {
-          number = precision.times(DPR, (this.IndexPxArray[0]['HELMET'] * num), day);
+          number = precision.times(
+            DPR,
+            this.IndexPxArray[0]["HELMET"] * num,
+            day
+          );
           premium = precision.minus(
             number,
             Math.min(precision.minus(indexPx, strikePrice), 0)
           );
 
-          earnings = - (Math.max(strikePrice - indexPx, 0) - premium)
+          earnings = -(Math.max(strikePrice - indexPx, 0) - premium);
         }
         this.Rent = toRounding(premium, 8);
-        this.earnings = toRounding(earnings, 8)
+        this.earnings = toRounding(earnings, 8);
         return toRounding(premium, 8);
       } else {
-        return 0
+        return 0;
       }
     },
     undAndColWatch(newValue) {
-      let list = this.IndexPxArray
-      let coin = newValue.underly
-      let type = newValue.curType
+      let list = this.IndexPxArray;
+      let coin = newValue.underly;
+      let type = newValue.curType;
       let px;
       let exPx;
       if (!list.length) {
-        return
+        return;
       }
       if (type == 1) {
-        px = list[1][coin]
-        exPx = list[1][coin] * 2
-        this.unit = coin
+        px = list[1][coin];
+        exPx = list[1][coin] * 2;
+        this.unit = coin;
       } else {
-        px = list[1][coin]
-        exPx = list[1][coin] * 0.5
-        this.unit = 'BNB'
+        px = list[1][coin];
+        exPx = list[1][coin] * 0.5;
+        this.unit = "BNB";
       }
-      this.indexPx = px
-      this.strikePrice = exPx
+      this.indexPx = px;
+      this.strikePrice = exPx;
     },
   },
 };
@@ -273,6 +297,10 @@ input:focus {
           border: 1px solid #cfcfd2;
           padding: 0 60px 0 12px;
           color: #121212;
+        }
+        i {
+          position: absolute;
+          right: 50px;
         }
         .right {
           color: #ff9600;
