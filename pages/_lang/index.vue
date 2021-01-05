@@ -8,14 +8,22 @@
         <h3><span>HELMET</span>.INSURE</h3>
         <p>Crypto-assets insurance trading platform on BSC</p>
         <div>
-          <button>
-            <img src="~/assets/img/helmet/home_github.png" alt="" />
-            View GitHub
+          <button @click="toLPplan">
+            <img src="~/assets/img/helmet/lpplan.png" alt="" />
+            Lp plan
           </button>
           <button @click="toProduct">
             <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Lauch APP
           </button>
         </div>
+        <a
+          class="github"
+          href="https://github.com/helmet-insure/helmet-insure.github.io"
+          target="_blank"
+        >
+          <img src="~/assets/img/helmet/share.png" alt="" />
+          <span> View GitHub</span>
+        </a>
       </div>
       <div class="right_pic">
         <img src="~/assets/img/helmet/home_banner.png" alt="" />
@@ -41,6 +49,9 @@ export default {
     toProduct() {
       this.$router.push("/product");
     },
+    toLPplan() {
+      this.$router.push("/plan");
+    },
   },
 };
 </script>
@@ -48,6 +59,24 @@ export default {
 @import "~/assets/css/base.scss";
 
 @media screen and (min-width: 1280px) {
+  .github {
+    display: flex;
+    cursor: pointer;
+    margin-top: 20px;
+    align-items: center;
+    img {
+      width: 24px;
+      height: 24px;
+      margin-right: 4px;
+    }
+    span {
+      font-size: 16px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: #ff9600;
+      line-height: 22px;
+    }
+  }
   .helmet_container {
     width: 100%;
     min-height: 100vh;
@@ -130,6 +159,7 @@ export default {
           }
         }
       }
+
       .right_pic {
         min-width: 474px;
         min-height: 322px;
