@@ -76,48 +76,9 @@ export default {
     this.$bus.$on("WATCH_COIN", (coin) => {
       this.curCoin = coin;
     });
-    setTimeout(() => {
-      let arr = this.$store.state.allIndexPrice[1];
-      if (this.$store.state.allIndexPrice.length) {
-        let max = toRounding(arr[this.curCoin] * 2 * 1.5, 4);
-        this.max = max;
-        this.price = {
-          IndexPrice: toRounding(Number(arr[this.curCoin]), 4),
-          Cover100: toRounding(arr[this.curCoin] * 2, 4),
-          Cover50: toRounding(arr[this.curCoin] / 2, 4),
-        };
-        this.line = [
-          {
-            line: 100 - toRounding(((arr[this.curCoin] * 2) / max) * 100, 0),
-            cover: 1 - toRounding((arr[this.curCoin] * 2) / max, 2),
-            num: toRounding(arr[this.curCoin] * 2, 4),
-            color: "#00B900",
-            title: this.$t("Content.ChartUp"),
-          },
-          {
-            line: 100 - toRounding(Number(arr[this.curCoin] / max) * 100, 0),
-            cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
-            num: toRounding(arr[this.curCoin], 4),
-            color: "#919AA6",
-            title: this.$t("Content.ChartPrice"),
-          },
-          {
-            line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
-            cover: 1 - toRounding(arr[this.curCoin] / 2 / max, 2),
-            num: toRounding(arr[this.curCoin] / 2, 4),
-            color: "#FF9600",
-            title: this.$t("Content.ChartOff"),
-          },
-        ];
-
-        this.upCover = `M0 0 L1080 0 L1080 ${this.line[0].cover * 200} L0 ${
-          this.line[0].cover * 200
-        } Z`;
-        this.dwCover = `M0 200 L1080 200 L1080 ${this.line[2].cover * 200} L0 ${
-          this.line[2].cover * 200
-        } Z`;
-      }
-    }, 2000);
+    this.$bus.$on("DRAW_ECHART", () => {
+      this.draw();
+    });
   },
   watch: {
     curCoin(newVal, Val) {
@@ -125,6 +86,7 @@ export default {
       let max = toRounding(arr[this.curCoin] * 2 * 1.5, 4);
       this.max = max;
       if (newVal) {
+        console.log(newVal);
         this.price = {
           IndexPrice: toRounding(Number(arr[newVal]), 4),
           Cover100: toRounding(arr[newVal] * 2, 4),
@@ -167,7 +129,52 @@ export default {
       return this.$store.state.allIndexPrice;
     },
   },
-  methods: {},
+  methods: {
+    draw() {
+      setTimeout(() => {
+        let arr = this.$store.state.allIndexPrice[1];
+        if (arr.BNB != 0) {
+          let max = toRounding(arr[this.curCoin] * 2 * 1.5, 4);
+          this.max = max;
+          this.price = {
+            IndexPrice: toRounding(Number(arr[this.curCoin]), 4),
+            Cover100: toRounding(arr[this.curCoin] * 2, 4),
+            Cover50: toRounding(arr[this.curCoin] / 2, 4),
+          };
+          this.line = [
+            {
+              line: 100 - toRounding(((arr[this.curCoin] * 2) / max) * 100, 0),
+              cover: 1 - toRounding((arr[this.curCoin] * 2) / max, 2),
+              num: toRounding(arr[this.curCoin] * 2, 4),
+              color: "#00B900",
+              title: this.$t("Content.ChartUp"),
+            },
+            {
+              line: 100 - toRounding(Number(arr[this.curCoin] / max) * 100, 0),
+              cover: 1 - toRounding(Number(arr[this.curCoin] / max), 2),
+              num: toRounding(arr[this.curCoin], 4),
+              color: "#919AA6",
+              title: this.$t("Content.ChartPrice"),
+            },
+            {
+              line: 100 - toRounding((arr[this.curCoin] / 2 / max) * 100, 0),
+              cover: 1 - toRounding(arr[this.curCoin] / 2 / max, 2),
+              num: toRounding(arr[this.curCoin] / 2, 4),
+              color: "#FF9600",
+              title: this.$t("Content.ChartOff"),
+            },
+          ];
+
+          this.upCover = `M0 0 L1080 0 L1080 ${this.line[0].cover * 200} L0 ${
+            this.line[0].cover * 200
+          } Z`;
+          this.dwCover = `M0 200 L1080 200 L1080 ${
+            this.line[2].cover * 200
+          } L0 ${this.line[2].cover * 200} Z`;
+        }
+      }, 1000);
+    },
+  },
 };
 </script>
 

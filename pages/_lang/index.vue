@@ -9,21 +9,21 @@
         <p>Crypto-assets insurance trading platform on BSC</p>
         <div>
           <button @click="toLPplan">
-            <img src="~/assets/img/helmet/lpplan.png" alt="" />
-            Lp plan
+            <img src="~/assets/img/helmet/home_github.png" alt="" />
+            View GitHub
           </button>
           <button @click="toProduct">
             <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Lauch APP
           </button>
         </div>
-        <a
+        <!-- <a
           class="github"
-          href="https://github.com/helmet-insure/helmet-insure.github.io"
+          href=""
           target="_blank"
         >
           <img src="~/assets/img/helmet/share.png" alt="" />
           <span> View GitHub</span>
-        </a>
+        </a> -->
       </div>
       <div class="right_pic">
         <img src="~/assets/img/helmet/home_banner.png" alt="" />
@@ -50,7 +50,8 @@ export default {
       this.$router.push("/product");
     },
     toLPplan() {
-      this.$router.push("/plan");
+      window.location.href =
+        "https://github.com/helmet-insure/helmet-insure.github.io";
     },
   },
 };
@@ -120,7 +121,7 @@ export default {
           display: flex;
           margin-top: 6.4vh;
           button {
-            min-width: 128px;
+            min-width: 140px;
             min-height: 36px;
             width: 8vw;
             height: 5vh;
@@ -174,7 +175,7 @@ export default {
     }
   }
 }
-@media screen and (min-width: 750px) and( max-width:1280px) {
+@media screen and (min-width: 750px) and(max-width:1280px) {
   .helmet_container {
     width: 100%;
     min-height: 100vh;

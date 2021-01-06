@@ -302,6 +302,7 @@ export default {
       arr.push(callIndexPirce);
       arr.push(putIndexPirce);
       this.$store.commit("SET_ALL_INDEX_PRICE", arr);
+      this.$bus.$emit("DRAW_ECHART");
     },
   },
 };

@@ -53,7 +53,7 @@ export default {
   props: ["currentCoin", "currentType"],
   data() {
     return {
-      dpr: "", //DPR
+      dpr: 0.14, //DPR
       volume: "", //数量
       precision,
       Rent: 0,
@@ -375,6 +375,10 @@ input:focus {
           border: 1px solid #cfcfd2;
           padding: 0 60px 0 12px;
           color: #919aa6;
+        }
+        i {
+          position: absolute;
+          right: 50px;
         }
         .right {
           color: #ff9600;
