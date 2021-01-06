@@ -8,13 +8,16 @@
         <h3><span>HELMET</span>.INSURE</h3>
         <p>Crypto-assets insurance trading platform on BSC</p>
         <div>
-          <button @click="toLPplan">
+          <a
+            href="https://github.com/helmet-insure/helmet-insure.github.io"
+            target="_blank"
+          >
             <img src="~/assets/img/helmet/home_github.png" alt="" />
             View GitHub
-          </button>
-          <button @click="toProduct">
+          </a>
+          <a href="https://app.helmet.insure">
             <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Lauch APP
-          </button>
+          </a>
         </div>
         <!-- <a
           class="github"
@@ -120,7 +123,7 @@ export default {
         div {
           display: flex;
           margin-top: 6.4vh;
-          button {
+          a {
             min-width: 140px;
             min-height: 36px;
             width: 8vw;
@@ -218,7 +221,7 @@ export default {
         div {
           display: flex;
           margin-top: 40px;
-          button {
+          a {
             width: 140px;
             height: 36px;
             display: flex;
@@ -355,7 +358,7 @@ export default {
           display: flex;
           flex-direction: column-reverse;
           margin-top: 34px;
-          button {
+          a {
             margin: 0 auto;
             width: 90%;
             height: 50px;

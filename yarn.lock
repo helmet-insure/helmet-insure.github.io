@@ -2388,6 +2388,11 @@ array-unique@^0.3.2:
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
+asap@~2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npm.taobao.org/asap/download/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
+  integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
+
 asn1.js@^5.2.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/asn1.js/-/asn1.js-5.4.1.tgz#11a980b84ebb91781ce35b0fdc2ee294e3783f07"
@@ -9096,6 +9101,13 @@ promise-to-callback@^1.0.0:
     is-fn "^1.0.0"
     set-immediate-shim "^1.0.1"
 
+promise@^8.0.1:
+  version "8.1.0"
+  resolved "https://registry.npm.taobao.org/promise/download/promise-8.1.0.tgz#697c25c3dfe7435dd79fcd58c38a135888eaf05e"
+  integrity sha1-aXwlw9/nQ13Xn81Yw4oTWIjq8F4=
+  dependencies:
+    asap "~2.0.6"
+
 proper-lockfile@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/proper-lockfile/-/proper-lockfile-4.1.1.tgz#284cf9db9e30a90e647afad69deb7cb06881262c"
@@ -10763,6 +10775,13 @@ tough-cookie@~2.5.0:
   dependencies:
     psl "^1.1.28"
     punycode "^2.1.1"
+
+tp-js-sdk@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.npm.taobao.org/tp-js-sdk/download/tp-js-sdk-3.3.0.tgz#200872de3c49f5444e4d880b6d8a1a01ae047ec7"
+  integrity sha1-IAhy3jxJ9UROTYgLbYoaAa4Efsc=
+  dependencies:
+    promise "^8.0.1"
 
 trim-newlines@^1.0.0:
   version "1.0.0"
