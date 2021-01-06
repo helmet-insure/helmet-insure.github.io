@@ -48,15 +48,7 @@ export default {
     // Insurance,
     Footer,
   },
-  methods: {
-    toProduct() {
-      this.$router.push("/product");
-    },
-    toLPplan() {
-      window.location.href =
-        "https://github.com/helmet-insure/helmet-insure.github.io";
-    },
-  },
+  methods: {},
 };
 </script>
 <style lang="scss" scoped>
