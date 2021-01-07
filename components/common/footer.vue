@@ -1,29 +1,29 @@
 <template>
   <div class="footer-container">
     <div class="footer_top">
-      <a href="">
+      <a href="https://twitter.com/Helmet_insure" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-Twitter"></use>
         </svg>
         <span>Twitter</span>
       </a>
-      <a href="">
+      <a href="https://t.me/helmet_insure" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-Telegram"></use>
         </svg>
         <span>Telegram</span>
       </a>
-      <a href="">
+      <a href="https://discord.gg/QtTJZEVds5" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-Discord"></use>
         </svg>
         <span>Discord</span>
       </a>
-      <a href="">
+      <a href="https://app.gitbook.com/" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-medium"></use>
         </svg>
-        <span>Medium</span>
+        <span>Guidebook</span>
       </a>
     </div>
     <div class="footer_bottom" :style="`padding:0 ${padding}px`">
