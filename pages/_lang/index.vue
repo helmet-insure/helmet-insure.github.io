@@ -16,7 +16,7 @@
             View GitHub
           </a>
           <a href="https://app.helmet.insure">
-            <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Lauch APP
+            <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Launch APP
           </a>
         </div>
         <!-- <a
