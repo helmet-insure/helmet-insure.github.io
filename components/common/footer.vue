@@ -19,7 +19,7 @@
         </svg>
         <span>Discord</span>
       </a>
-      <a href="https://app.gitbook.com/" target="_blank">
+      <a href="https://helmet-insure.gitbook.io/helmet/" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-medium"></use>
         </svg>
