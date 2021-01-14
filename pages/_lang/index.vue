@@ -16,7 +16,8 @@
             View GitHub
           </a>
           <a href="https://app.helmet.insure">
-            <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Launch APP
+            <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Launch
+            APP
           </a>
         </div>
         <!-- <a
@@ -160,8 +161,8 @@ export default {
         min-width: 474px;
         min-height: 322px;
         margin-top: 10vh;
-        width: 35vw;
-        height: 46vh;
+        width: 680px;
+        height: 483px;
         img {
           width: 100%;
           height: 100%;
