@@ -30,7 +30,29 @@
         </a> -->
       </div>
       <div class="right_pic">
-        <img src="~/assets/img/helmet/home_banner.png" alt="" />
+        <img
+          src="~/assets/img/helmet/home_banner.png"
+          alt=""
+          v-if="!this.showVideo"
+        />
+        <img
+          class="bofang"
+          src="~/assets/img/helmet/bofang.png"
+          alt=""
+          v-if="!this.showVideo"
+          @click="showVideo = true"
+        />
+        <div v-if="this.showVideo" style="width: 100%; height: 100%">
+          <iframe
+            id="youtube"
+            width="100%"
+            height="100%"
+            src="https://www.youtube-nocookie.com/embed/tT_zfUarAys?controls=0&autoplay=1"
+            frameborder="0"
+            allow="accelerometer; autoplay=true; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
       </div>
     </div>
     <Footer :padding="0" />
@@ -44,6 +66,11 @@ import "~/assets/svg/iconfont.js";
 export default {
   layout: "helmet",
   name: "home",
+  data() {
+    return {
+      showVideo: false,
+    };
+  },
   components: {
     Banner,
     // Insurance,
@@ -163,9 +190,19 @@ export default {
         margin-top: 10vh;
         width: 680px;
         height: 483px;
+        position: relative;
         img {
           width: 100%;
           height: 100%;
+        }
+        .bofang {
+          width: 120px;
+          height: 120px;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: pointer;
         }
       }
     }
@@ -258,9 +295,19 @@ export default {
         margin-top: 50px;
         width: 474px;
         height: 322px;
+        position: relative;
         img {
           width: 100%;
           height: 100%;
+        }
+        .bofang {
+          width: 80px;
+          height: 80px;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: pointer;
         }
       }
     }
@@ -393,9 +440,28 @@ export default {
       .right_pic {
         width: 94%;
         margin: 0 auto;
+        position: relative;
+        min-height: 257px;
         img {
           width: 100%;
           height: 100%;
+        }
+        .bofang {
+          width: 80px;
+          height: 80px;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: pointer;
+        }
+        > div {
+          width: 100%;
+          min-height: 257px;
+          #youtube {
+            width: 100%;
+            min-height: 257px;
+          }
         }
       }
     }
