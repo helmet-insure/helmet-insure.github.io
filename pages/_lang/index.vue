@@ -44,12 +44,11 @@
         />
         <div v-if="this.showVideo" style="width: 100%; height: 100%">
           <iframe
-            id="youtube"
             width="100%"
             height="100%"
             src="https://www.youtube-nocookie.com/embed/tT_zfUarAys?controls=0&autoplay=1"
             frameborder="0"
-            allow="accelerometer; autoplay=true; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>
         </div>
@@ -71,12 +70,23 @@ export default {
       showVideo: false,
     };
   },
+  watch: {
+    showVideo(newValue) {
+      if (newValue) {
+        setInterval(() => {
+          setTimeout(() => {
+            this.showVideo = false;
+          });
+          clearTimeout();
+        }, 142000);
+      }
+    },
+  },
   components: {
     Banner,
     // Insurance,
     Footer,
   },
-  methods: {},
 };
 </script>
 <style lang="scss" scoped>
