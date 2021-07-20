@@ -33,7 +33,7 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
   let undValue = addCommom(data.und, 4);
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
-    conText: `<p>Settlement ${addCommom(volume, 4)} ${data._collateral}</p>`,
+    conText: `<p>Settlement ${addCommom(volume)} ${data._collateral}</p>`,
   });
   const factory = await getFactory();
   const wei = await getWei(opt._collateral);
@@ -49,29 +49,21 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
       bus.$emit("CLOSE_STATUS_DIALOG");
       bus.$emit("OPEN_STATUS_DIALOG", {
         type: "submit",
-        conText: `<a href="https://${
-          netObj[Number(window.chainID)]
-        }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+        conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
       });
     })
     .on("confirmation", (confirmationNumber, receipt) => {
       // callBack('success');
       if (confirmationNumber === 0) {
-        let confirmationTit = `<div>${colValue > 0 &&
-          data._collateral} ${undValue > 0 &&
-          ", " +
-            data._underlying} settlement is successful, Please check in the <span>wallet</span></div>`;
+        let confirmationTit = `<div>${data._collateral} ${", " +
+          data._underlying} settlement is successful, Please check in the <span>wallet</span></div>`;
         if (window.statusDialog) {
           bus.$emit("CLOSE_STATUS_DIALOG");
           bus.$emit("OPEN_STATUS_DIALOG", {
             type: "success",
             title: "Successfully rented",
             conTit: confirmationTit,
-            conText: `<a href="https://${
-              netObj[Number(window.chainID)]
-            }etherscan.io/tx/${
-              receipt.transactionHash
-            }" target="_blank">View on Etherscan</a>`,
+            conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
           });
         } else {
           Message({
@@ -93,10 +85,8 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
       bus.$emit("CLOSE_STATUS_DIALOG");
       if (error && error.message) {
         Message({
-          message: `${colValue > 0 && data._collateral} ${undValue > 0 &&
-            ", " +
-              data._underlying} settlement is successful, Please check in the wallet`,
-          type: "success",
+          message: error && error.message,
+          type: "error",
           // duration: 0,
         });
       }
@@ -107,11 +97,10 @@ export const burn = async (longOrshort, volume, opt = {}, data) => {
 };
 
 export const settle = async (short, data) => {
-  let colValue = addCommom(data.col + Number(data.longBalance), 4);
+  let colValue = addCommom(Number(data.col) + Number(data.longBalance), 4);
   let undValue = addCommom(data.und, 4);
-  let pendingText = `<p>Settlement <span>${colValue > 0 &&
-    colValue + data._collateral} ${undValue > 0 &&
-    "And" + undValue + data._underlying}</span></p>`;
+  let pendingText = `<p>Settlement <span>${colValue +
+    data._collateral} ${"And " + undValue + data._underlying}</span></p>`;
   bus.$emit("OPEN_STATUS_DIALOG", {
     type: "pending",
     //   conText: `<p>Settlement <span>${data_.volume} ${data}.category}</span> </p>`,
@@ -130,9 +119,7 @@ export const settle = async (short, data) => {
       bus.$emit("CLOSE_STATUS_DIALOG");
       bus.$emit("OPEN_STATUS_DIALOG", {
         type: "submit",
-        conText: `<a href="https://${
-          netObj[Number(window.chainID)]
-        }etherscan.io/tx/${hash}" target="_blank">View on Etherscan</a>`,
+        conText: `<a href="https://bscscan.com/tx/${hash}" target="_blank">View on BscScan</a>`,
       });
     })
     .on("confirmation", (confirmationNumber, receipt) => {
@@ -148,11 +135,7 @@ export const settle = async (short, data) => {
             type: "success",
             title: "Successfully rented",
             conTit: confirmationTit,
-            conText: `<a href="https://${
-              netObj[Number(window.chainID)]
-            }etherscan.io/tx/${
-              receipt.transactionHash
-            }" target="_blank">View on Etherscan</a>`,
+            conText: `<a href="https://bscscan.com/tx/${receipt.transactionHash}" target="_blank">View on BscScan</a>`,
           });
         } else {
           Message({

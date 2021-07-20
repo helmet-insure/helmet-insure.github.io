@@ -2,11 +2,15 @@
   <div class="balance">
     <section>
       <div>
-        <span>{{ $t('Content.InsurancePrice') }}</span>
-        <p>{{ indexPx || 0 }} {{ unit }}</p>
+        <span>{{ $t("Content.InsurancePrice") }}</span>
+        <p>
+          1 {{ currentCoin == "FORTUBE" ? "FOR" : currentCoin }} :
+          {{ strikePrice }} BNB
+          <!-- {{ unit }} ≈ {{ HelmetPrice }}HELMET -->
+        </p>
       </div>
       <div>
-        <span>{{ $t('Content.ProtectTheCycle') }}</span>
+        <span>{{ $t("Content.ProtectTheCycle") }}</span>
         <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-time"></use>
@@ -17,142 +21,168 @@
     </section>
 
     <div>
-      <span>{{ $t('Content.UsableBalance') }}</span>
+      <span>{{ $t("Content.UsableBalance") }}</span>
       <div>
-        <p>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-BNB"></use></svg
-          >{{ this.BNB }} BNB
-        </p>
-        <p>
+        <p v-if="TradeType == 'sell'">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Helmet"></use></svg
-          >{{ this.HELMET }} HELMET
+          >{{ BalanceArray[underly] }}
+          {{ underly == "FORTUBE" ? "FOR" : underly }}
         </p>
-        <p>
+        <p v-else>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-Helmet"></use></svg
+          >{{ BalanceArray["HELMET"] }}
+          HELMET
+        </p>
+        <p v-if="TradeType != 'buy'">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-BNB"></use></svg
+          >{{ BalanceArray["BNB"] }} BNB
+        </p>
+        <!-- <p>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-Qusd"></use></svg
           >{{ this.QUSD }} QUSD
-        </p>
+        </p> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import '~/assets/svg/iconfont.js';
-import { getBalance } from '~/interface/order.js';
-import { uniswap } from '~/assets/utils/address-pool.js';
-import precision from '~/assets/js/precision.js';
+import "~/assets/svg/iconfont.js";
+import { uniswap } from "~/assets/utils/address-pool.js";
+import precision from "~/assets/js/precision.js";
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
+import { toWei, fromWei } from "~/assets/utils/web3-fun.js";
 export default {
-  props: ['currentCoin', 'currentType'],
+  props: ["currentCoin", "currentType", "TradeType"],
   data() {
     return {
-      underly: 'WBNB', //标的物
+      underly: "HELMET", //标的物
       curType: 1,
-      collateral: 'WBNB', //抵押物
-      dueDate: '2020-12-09 00:00',
+      collateral: "WBNB", //抵押物
       QUSD: 0,
       BNB: 0,
       CAKE: 0,
       HELMET: 0,
-      indexPx: 0,
-      unit: 'WBNB',
+      CKT: 0,
+      FORTUBE: 0,
+      indexPx: 0.0033,
+      unit: "WBNB",
+      precision,
+      toRounding,
+      autoRounding,
+      fixD,
+      addCommom,
+      strikePrice: 0.0067,
+      dueDate: 0,
     };
   },
   computed: {
-    // 保费
-    // 预期日化收益 = ((指数价格 - 执行价格) + 保费) / (执行价格 * 天数)
-    // 保费 = 预期日化收益 * 执行价格 * 天数 - 指数价格-执行价格);
-    rent() {
-      if (this.indexPx && this.dueDate && this.price && this.dpr) {
-        let dpr = this.dpr / 100;
-        let time1 = new Date(this.dueDate).getTime();
-        let time2 = new Date().getTime();
-        let day = parseInt((time1 - time2) / (1000 * 60 * 60 * 24)) + 1;
-        let premium = precision.minus(
-          precision.times(dpr, this.price, day),
-          precision.minus(this.indexPx, this.price)
-        );
-        return premium;
-      }
-      return '--';
-    },
-    CoinType() {
-      if (this.underly && this.collateral && this.curType) {
+    undAndCol() {
+      if (this.currentCoin && this.currentType) {
         return {
-          underly: this.underly,
-          collateral: this.collateral,
-          Type: this.curType,
+          underly: this.currentCoin,
+          curType: this.currentType,
         };
       }
     },
+    IndexPxArray() {
+      let list = this.$store.state.allIndexPrice;
+      return list;
+    },
+    BalanceArray() {
+      let obj = this.$store.state.BalanceArray;
+      return obj;
+    },
   },
   watch: {
-    currentCoin(val) {
-      this.underly = val;
+    currentCoin(val, oldVal) {
+      if (val) {
+        this.underly = val;
+        this.currentCoin = val;
+      }
     },
-    currentType(val) {
-      this.curType = val;
+    currentType(val, oldVal) {
+      if (val) {
+        this.curType = val;
+        this.currentType = val;
+      }
     },
-    CoinType: {
-      handler: 'CoinTypeWatch',
+    TradeType(val) {
+      if (val) {
+        this.TradeType = val;
+      }
+    },
+    undAndCol: {
+      handler: "undAndColWatch",
+      deep: true,
       immediate: true,
+    },
+    strikePrice(newValue, value) {
+      if (newValue) {
+        this.strikePrice = newValue;
+      }
+    },
+    IndexPxArray(newValue, value) {
+      if (newValue) {
+        this.strikePrice = 0.0067;
+      }
     },
   },
   mounted() {
-    this.$bus.$on('REFRESH_BALANCE', () => {
-      this.getBalance();
-    });
-    setTimeout(() => {
-      this.getBalance();
-      this.getIndexPrice();
-    }, 1000);
+    setInterval(() => {
+      setTimeout(() => {
+        this.getDownTime();
+      });
+      clearTimeout();
+    }, 2000);
   },
   methods: {
-    async getBalance() {
-      const bnbAmount = await getBalance('WBNB');
-      const qusdAmount = await getBalance('QUSD');
-      const cakeAmount = await getBalance('CAKE');
-      const helmetAmount = await getBalance('HELMET');
-      this.BNB = bnbAmount;
-      this.QUSD = qusdAmount;
-      this.CAKE = cakeAmount;
-      this.HELMET = helmetAmount;
+    // 倒计时
+    getDownTime(time) {
+      let now = new Date() * 1;
+      let dueDate = new Date(this.$store.state.dueDate);
+      let DonwTime = dueDate - now;
+      let day = Math.floor(DonwTime / (24 * 3600000));
+      let hour = Math.floor((DonwTime - day * 24 * 3600000) / 3600000);
+      let minute = Math.floor(
+        (DonwTime - day * 24 * 3600000 - hour * 3600000) / 60000
+      );
+      let second = Math.floor(
+        (DonwTime - day * 24 * 3600000 - hour * 3600000 - minute * 60000) / 1000
+      );
+      let template = `${day} ${this.$t("Content.Day")} ${hour} ${this.$t(
+        "Content.Hour"
+      )} ${minute} ${this.$t("Content.Min")} ${second} ${this.$t(
+        "Content.Second"
+      )}`;
+      this.dueDate = template;
     },
-    async CoinTypeWatch(newValue) {
-      if (newValue.Type == 2) {
-        if (newValue.underly != 'WBNB') {
-          this.collateral = this.underly;
-          this.underly = this.underly;
-          this.unit = this.underly;
-        } else {
-          this.collateral = 'QUSD';
-          this.unit = 'QUSD';
-          this.underly = this.underly;
-        }
-      } else {
-        this.collateral = 'WBNB';
-        this.underly = this.underly;
-        this.unit = 'WBNB';
+
+    undAndColWatch(newValue) {
+      let list = this.IndexPxArray;
+      let coin = newValue.underly;
+      let type = newValue.curType;
+      let px;
+      let exPx;
+
+      if (!list.length) {
+        return;
       }
-      const px = await uniswap(this.underly, this.collateral, window.chainID);
-      if (newValue.Type == 1) {
-        this.indexPx = precision.round(px, 4) * 2;
+      if (type == 1) {
+        px = list[1][coin];
+        exPx = list[1][coin] * 2;
+        this.unit = "WBNB";
       } else {
-        this.indexPx = precision.round(px, 4) / 2;
+        px = list[1][coin];
+        exPx = list[1][coin] * 0.5;
+        this.unit = "WBNB";
       }
-      this.$store.commit('SET_INDEX_PRICE', this.indexPx);
-    },
-    async getIndexPrice() {
-      const px = await uniswap(this.underly, this.collateral);
-      this.indexPx = precision.round(px, 4);
-      if (this.curType == 1) {
-        this.indexPx = precision.round(px, 4) * 2;
-      } else {
-        this.indexPx = precision.round(px, 4) / 2;
-      }
-      this.$store.commit('SET_INDEX_PRICE', this.indexPx);
+      this.indexPx = fixD(toRounding(px, 4), 4);
+      this.strikePrice = fixD(toRounding(exPx, 4), 4);
     },
   },
 };
@@ -166,7 +196,11 @@ export default {
     section {
       display: flex;
       > div {
-        margin-right: 100px;
+        &:nth-of-type(1) {
+          width: 250px;
+        }
+        width: 300px;
+
         span {
           font-size: 14px;
           color: #919aa6;
@@ -186,7 +220,6 @@ export default {
       }
     }
     > div {
-      margin-right: 100px;
       span {
         font-size: 14px;
         color: #919aa6;

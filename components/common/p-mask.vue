@@ -117,7 +117,7 @@ export default {
           text: this.$t('Header.Mining'),
         },
         // {
-        //   url: '/sell',
+        //   url: '/plan',
         //   link: false,
         //   text: this.$t('Header.MySupply'),
         // },

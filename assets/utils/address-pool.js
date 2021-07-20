@@ -13,7 +13,7 @@ import precision from "~/assets/js/precision.js";
 import { Contract } from "@ethersproject/contracts";
 import { getNetwork } from "@ethersproject/networks";
 import { getDefaultProvider } from "@ethersproject/providers";
-import IPancakePair from "@pancakeswap-libs/pancake-swap-core/build/IPancakePair.json";
+import IPancakePair from "~/abi/IPancakePair.json";
 import ERC20 from "~/abi/ERC20_abi.json";
 
 const selectNetwork = (charID) => {
@@ -86,15 +86,18 @@ export const getWei = (token) => {
     token = getSymbol(token)[0];
   }
   switch (token) {
-    case "USDT":
+    case "BNB_CTK_LPT":
       return "lovelace"; // 6
-    case "USDC":
+    case "BNB_CTK":
       return "lovelace"; // 6
+    case "CTK":
+      return "lovelace"; // 6
+    case 30:
+      return "tether";
     default:
       return "ether"; // 18
   }
 };
-
 export const getWeiWithFix = (fix) => {
   switch (fix) {
     case 30:
@@ -133,7 +136,7 @@ export const getWei_2 = (token) => {
     token = getSymbol(token)[0];
   }
   switch (token) {
-    case "USDT":
+    case "CTK":
       return 6; // 6
     case "USDC":
       return 6; // 6
@@ -180,7 +183,6 @@ export const uniswap = async (token1, token2) => {
     token2,
     token2
   );
-  console.log(token1, token2);
   try {
     // 获取交易对地址
     const address = Pair.getAddress(TOKEN1, TOKEN2);
@@ -206,12 +208,40 @@ export const uniswap = async (token1, token2) => {
       new TokenAmount(TOKEN1, balances[0]),
       new TokenAmount(TOKEN2, balances[1])
     );
+    // let path = new Token(
+    //   "56",
+    //   "0x4E76DfeA6Fb3726e9A77628AAa23839E3298BC37",
+    //   18,
+    //   "HELMET",
+    //   "HELMET"
+    // );
     const route = new Route([pair], TOKEN1);
-    if (token1 === "WBTC") {
-      return route.midPrice.toSignificant(6) / 10000000000;
-    }
-    return route.midPrice.toSignificant(6);
+    let Price = route.midPrice.toSignificant(6);
+
+    return Price;
   } catch (error) {
+    console.log(error);
     return 0;
+  }
+};
+export const getTokenName = (address) => {
+  let tokenAddress = address.toLowerCase();
+  switch (tokenAddress) {
+    case "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c":
+      return "WBNB";
+    case "0xb8c540d00dd0bf76ea12e4b4b95efc90804f924e":
+      return "QUSD";
+    case "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82":
+      return "CAKE";
+    case "0x658a109c5900bc6d2357c87549b651670e5b0539":
+      return "FORTUBE";
+    case "0xe9e7cea3dedca5984780bafc599bd69add087d56":
+      return "BUSD";
+    case "0x4e76dfea6fb3726e9a77628aaa23839e3298bc37":
+      return "HELMET";
+    case "0xa8c2b8eec3d368c0253ad3dae65a5f2bbb89c929":
+      return "CTK";
+    default:
+      return "--";
   }
 };

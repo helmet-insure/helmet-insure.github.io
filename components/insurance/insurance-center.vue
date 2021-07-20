@@ -5,13 +5,13 @@
         @click="handleClickType('buy')"
         :class="type == 'buy' ? 'active' : ''"
       >
-        {{ $t('Type.BuyInsurance') }}
+        {{ $t("Type.BuyInsurance") }}
       </button>
       <button
         @click="handleClickType('sell')"
         :class="type == 'sell' ? 'active' : ''"
       >
-        {{ $t('Type.ToInsurance') }}
+        {{ $t("Type.ToInsurance") }}
       </button>
     </div>
     <CoinType
@@ -21,21 +21,35 @@
     <Echart></Echart>
     <InsuranceType
       @changeType="handleClickTradeType"
-      :currentType="type"
+      :currentType="TradeType"
     ></InsuranceType>
-    <Balance :currentCoin="curCoin" :currentType="TradeType"></Balance>
-    <InsuranceList v-if="type == 'buy'"></InsuranceList>
-    <InsuranceForm v-if="type == 'sell'"></InsuranceForm>
+    <Balance
+      :currentCoin="curCoin"
+      :currentType="TradeType"
+      :TradeType="type"
+    ></Balance>
+    <InsuranceList
+      v-if="type == 'buy'"
+      :currentCoin="curCoin"
+      :currentType="TradeType"
+    ></InsuranceList>
+    <InsuranceForm
+      v-if="type == 'sell'"
+      :currentCoin="curCoin"
+      :currentType="TradeType"
+    ></InsuranceForm>
+    <RePrice v-if="repriceflag" :option="option"> </RePrice>
   </div>
 </template>
 
 <script>
-import CoinType from './coin-type.vue';
-import Echart from './echart.vue';
-import InsuranceType from './insurance-type.vue';
-import Balance from './balance.vue';
-import InsuranceList from './insurance-list.vue';
-import InsuranceForm from './insurance-form.vue';
+import CoinType from "./coin-type.vue";
+import Echart from "./echart.vue";
+import InsuranceType from "./insurance-type.vue";
+import Balance from "./balance.vue";
+import InsuranceList from "./insurance-list.vue";
+import InsuranceForm from "./insurance-form.vue";
+import RePrice from "./re-price.vue";
 export default {
   components: {
     CoinType,
@@ -44,15 +58,26 @@ export default {
     Balance,
     InsuranceList,
     InsuranceForm,
+    RePrice,
   },
   data() {
     return {
-      type: 'buy',
-      curCoin: 'BNB',
+      type: "buy",
+      curCoin: "HELMET",
       TradeType: 1,
+      repriceflag: false,
+      option: {},
     };
   },
-  mounted() {},
+  mounted() {
+    this.$bus.$on("OPEN_REPRICE", (data) => {
+      this.repriceflag = true;
+      this.option = data;
+    });
+    this.$bus.$on("CLOSE_REPRICE", () => {
+      this.repriceflag = false;
+    });
+  },
   methods: {
     // 选择买卖类型
     handleClickType(type) {
@@ -71,7 +96,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and(min-width:750px) {
   .insurance_center {
     margin-bottom: 10px;
@@ -96,6 +121,7 @@ export default {
       font-weight: bold;
       color: #121212;
       border-radius: 3px 3px 0px 0px;
+      background: #f7f7fa;
     }
     .active {
       background: #ff9600;

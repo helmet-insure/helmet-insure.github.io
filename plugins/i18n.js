@@ -12,7 +12,7 @@ export default ({ app, store }) => {
     messages: {
       en_US: require("~/locales/en_US.json"),
       zh_CN: require("~/locales/zh_CN.json"),
-      po_TU: require("~/locales/po_TU.json"),
+      // po_TU: require("~/locales/po_TU.json"),
     },
   });
 

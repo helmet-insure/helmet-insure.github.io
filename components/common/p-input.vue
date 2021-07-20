@@ -1,7 +1,7 @@
 <template>
   <div class="p-input-block">
     <input :type="type" v-model="svalue" :placeholder="placeholder" />
-    <button class="right">{{ right }}</button>
+    <button class="right" @click="handleClickToBuy">{{ right }}</button>
   </div>
 </template>
 <script>
@@ -58,16 +58,15 @@ export default {
       }
     },
   },
-  // methods: {
-  //     valueWatch(newValue) {
-  //         console.log('valueWatch####', newValue);
-  //         this.svalue = newValue;
-  //     }
-  // }
+  methods: {
+    handleClickToBuy() {
+      this.$emit('numChange')
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
   .p-input-block {
     display: flex;

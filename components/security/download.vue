@@ -1,18 +1,18 @@
 <template>
   <div class="security-download">
-    <div class="download-title">{{ $t('Content.Security') }}</div>
+    <div class="download-title">{{ $t("Content.Security") }}</div>
     <p class="download-text">
-      {{ $t('Tips.Tip3') }}
+      {{ $t("Tips.Tip3") }}
     </p>
     <div class="download-link">
       <a href="/doc/en_US.pdf" target="_blank">
-        {{ $t('Content.PDF') }}
+        {{ $t("Content.PDF") }}
       </a>
       <a
-        href="https://etherscan.io/address/0xe172500462DCD407f2E42590c4ed21B926c2CC60"
+        href="https://bscscan.com/address/0x4E76DfeA6Fb3726e9A77628AAa23839E3298BC37"
         target="_blank"
       >
-        {{ $t('Content.ViewContractAdress') }}
+        {{ $t("Content.ViewContractAdress") }}
       </a>
     </div>
   </div>
@@ -23,7 +23,7 @@ export default {};
 </script>
 
 <style lang='scss' scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
   .download-title {
     height: 60px;

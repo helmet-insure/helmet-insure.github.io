@@ -8,21 +8,21 @@
   >
     <div class="depositeInput">
       <input type="number" v-model="DepositeNum" />
-      <span>BNB</span>
+      <span>Token</span>
     </div>
     <p class="total-token">
-      <span>{{ current }} LP token：{{ lptBalance }}</span
-      ><a @click="addAll">{{ $t('Table.ALL') }}</a>
+      <span>{{ current }} SHORT Token：{{ lptBalance }}</span
+      ><a @click="addAll">{{ $t("Table.ALL") }}</a>
     </p>
-    <a
+    <!-- <a
       v-if="current"
       class="to-gettoken"
       :href="`https://app.uniswap.org/#/add/ETH/${getAddress(
         current.split('-')[1]
       )}`"
       target="_blank"
-      >{{ $t('Table.GetLP') }}</a
-    >
+      >{{ $t("Table.GetLP") }}</a
+    > -->
     <div class="check" v-if="!hiddenGlobal">
       <img
         src="~/assets/img/helmet/checked2.png"
@@ -36,7 +36,7 @@
         v-else
         @click="depositeCheck"
       />
-      <p>{{ $t('Table.InfiniteApproval') }}</p>
+      <p>{{ $t("Table.InfiniteApproval") }}</p>
     </div>
   </PDialog>
 </template>
@@ -91,14 +91,14 @@ export default {
       }
       let flag = this.hiddenGlobal || this.checked;
       let type = this.current;
-      toDeposite(type, { amount: this.DepositeNum }, flag, (status) => {});
+      toDeposite(type, { amount: this.DepositeNum }, flag, (status) => { });
       this.$bus.$emit('DEPOSITE_LOADING', { status: true });
     },
     // 获取余额
     getBalance() {
       let coin = this.current.replace('-', '_') + '_LPT';
       getBalance(coin).then((res) => {
-        this.lptBalance = addCommom(res, 20);
+        this.lptBalance = addCommom(res, 8);
       });
     },
     currentWatch(newValue) {
@@ -114,7 +114,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
   .depositeInput {
     margin-top: 44px;

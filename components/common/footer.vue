@@ -1,47 +1,48 @@
 <template>
   <div class="footer-container">
     <div class="footer_top">
-      <a href="">
+      <a href="https://twitter.com/Helmet_insure" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-Twitter"></use>
         </svg>
         <span>Twitter</span>
       </a>
-      <a href="">
+      <a href="https://t.me/helmet_insure" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-Telegram"></use>
         </svg>
         <span>Telegram</span>
       </a>
-      <a href="">
+      <a href="https://discord.gg/QtTJZEVds5" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-Discord"></use>
         </svg>
         <span>Discord</span>
       </a>
-      <a href="">
+      <a href="https://helmet-insure.gitbook.io/helmet/" target="_blank">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-medium"></use>
         </svg>
-        <span>Medium</span>
+        <span>Guidebook</span>
       </a>
     </div>
-    <div class="footer_bottom">
+    <div class="footer_bottom" :style="`padding:0 ${padding}px`">
       <p>Powered by HELMET Core team</p>
       <Langauage class="langauage" />
     </div>
   </div>
 </template>
 <script>
-import Langauage from '~/components/common/langauage.vue';
-import '~/assets/svg/iconfont.js';
+import Langauage from "~/components/common/langauage.vue";
+import "~/assets/svg/iconfont.js";
 export default {
-  name: 'p-footer',
+  props: ["padding"],
+  name: "p-footer",
   components: { Langauage },
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
   .footer-container {
     width: 100%;
@@ -49,6 +50,7 @@ export default {
     background: #121212;
     display: flex;
     flex-direction: column;
+    min-width: 1200px;
     .footer_top {
       width: 300px;
       flex: 1;
@@ -78,7 +80,6 @@ export default {
       align-items: center;
       justify-content: space-between;
       display: flex;
-      padding: 0 200px;
       p {
         font-size: 14px;
         font-weight: 400;
@@ -87,6 +88,12 @@ export default {
     }
   }
 }
+@media screen and (min-width: 750px) and (max-width: 1280px) {
+  .footer_bottom {
+    padding: 0 50px !important;
+  }
+}
+
 @media screen and (max-width: 750px) {
   .footer-container {
     width: 100%;
@@ -122,6 +129,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 16px !important;
       display: flex;
       p {
         width: 100%;

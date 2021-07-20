@@ -6,21 +6,26 @@
       :key="index"
     >
       <h3>{{ item.title }}</h3>
-      <p>距离挖矿结束还剩：<span>10:14:34:12</span></p>
+      <p>
+        {{ $t("Table.SurplusTime") }}：<span>{{ item.downTime }}</span>
+      </p>
       <div>
         <div class="left">
-          <p>翻倍险<span>100%</span><i></i></p>
+          <p>{{ $t("Content.DoubleInsurance") }}<span>100%</span><i></i></p>
           <div>
             <div>
-              <span>Minted</span>
+              <span>{{ $t("Table.Minted") }}</span>
               <p>HELMET</p>
-              <strong>{{ item.callMined }}</strong>
+              <strong>{{
+                item.callMined.length > 60 ? 0 : item.callMined
+              }}</strong>
               <button
                 :class="
                   claimLoading && claimIndex == index && claimType == 'call'
                     ? 'loading o_button'
                     : 'o_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toClaim(item, index, 'call')"
               >
                 <i
@@ -30,20 +35,23 @@
                       : ''
                   "
                 ></i>
-                Claim Rewards
+                {{ $t("Table.ClaimRewards") }}
               </button>
             </div>
             <section class="cut_line"></section>
             <div>
-              <span>Currently Staked</span>
-              <p>BNB-QUSD Short Token</p>
-              <strong>0</strong>
+              <span>{{ $t("Table.CurrentlyStaked") }}</span>
+              <p>{{ item.call.length > 60 ? 0 : item.call }} Short Token</p>
+              <strong>{{
+                item.callSpToken.length > 60 ? 0 : item.callSpToken
+              }}</strong>
               <button
                 :class="
                   exitLoading && exitIndex == index && exitType == 'call'
                     ? 'loading o_button'
                     : 'o_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toExit(item, index, 'call')"
               >
                 <i
@@ -53,7 +61,7 @@
                       : ''
                   "
                 ></i>
-                Claim&Unstake
+                {{ $t("Table.Claim") }}&{{ $t("Table.Unstake") }}
               </button>
               <button
                 :class="
@@ -63,6 +71,7 @@
                     ? 'loading b_button'
                     : 'b_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toDeposite(item, index, 'call')"
               >
                 <i
@@ -74,18 +83,20 @@
                       : ''
                   "
                 ></i>
-                Stake
+                {{ $t("Table.Stake") }}
               </button>
             </div>
           </div>
         </div>
         <div class="right">
-          <p>腰斩险<span>-50%</span><i></i></p>
+          <p>{{ $t("Content.HalfInsurance") }}<span>-50%</span><i></i></p>
           <div>
             <div>
-              <span>Minted</span>
+              <span>{{ $t("Table.Minted") }}</span>
               <p>HELMET</p>
-              <strong>{{ item.putMined }}</strong>
+              <strong>{{
+                item.putMined.length > 60 ? 0 : item.putMined
+              }}</strong>
               <button
                 class="o_button"
                 :class="
@@ -93,6 +104,7 @@
                     ? 'loading o_button'
                     : 'o_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toClaim(item, index, 'put')"
               >
                 <i
@@ -102,20 +114,23 @@
                       : ''
                   "
                 ></i>
-                Claim Rewards
+                {{ $t("Table.ClaimRewards") }}
               </button>
             </div>
             <section class="cut_line"></section>
             <div>
-              <span>Currently Staked</span>
-              <p>BNB-QUSD Short Token</p>
-              <strong>0</strong>
+              <span>{{ $t("Table.CurrentlyStaked") }}</span>
+              <p>{{ item.put.length > 60 ? 0 : item.put }} Short Token</p>
+              <strong>{{
+                item.putSpToken.length > 60 ? 0 : item.putSpToken
+              }}</strong>
               <button
                 :class="
                   exitLoading && exitIndex == index && exitType == 'put'
                     ? 'loading o_button'
                     : 'o_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toExit(item, index, 'put')"
               >
                 <i
@@ -125,7 +140,7 @@
                       : ''
                   "
                 ></i>
-                Claim&Unstake
+                {{ $t("Table.Claim") }}&{{ $t("Table.Unstake") }}
               </button>
               <button
                 :class="
@@ -135,6 +150,7 @@
                     ? 'loading b_button'
                     : 'b_button'
                 "
+                style="background: #ccc !important; pointer-events: none"
                 @click="toDeposite(item, index, 'put')"
               >
                 <i
@@ -146,7 +162,7 @@
                       : ''
                   "
                 ></i>
-                Stake
+                {{ $t("Table.Stake") }}
               </button>
             </div>
           </div>
@@ -166,89 +182,111 @@ import {
   exitStake,
   getLastTime,
   approveStatus,
-} from '~/interface/deposite';
-import { fixD, addCommom, autoRounding, toRounding } from '~/assets/js/util.js';
-import { getAddress, getContract } from '~/assets/utils/address-pool.js';
-import moment from 'moment';
-import Protect from './protect';
+} from "~/interface/deposite";
+import { fixD, addCommom, autoRounding, toRounding } from "~/assets/js/util.js";
+import { getAddress, getContract } from "~/assets/utils/address-pool.js";
+import moment from "moment";
+import Protect from "./protect";
 export default {
-  name: 'mining-list',
+  name: "mining-list",
   components: { Protect },
   data() {
     return {
       miningList: [
         {
-          title: 'HELMET-BNB Short Token POOL',
-          call: 'HELMET-BNB',
-          put: 'BNB-HELMET',
+          title: "HELMET-BNB Short Token POOL",
+          call: "BNB-HELMET",
+          put: "HELMET-BNB",
           callMined: 0,
           putMined: 0,
+          callSpToken: 0,
+          putSpToken: 0,
+          dueDate: "2020-12-31 00:00",
+          downTime: "",
         },
         {
-          title: 'CAKE-BNB Short Token POOL',
-          call: 'CAKE-BNB',
-          put: 'BNB-CAKE',
+          title: "CAKE-BNB Short Token POOL",
+          call: "BNB-CAKE",
+          put: "CAKE-BNB",
           callMined: 0,
           putMined: 0,
+          callSpToken: 0,
+          putSpToken: 0,
+          dueDate: "2020-12-31 00:00",
+          downTime: "",
         },
         {
-          title: 'CTK-BNB Short Token POOL',
-          call: 'CTK-BNB',
-          put: 'BNB-CTK',
+          title: "CTK-BNB Short Token POOL",
+          call: "BNB-CTK",
+          put: "CTK-BNB",
           callMined: 0,
           putMined: 0,
+          callSpToken: 0,
+          putSpToken: 0,
+          dueDate: "2020-12-31 00:00",
+          downTime: "",
         },
         {
-          title: 'FOR-BNB Short Token POOL',
-          call: 'FOR-BNB',
-          put: 'BNB-FOR',
+          title: "FOR-BNB Short Token POOL",
+          call: "BNB-FOR",
+          put: "FOR-BNB",
           callMined: 0,
           putMined: 0,
+          callSpToken: 0,
+          putSpToken: 0,
+          dueDate: "2020-12-31 00:00",
+          downTime: "",
         },
       ],
       moment: moment,
       claimLoading: false, //结算loading
-      claimIndex: '', //结算ID
-      claimType: '', //结算类型
+      claimIndex: "", //结算ID
+      claimType: "", //结算类型
       depositeLoading: false, //结质押loading
-      depositeIndex: '', //抵押ID
-      depositeType: '', //抵押类型
+      depositeIndex: "", //抵押ID
+      depositeType: "", //抵押类型
       exitLoading: false, //退出loading
-      exitIndex: '', //退出ID
-      exitType: '', //退出类型
+      exitIndex: "", //退出ID
+      exitType: "", //退出类型
       typeList: [
-        'HELMET-BNB',
-        'BNB-HELMET',
-        'CAKE-BNB',
-        'BNB-CAKE',
-        'CTK-BNB',
-        'BNB-CTK',
-        'FOR-BNB',
-        'BNB-FOR',
+        "HELMET_BNB",
+        "BNB_HELMET",
+        "CAKE_BNB",
+        "BNB_CAKE",
+        "CTK_BNB",
+        "BNB_CTK",
+        "FOR_BNB",
+        "BNB_FOR",
       ],
     };
   },
   watch: {
     miningList: {
-      handler: 'miningListWatch',
+      handler: "miningListWatch",
       immediate: true,
     },
   },
   mounted() {
+    setInterval(() => {
+      setTimeout(() => {
+        this.getDownTime();
+      });
+      clearTimeout();
+    }, 1000);
     this.getAllowance();
     setTimeout(() => {
       this.getAllData();
     }, 1000);
-    this.$bus.$on('DEPOSITE_LOADING', (data) => {
+    this.$bus.$on("DEPOSITE_LOADING", (data) => {
       this.depositeLoading = data.status;
     });
-    this.$bus.$on('CLAIM_LOADING', (data) => {
+    this.$bus.$on("CLAIM_LOADING", (data) => {
       this.claimLoading = false;
     });
-    this.$bus.$on('EXIT_LOADING', (data) => {
+    this.$bus.$on("EXIT_LOADING", (data) => {
       this.exitLoading = false;
     });
-    this.$bus.$on('REFRESH_MINING', (data) => {
+    this.$bus.$on("REFRESH_MINING", (data) => {
       this.getAllData();
       this.getAllowance();
     });
@@ -259,17 +297,41 @@ export default {
         this.miningList = newValue;
       }
     },
+    getDownTime() {
+      let now = new Date() * 1;
+      let list = this.miningList;
+      for (let i = 0; i < 4; i++) {
+        let dueDate = list[i].dueDate;
+        dueDate = new Date(dueDate);
+        let DonwTime = dueDate - now;
+        let day = Math.floor(DonwTime / (24 * 3600000));
+        let hour = Math.floor((DonwTime - day * 24 * 3600000) / 3600000);
+        let minute = Math.floor(
+          (DonwTime - day * 24 * 3600000 - hour * 3600000) / 60000
+        );
+        let second = Math.floor(
+          (DonwTime - day * 24 * 3600000 - hour * 3600000 - minute * 60000) /
+            1000
+        );
+        let template = `${day}${this.$t("Content.Day")}${hour}${this.$t(
+          "Content.Hour"
+        )}${minute}${this.$t("Content.Min")}${second}${this.$t(
+          "Content.Second"
+        )}`;
+        this.miningList[i].downTime = template;
+      }
+    },
     async getAllData() {
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 4; i++) {
         const charID = window.chainID;
         // call地址
-        let callType = this.miningList[i].call.replace('-', '_');
-        let callTypeLPT = callType + '_LPT';
+        let callType = this.miningList[i].call.replace("-", "_");
+        let callTypeLPT = callType + "_LPT";
         let callPoolAdress = getContract(callType, charID);
         let callLptAdress = getContract(callTypeLPT, charID);
         // put地址
-        let putType = this.miningList[i].put.replace('-', '_');
-        let putTypeLPT = putType + '_LPT';
+        let putType = this.miningList[i].put.replace("-", "_");
+        let putTypeLPT = putType + "_LPT";
         let putPoolAdress = getContract(putType, charID);
         let putLptAdress = getContract(putTypeLPT, charID);
 
@@ -279,11 +341,13 @@ export default {
         // 获取待领取paya
         let callMined = await CangetPAYA(callType);
         let putMined = await CangetPAYA(putType);
-        this.miningList[i].callMined = addCommom(callMined, 8) || 0;
-        this.miningList[i].putMined = addCommom(putMined, 8) || 0;
+        this.miningList[i].callMined = addCommom(callMined, 8);
+        this.miningList[i].putMined = addCommom(putMined, 8);
         // 获取Lp-Tokens
-        // let lpTokens = await getLPTOKEN(type);
-        // this.miningList[i].lptoken = addCommom(lpTokens, 8);
+        let callLpTokens = await getLPTOKEN(callType);
+        let putLpTokens = await getLPTOKEN(putType);
+        this.miningList[i].callSpToken = addCommom(callLpTokens, 8);
+        this.miningList[i].putSpToken = addCommom(putLpTokens, 8);
         //获取当前池子的总量
         // let DOUBLEPOOL = await totalSupply(type);
         //获取当前LPT的总量
@@ -306,10 +370,10 @@ export default {
       this.claimIndex = index;
       this.claimType = tradeType;
       let type;
-      if (tradeType === 'call') {
-        type = item.call.replace('-', '_');
+      if (tradeType === "call") {
+        type = item.call.replace("-", "_");
       } else {
-        type = item.put.replace('-', '_');
+        type = item.put.replace("-", "_");
       }
       let res = await getPAYA(type);
     },
@@ -321,12 +385,12 @@ export default {
       this.depositeIndex = index; //抵押ID
       this.depositeType = tradeType; //抵押类型
       let type;
-      if (tradeType === 'call') {
-        type = item.call.replace('-', '_');
+      if (tradeType === "call") {
+        type = item.call.replace("-", "_");
       } else {
-        type = item.put.replace('-', '_');
+        type = item.put.replace("-", "_");
       }
-      this.$bus.$emit('OPEN_DEPOSITE', { current: type });
+      this.$bus.$emit("OPEN_DEPOSITE", { current: type });
     },
     // 退出
     async toExit(item, index, tradeType) {
@@ -337,10 +401,10 @@ export default {
       this.exitIndex = index;
       this.exitType = tradeType;
       let type;
-      if (tradeType === 'call') {
-        type = item.call.replace('-', '_');
+      if (tradeType === "call") {
+        type = item.call.replace("-", "_");
       } else {
-        type = item.put.replace('-', '_');
+        type = item.put.replace("-", "_");
       }
       let res = await exitStake(type);
     },
@@ -348,26 +412,25 @@ export default {
     async getAllowance() {
       let approveList = {};
       for (let i = 0; i < 8; i++) {
-        let type = this.typeList[i].replace('-', '_');
+        let type = this.typeList[i];
         let res = await approveStatus(type);
         let value = res.length > 30 ? true : false;
         const key = this.typeList[i];
         approveList[key] = value;
       }
-      this.$store.commit('SET_APPROVE_LIST', approveList);
-      console.log(approveList);
+      this.$store.commit("SET_APPROVE_LIST", approveList);
     },
   },
 };
 </script>
 
 <style lang='scss' soped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 .loading_pic {
   display: block;
   width: 24px;
   height: 24px;
-  background-image: url('../../assets/img/helmet/loading.png');
+  background-image: url("../../assets/img/helmet/loading.png");
   background-repeat: no-repeat;
   background-size: cover;
   animation: loading 2s 0s linear infinite;
@@ -435,7 +498,7 @@ export default {
           > p {
             color: #00b900;
             i {
-              background-image: url('../../assets/img/helmet/call@2x.png');
+              background-image: url("../../assets/img/helmet/call@2x.png");
             }
           }
         }
@@ -445,7 +508,7 @@ export default {
           > p {
             color: #ff6400;
             i {
-              background-image: url('../../assets/img/helmet/put@2x.png');
+              background-image: url("../../assets/img/helmet/put@2x.png");
             }
           }
         }
@@ -460,6 +523,7 @@ export default {
             text-align: center;
             margin-top: 18px;
             font-size: 14px;
+            align-items: center;
             span {
               font-size: 16px;
               font-weight: bold;
@@ -495,11 +559,11 @@ export default {
                 margin: 20px 0 8px;
               }
               button {
-                min-width: 100px;
+                min-width: 134px;
                 margin-top: 20px;
               }
               .b_button {
-                width: 134px;
+                min-width: 134px;
               }
             }
           }
@@ -549,7 +613,7 @@ export default {
           > p {
             color: #00b900;
             i {
-              background-image: url('../../assets/img/helmet/call@2x.png');
+              background-image: url("../../assets/img/helmet/call@2x.png");
             }
           }
         }
@@ -559,7 +623,7 @@ export default {
           > p {
             color: #ff6400;
             i {
-              background-image: url('../../assets/img/helmet/put@2x.png');
+              background-image: url("../../assets/img/helmet/put@2x.png");
             }
           }
         }

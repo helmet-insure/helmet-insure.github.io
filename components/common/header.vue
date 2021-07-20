@@ -1,21 +1,20 @@
 <template>
   <div class="header-container">
     <div>
-      <a class="logo" href="https://www.payaso.io/" target="_blank">
+      <a class="logo" href="/" target="_self">
         <img src="~/assets/img/helmet/trade_logo.png" />
       </a>
       <div class="nav-list">
         <nuxt-link
           to="/product"
           :class="routeObj.name === 'product-id' ? 'active' : ''"
-          >{{ $t('Header.Trade') }}</nuxt-link
+          >{{ $t("Header.Trade") }}</nuxt-link
         >
-        <!-- <nuxt-link to="/buy">{{ $t('Header.MySafetyHelmet') }}</nuxt-link> -->
-        <!-- <nuxt-link to="/sell">{{ $t('Header.MySupply') }}</nuxt-link> -->
-        <nuxt-link to="/mining">{{ $t('Header.Mining') }}</nuxt-link>
-        <!-- <a href="http://www.payaso.io/guides" target="_blank">{{
-          $t('Header.GuideBook')
-        }}</a> -->
+        <nuxt-link to="/mining">{{ $t("Header.Mining") }}</nuxt-link>
+        <!-- <nuxt-link to="/plan">{{ $t("Header.Plan") }}</nuxt-link> -->
+        <a href="https://helmet-insure.gitbook.io/helmet/" target="_blank">{{
+          $t("Header.GuideBook")
+        }}</a>
       </div>
       <!-- <Assets v-if="userInfo.data.isLogin"></Assets> -->
       <!-- 分割线 -->
@@ -52,13 +51,13 @@
   </div>
 </template>
 <script>
-import WallectSelect from './wallet-select';
-import CurrentAccount from '~/components/account/current-account.vue';
-import ChangeAccount from '~/components/account/change-account.vue';
-import Assets from '~/components/common/assets.vue';
-import Langauage from '~/components/common/langauage.vue';
+import WallectSelect from "./wallet-select";
+import CurrentAccount from "~/components/account/current-account.vue";
+import ChangeAccount from "~/components/account/change-account.vue";
+import Assets from "~/components/common/assets.vue";
+import Langauage from "~/components/common/langauage.vue";
 export default {
-  name: 'p-header',
+  name: "p-header",
   components: {
     WallectSelect,
     CurrentAccount,
@@ -69,7 +68,7 @@ export default {
   data() {
     return {
       showWallectSelect: false,
-      accountText: '',
+      accountText: "",
       showMask: false,
       showCurrentAccount: false, // 显示当前账户信息
       showChangeWallet: false,
@@ -85,7 +84,7 @@ export default {
   },
   watch: {
     userInfo: {
-      handler: 'userInfoWatch',
+      handler: "userInfoWatch",
       immediate: true,
     },
   },
@@ -108,11 +107,11 @@ export default {
         account = account.toUpperCase();
         this.accountText =
           account.substr(0, 1) +
-          ' ' +
+          " " +
           account.substr(1, 1) +
-          ' ' +
+          " " +
           account.substr(2, 4) +
-          '...' +
+          "..." +
           account.substr(-5);
       }
     },
@@ -123,13 +122,13 @@ export default {
       this.showWallectSelect = false;
     },
     handleShowMask() {
-      this.$store.dispatch('setMaskDialog', true);
+      this.$store.dispatch("setMaskDialog", true);
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 .header-container {
   width: 100%;
   height: 80px;
@@ -151,7 +150,7 @@ export default {
         font-weight: bold;
         &::after {
           display: none;
-          content: '';
+          content: "";
           position: absolute;
           left: 0px;
           bottom: 0px;
@@ -289,7 +288,7 @@ export default {
       .more {
         width: 24px;
         height: 24px;
-        background-image: url('../../assets/img/helmet/caidan@2x.png');
+        background-image: url("../../assets/img/helmet/caidan@2x.png");
         background-repeat: no-repeat;
         background-size: cover;
       }

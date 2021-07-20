@@ -2,25 +2,25 @@
   <div class="insurance-banner">
     <ul>
       <li>
-        <!-- 已经成交的保险品种的种类 -->
+        <!-- 已成交保单 -->
         <p>
-          <label>{{ $t('Banner.ClosedPolicy') }}</label>
-          <span>{{ addCommom(frequency, 2) }}</span>
+          <label>{{ $t("Banner.ClosedPolicy") }}</label>
+          <span>{{ helmetVarieties }}</span>
         </p>
         <img src="~/assets/img/helmet/ba1@2x.png" alt="" />
       </li>
       <li>
-        <!-- 保险交易过的资金量 -->
+        <!-- LONG当前总价值 -->
         <p>
-          <label>{{ $t('Banner.LongValue') }}</label>
-          <span> {{ helmetVarieties }}</span>
+          <label>{{ $t("Banner.LongValue") }}</label>
+          <span> {{ addCommom(totalHelmetsBorrowedVolume, 4) }}</span>
         </p>
         <img src="~/assets/img/helmet/ba2@2x.png" alt="" />
       </li>
       <li>
-        <!-- 24小时Long token 铸造量 -->
+        <!-- Helmet流通量 -->
         <p>
-          <label>{{ $t('Banner.HelmetTransfer') }}</label>
+          <label>{{ $t("Banner.HelmetTransfer") }}</label>
           <span>{{
             addCommom(
               precision.plus(
@@ -75,8 +75,9 @@ export default {
     },
   },
   mounted() {
-    this.getBannerData();
-    console.log(this.$store.state.assets);
+    if (window.chainID == 56) {
+      this.getBannerData();
+    }
   },
   methods: {
     async getBannerData() {
@@ -91,7 +92,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 .insurance-banner {
   background: #fff;
   ul {
@@ -132,6 +133,9 @@ export default {
           display: flex;
           flex-direction: column;
           text-align: left;
+          label {
+            color: #919aa6;
+          }
           span {
             margin-top: 8px;
             font-size: 20px;
@@ -152,8 +156,11 @@ export default {
         background: #ff9600;
         border-radius: 3px;
         p {
+          label {
+            color: rgba(255, 255, 255, 0.8);
+          }
           span {
-            color: #fff !important;
+            color: #fff;
           }
         }
       }

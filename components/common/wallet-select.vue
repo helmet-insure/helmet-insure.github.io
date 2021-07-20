@@ -47,9 +47,6 @@ export default {
             .request({ method: 'eth_requestAccounts' })
             .then(async (account) => {
               window.localStorage.setItem('currentType', 'MetaMask');
-              // setTimeout(() => {
-              //     window.location.reload()
-              // }, 500)
               let userInfo = await mateMaskInfo(account[0], 'MetaMask');
               this.$store.dispatch('setUserInfo', userInfo);
               this.$bus.$emit('REFRESH_ALL_DATA');
@@ -69,7 +66,6 @@ export default {
     async connectWallet() {
       const walletConnectProvider = new WalletConnectProvider({
         infuraId: '3cd774e14cf34ff78167908f8377051c', // Required
-        // qrcode: true
       });
       await walletConnectProvider.enable();
       const web3 = new Web3(walletConnectProvider);
@@ -81,13 +77,12 @@ export default {
       this.$bus.$emit('REFRESH_ALL_DATA');
       this.$bus.$emit('REFRESH_MINING');
       this.closeDialog();
-      // this.coinbase = await this.web3.eth.getAccounts()[0];
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/base.scss';
+@import "~/assets/css/base.scss";
 @media screen and (min-width: 750px) {
   .wallet-select-mask {
     .wallet-select-block {
@@ -112,8 +107,10 @@ export default {
         justify-content: center;
         padding: 0px 16px;
         border-right: 1px solid #ededf0;
+        background: #f7f7fa;
         &:hover {
           cursor: pointer;
+          background: #fff;
           span {
             color: #ff9600;
           }
@@ -187,7 +184,7 @@ export default {
       display: block;
       width: 20px;
       height: 20px;
-      background: url('../../assets/img/icon/guanbi.png') center center
+      background: url("../../assets/img/icon/guanbi.png") center center
         no-repeat;
       background-size: 100% 100%;
       position: absolute;
