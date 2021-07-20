@@ -8,6 +8,11 @@
         <h3><span>HELMET</span>.INSURE</h3>
         <p>Crypto-assets insurance trading platform on BSC</p>
         <div>
+          <img
+            src="~/assets/img/helmet/invested.png"
+            alt=""
+            class="h5_binance"
+          />
           <a
             href="https://github.com/helmet-insure/helmet-insure.github.io"
             target="_blank"
@@ -19,15 +24,13 @@
             <img src="~/assets/img/helmet/home_btn_icon.png" alt="" /> Launch
             APP
           </a>
+          <i></i>
+          <img
+            src="~/assets/img/helmet/invested.png"
+            alt=""
+            class="web_binance"
+          />
         </div>
-        <!-- <a
-          class="github"
-          href=""
-          target="_blank"
-        >
-          <img src="~/assets/img/helmet/share.png" alt="" />
-          <span> View GitHub</span>
-        </a> -->
       </div>
       <div class="right_pic">
         <img
@@ -161,6 +164,7 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
             &:hover {
               transition: transform 0.5s ease;
               transform: scale(1.04);
@@ -190,6 +194,22 @@ export default {
                 margin-right: 4px;
               }
             }
+          }
+          > i {
+            display: block;
+            width: 2px;
+            min-height: 36px;
+            height: 5vh;
+            background: #212121;
+            border-radius: 1px;
+            margin: 0 40px;
+          }
+          > img {
+            height: 5vh;
+            min-height: 36px;
+          }
+          .h5_binance {
+            display: none;
           }
         }
       }
@@ -284,7 +304,6 @@ export default {
                 margin-right: 4px;
               }
             }
-
             &:nth-of-type(2) {
               background: #ff9600;
               font-size: 16px;
@@ -296,6 +315,19 @@ export default {
                 margin-right: 4px;
               }
             }
+          }
+          > i {
+            display: block;
+            height: 36px;
+            background: #212121;
+            border-radius: 1px;
+            margin: 0 40px;
+          }
+          > img {
+            height: 36px;
+          }
+          .h5_binance {
+            display: none;
           }
         }
       }
@@ -444,6 +476,16 @@ export default {
                 margin-right: 4px;
               }
             }
+          }
+          > i {
+            display: none;
+          }
+          > img {
+            width: 80%;
+            margin: 20px auto 0;
+          }
+          .web_binance {
+            display: none;
           }
         }
       }

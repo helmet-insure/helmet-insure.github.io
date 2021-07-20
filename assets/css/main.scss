@@ -56,14 +56,7 @@ body {
 
     ::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        background-image: -webkit-gradient(
-            linear,
-            left bottom,
-            left top,
-            color-stop(0.44, #873232),
-            color-stop(0.72, #873232),
-            color-stop(0.86, #873232)
-        );
+        background: #ff9600;
     }
 }
 a {

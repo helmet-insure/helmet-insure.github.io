@@ -27,7 +27,7 @@
       </a>
     </div>
     <div class="footer_bottom" :style="`padding:0 ${padding}px`">
-      <p>Powered by payaso.io core team</p>
+      <p>Powered by HELMET Core team</p>
       <Langauage class="langauage" />
     </div>
   </div>
